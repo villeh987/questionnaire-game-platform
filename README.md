@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 # BWA/TIETA12 course work assignment
 
@@ -181,3 +182,6 @@ npm run Lint: fix
 Naturally, it is easier to set up a code editor to monitor and correct the style during coding. 
 
 The project root directory contains the VSCode Editor configuration folder, where the appropriate settings are available for the editor. In addition, it contains plugin recommendations that VSCode will offer to install if the user so wishes. In addition, the project includes the _.editorconfig_ file, which allows you to easily import some of your settings to a number of other editors.
+=======
+*BWA - TIETA 12 course work assignment*
+>>>>>>> b1471ff92ae172fc545dbdc5cab56b005f1f0fbd
