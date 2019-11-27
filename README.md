@@ -1,21 +1,83 @@
-<<<<<<< HEAD
 
-# BWA/TIETA12 course work assignment
+# BWA/TIETA12 coursework assignment
 
 In the assignment, we gamify multi-choice questionnaire.
-The assignment consists of two parts: the game itself, and its management view.
-The management implies CRUD operations: questions are added, modified, and deleted.
-HTTP methods are used "restful" way.
-The questionnaire is stored in the database and exploited according to a scheme.
-Data must be compliant with the DB scheme is needed in saving the data to the MongoDB.
+The assignment consists of three parts: the game, management view, and testing/documentation.
+1. game - some mechanism for selecting the right answers
+
+2. management implies CRUD operations: questions can be created, queried, modified, and deleted.
+
+3. test your modifications, that is game and management view in particular, other tests can be implemented as well. 
+
+In the beginning of December, we will meet all the groups to check that each
+group has some idea how to proceed. 
+In addition, we promote MIT licensing:
+if you grant the license, your game may be integrated in the LukioPlussa project; 
+the project is funded by the Ministry of Education. Its aim is to provide free learning material 
+for high-school students, especially for the domains of mathematics and computer science.
 
 
 
-In the end of November, we will meet all the groups.
-If you give a permission, your game may be used in LukioPlussa project; the project is  
-funded by Ministry of Education. The aim is to provide free learning material for
-high-school students, especially for the domains of mathematics and computer science.
-Giving the permission is possible in this meeting.
+
+### The project structure
+
+```
+.
+├── app.js                  --> express app
+├── index.js                --> bwa app
+├── package.json            --> app info and dependencies
+├── controllers             --> controllers (handle e.g. routing)
+│   ├──  ...                -->   ...
+│   └── hello.js            --> the same as "minimal viable grader"
+├── models                  --> models that reflect the db schemes  
+│                               and take care of storing data
+├── public                  --> location for public (static) files
+│   ├── img                 --> for images
+│   ├── js                  --> for javascript
+│   └── css                 --> for styles
+├── routes                  --> a dir for router modules
+│   ├── hello.js            --> / (root) router
+│   ├──  ...                -->   ...
+│   └── users.js            --> /users router
+├── views                   --> views - visible parts
+│   ├── error.hbs           --> error view
+│   ├── hello.hbs           --> main view - "minimal viable grader"
+│   ├── layouts             --> layouts - handlebar concept
+│   │   └── layout.hbs      --> layout view, "template" to be rendered
+│   └── partials            --> smaller handlebar components to be included in views 
+└── test                    --> tests
+│   ├── assignment          --> TODO: your tests here
+│   ├── integration         --> integration
+└── └── models              --> unit tests for models
+                        
+
+```
+
+TODO: add your files here and give a short description
+
+
+## Game
+
+TODO: describe your work
+
+On ollut vaan requirements lista ja sitten "Create a short document that describes how your coursework handles these requirements." Ja erikseen maininta sitten että pitää selvittää miten se softa ajetaan.
+
+## Management view
+
+TODO: describe your work
+
+
+## Tests and documentation
+
+TODO:  describe your work
+
+
+## Security concerns
+
+TODO: list the security threats represented in the course slides.
+Document how your application protects against the threats. 
+You are also free to add more security threats + protection here, if you will.
+
 
 
 ## Installation
@@ -91,35 +153,8 @@ Giving the permission is possible in this meeting.
     ```
 
 
-### The project structure
 
-```
-.
-├── app.js                  --> express app
-├── index.js                --> bwa app
-├── package.json            --> app info and dependencies
-├── controllers             --> controllers (handle e.g. routing)
-│   ├──  ...                -->   ...
-│   └── hello.js            --> the same as "minimal viable grader"
-├── models                  --> models that reflect the db schemes  
-│                               and take care of storing data
-├── public                  --> location for public (static) files
-│   ├── img                 --> for images
-│   ├── js                  --> for javascript
-│   └── css                 --> for styles
-├── routes                  --> a dir for router modules
-│   ├── hello.js            --> / (root) router
-│   ├──  ...                -->   ...
-│   └── users.js            --> /users router
-├── views                   --> views - visible parts
-│   ├── error.hbs           --> error view
-│   ├── hello.hbs           --> main view - "minimal viable grader"
-│   ├── layouts             --> layouts - handlebar concept
-│   │   └── layout.hbs      --> layout view, "template" to be rendered
-│   └── partials            --> smaller handlebar components to be included in views 
-└── test                    --> tests
 
-```
 ## Coding conventions 
 
 Project uses _express_ web app framework (https://expressjs.com/).
@@ -160,10 +195,10 @@ The _eslint_ tool used is configured to require certain stylistic considerations
 
 This project follows the following coding styles:
 
-- Indents with 4 spaces
+- indents with 4 spaces
 - the code block starting bracket `{` is in the same line as the block starting the function, clause or loop
 - the block terminating bracket `}` in the code block is always on its own line, except in cases where the whole block is on a single line
-- The _camelCase_ style is recommended for naming functions and variables
+- the _camelCase_ style is recommended for naming functions and variables
 - the variables should not be defined by using the `var` keyword, but the variables and constants are defined using the` let` and `const` keywords
 - each line of code ends with a semicolon `;`
 
@@ -182,6 +217,3 @@ npm run Lint: fix
 Naturally, it is easier to set up a code editor to monitor and correct the style during coding. 
 
 The project root directory contains the VSCode Editor configuration folder, where the appropriate settings are available for the editor. In addition, it contains plugin recommendations that VSCode will offer to install if the user so wishes. In addition, the project includes the _.editorconfig_ file, which allows you to easily import some of your settings to a number of other editors.
-=======
-*BWA - TIETA 12 course work assignment*
->>>>>>> b1471ff92ae172fc545dbdc5cab56b005f1f0fbd
