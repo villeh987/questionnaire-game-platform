@@ -1,8 +1,8 @@
 {
     "mongo": {
-        "host": "TODO",
-        "port": "TODO",
-        "db": "TODO"
+        "host": "localhost",
+        "port": "27017",
+        "db": "bwa"
     },
     "session": {
         "name": "bwa",

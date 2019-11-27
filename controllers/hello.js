@@ -9,7 +9,6 @@ module.exports = {
      * @param {Object} response is express response object
      */
     showExercise(request, response) {
-        // TODO: search exercises from the database and render the page accordingly
         // currently we use only the default exercise here
         response.render('hello');
     },
