@@ -1,37 +1,9 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 'use strict';
 
 const User = require('../models/user');
 
 module.exports = {
-    /**
-     * Returns a form for a user to login
-     * @param {Object} request is express request object
-     * @param {Object} response is express response object
-     */
-    login(request, response) {
-        //TODO: show the login view
-    },
-
-    /**
-     * User logs out and gets redirected to a login page.
-     *
-     * @param {Object} request is express request object
-     * @param {Object} response is express response object
-     */
-    logout(request, response) {
-        //TODO: passport logout
-        //TODO: flash the successMessage with an appropriate message
-        //TODO: redirect a user to the right location
-    },
-
-    /**
-     * Returns a form for user to register
-     * @param {Object} request is express request object
-     * @param {Object} response is express response object
-     */
-    register(request, response) {
-        //TODO: render the registration view
-    },
 
     /**
      * Returns list of users
@@ -43,7 +15,7 @@ module.exports = {
             .sort('name')
             .select('name email role')
             .exec();
-        //TODO: render the users view
+        response.render('user/users', { users });
     },
 
     /**
@@ -111,7 +83,8 @@ module.exports = {
         let user = await User.findOne({ email }).exec();
 
         if (user) {
-            const errorMessage = 'Email already registered for another user.';
+            const errorMessage =
+                'Email already registered for another user.';
 
             if (request.is('json')) {
                 return response.status(409).json({
@@ -146,7 +119,10 @@ module.exports = {
      */
     async processChangeRole(request, response) {
         if (request.params.id === request.user.id) {
-            request.flash('errorMessage', 'You cannot change your own role.');
+            request.flash(
+                'errorMessage',
+                'You cannot change your own role.'
+            );
             return response.redirect('/users');
         }
 
@@ -213,7 +189,10 @@ module.exports = {
      */
     async delete(request, response) {
         if (request.params.id === request.user.id) {
-            request.flash('errorMessage', 'Removing user not allowed');
+            request.flash(
+                'errorMessage',
+                'Removing user not allowed'
+            );
             return response.redirect('/users');
         }
 
@@ -240,7 +219,10 @@ module.exports = {
      */
     async processDelete(request, response) {
         if (request.params.id === request.user.id) {
-            request.flash('errorMessage', 'Removing user not allowed');
+            request.flash(
+                'errorMessage',
+                'Removing user not allowed'
+            );
             return response.redirect('/users');
         }
 
@@ -340,5 +322,35 @@ module.exports = {
         );
 
         response.redirect('/users/me');
+    },
+
+    /**
+     * Returns a form for a user to login
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
+    login(request, response) {
+        response.render('user/login');
+    },
+
+    /**
+     * User logs out and gets redirected to a login page.
+     *
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
+    logout(request, response) {
+        request.logout();
+        request.flash('successMessage', 'You have logged out');
+        response.redirect('/users/login');
+    },
+
+    /**
+     * Returns a form for user to register
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
+    register(request, response) {
+        response.render('user/register');
     }
 };
