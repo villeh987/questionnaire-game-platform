@@ -37,7 +37,7 @@ module.exports = {
      */
     register(request, response) {
         //TODO: render the registration view
-    }
+    },
 
 
     /**
