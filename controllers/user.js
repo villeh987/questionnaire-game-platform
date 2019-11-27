@@ -1,11 +1,8 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 'use strict';
 
 const User = require('../models/user');
 
 module.exports = {
-
-
     /**
      * Returns a form for a user to login
      * @param {Object} request is express request object
@@ -23,11 +20,8 @@ module.exports = {
      */
     logout(request, response) {
         //TODO: passport logout
-
         //TODO: flash the successMessage with an appropriate message
-
         //TODO: redirect a user to the right location
-
     },
 
     /**
@@ -38,7 +32,6 @@ module.exports = {
     register(request, response) {
         //TODO: render the registration view
     },
-
 
     /**
      * Returns list of users
@@ -118,8 +111,7 @@ module.exports = {
         let user = await User.findOne({ email }).exec();
 
         if (user) {
-            const errorMessage =
-                'Email already registered for another user.';
+            const errorMessage = 'Email already registered for another user.';
 
             if (request.is('json')) {
                 return response.status(409).json({
@@ -154,10 +146,7 @@ module.exports = {
      */
     async processChangeRole(request, response) {
         if (request.params.id === request.user.id) {
-            request.flash(
-                'errorMessage',
-                'You cannot change your own role.'
-            );
+            request.flash('errorMessage', 'You cannot change your own role.');
             return response.redirect('/users');
         }
 
@@ -224,10 +213,7 @@ module.exports = {
      */
     async delete(request, response) {
         if (request.params.id === request.user.id) {
-            request.flash(
-                'errorMessage',
-                'Removing user not allowed'
-            );
+            request.flash('errorMessage', 'Removing user not allowed');
             return response.redirect('/users');
         }
 
@@ -254,10 +240,7 @@ module.exports = {
      */
     async processDelete(request, response) {
         if (request.params.id === request.user.id) {
-            request.flash(
-                'errorMessage',
-                'Removing user not allowed'
-            );
+            request.flash('errorMessage', 'Removing user not allowed');
             return response.redirect('/users');
         }
 
@@ -357,6 +340,5 @@ module.exports = {
         );
 
         response.redirect('/users/me');
-    },
-
+    }
 };

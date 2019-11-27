@@ -1,6 +1,5 @@
 'use strict';
 
-
 require('dotenv').config();
 const debug = require('debug')('bwa:app');
 const createError = require('http-errors');
@@ -30,7 +29,7 @@ db.connectDB(dbConfig);
 
 // setup admin user
 // TODO: pass config with the right key to add admin user
-require('./setup/createusers')/*TODO: add here;*/;
+require('./setup/createusers') /*TODO: add here;*/;
 
 if (app.get('env') === 'development') {
     app.use(logger('dev'));
@@ -39,9 +38,6 @@ if (app.get('env') === 'development') {
     require('./setup/createdata')().then((msg) => {
         debug(msg);
     });
-
-    // enable webpack development server
-    require('./middleware/webpack')(app);
 }
 
 // trust reverse proxy headers
@@ -138,7 +134,8 @@ app.use(function(request, response, next) {
 app.use(function(error, request, response, next) {
     // set locals, only providing error in development
     response.locals.message = error.message;
-    response.locals.error = request.app.get('env') === 'development' ? error : {};
+    response.locals.error =
+        request.app.get('env') === 'development' ? error : {};
     response.locals.title = `${error.status || 500} ${error.message}`;
     response.locals.heading = `${request.method} ${request.url}`;
 

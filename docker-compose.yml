@@ -5,11 +5,11 @@ services:
         build:
             context: .
             dockerfile: ./docker/Dockerfile
-        image: bwa:production
+        image: bwa:development
         container_name: bwa
         restart: unless-stopped
         environment:
-            - NODE_ENV=docker
+            - NODE_ENV=development
         depends_on:
             - 'mongo'
         ports:

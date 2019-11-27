@@ -3,7 +3,6 @@
 const Hello = require('../models/hello');
 
 module.exports = {
-
     /**
      * Prints exercise page
      * @param {Object} request is express request object
@@ -25,7 +24,6 @@ module.exports = {
         const maxPoints = 2;
         const points = Hello.grade(request.body.answer, maxPoints);
         response.render('hello-graded', {
-            layout: 'grader_reply',
             points: points,
             maxPoints: maxPoints,
             status: 'graded',
