@@ -72,6 +72,8 @@ TODO: list the security threats represented in the course slides.
 Document how your application protects against the threats.
 You are also free to add more security threats + protection here, if you will.
 
+Application uses Helmet to protect itself against many common threats. More info here: https://helmetjs.github.io/
+
 ---
 
 ## Installation
