@@ -43,6 +43,7 @@ const inputSchema = {
             return 'Email is required and it must right format';
         }),
     password: Joi.string()
+        .min(schemaDefaults.password.minLength)
         .max(schemaDefaults.password.maxLength)
         .error(() => {
             return `Password must be at least ${schemaDefaults.password.minLength} chars.`;
@@ -92,29 +93,35 @@ const userSchema = new Schema({
             if (!password || password.length === 0) return password;
             // transparently encrypt password when setting it using:
             // setter must be synchronous or errors will happen
-            // TODO: hash password here with bcrypt, use length of 10,
-            return //TODO: here;
+            
+            return bcrypt.hashSync(password, 10);
         }
     },
-    //TODO: add role, trim, lowercase, and it should enumerate possible schemaDefults.role.values, and default to defaultValues
+    role: {
+        type: String,
+        enum: ['admin', 'teacher', 'student'],
+        trim: true,
+        lowercase: true,
+        default: 'student'
+    }
 });
 
 userSchema.virtual('isAdmin').get(function() {
     // eslint-disable-next-line babel/no-invalid-this
-    //TODO: add the admin check for the role of this object
+    return this.role === "admin";
     // the helper function should return either true of false
 });
 
 userSchema.virtual('isTeacher').get(function() {
     // eslint-disable-next-line babel/no-invalid-this
-    //TODO: add the teacher check for the role of this object
+    return this.role === "admin" || this.role === "teacher";
     // Note that admin can be anything
     // the helper function should return either true of false
 });
 
 userSchema.virtual('isStudent').get(function() {
     // eslint-disable-next-line babel/no-invalid-this
-    //TODO: add the teacher check for the role of this object
+    return this.role === "admin" || this.role === "student";
     //Note that admin can be anything
     // the helper function should return either true of false
 });
@@ -152,7 +159,13 @@ userSchema.statics.validateLogin = function(data) {
     const { email, password } = inputSchema;
     const loginValidationSchema = {
         email: email.required(),
-        password: password.min(1).required()
+        password: Joi.string()
+        .min(1)
+        .max(schemaDefaults.password.maxLength)
+        .error( () => {
+            return `Password must be at least ${schemaDefaults.password.minLength} chars.`;
+        })
+        .required()
     };
     const result = Joi.validate(data, loginValidationSchema);
     if (result.error) result.error = buildErrorObject(result.error.details);
