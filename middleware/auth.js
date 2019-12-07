@@ -20,7 +20,10 @@ module.exports = {
             return response.redirect(loginUrl);
         }
 
-        // TODO: do the checking
+        if (!request.user.isAdmin) {
+            request.flash('errorMessage', 'Admin rights required!');
+            return response.redirect('/');
+        }
 
         next();
     },
