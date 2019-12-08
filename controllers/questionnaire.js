@@ -27,62 +27,19 @@ module.exports = {
         }
 
         response.render('questionnaire/questionnaire', { questionnaire });
-    }
-
-/*
-    async create(request, response) {
-        const { error } = User.validateRegistration(request.body);
-        // TODO: find out why ESLint thinks name is already defined
-        //       This seems to be a bug in ESLint...
-        // ESLint: 'name' is already declared in the upper scope
-        // eslint-disable-next-line no-shadow
-        const { name, email, password } = request.body;
-
-        if (error) {
-            if (request.is('json')) {
-                return response.status(400).json({ error });
-            }
-
-            return response.render('user/register', {
-                name,
-                email,
-                errors: error
-            });
-        }
-
-        let user = await User.findOne({ email }).exec();
-
-        if (user) {
-            const errorMessage =
-                'Email already registered for another user.';
-
-            if (request.is('json')) {
-                return response.status(409).json({
-                    error: errorMessage
-                });
-            }
-
-            return response.render('user/register', {
-                name,
-                email,
-                errorMessage
-            });
-        }
-
-        user = new User();
-        user.name = name;
-        user.email = email;
-        user.password = password;
-
-        await user.save();
-        request.flash(
-            'successMessage',
-            'Registration ready, you can now log in.'
-        );
-        response.redirect('/users/login');
     },
 
 
+    async create(request, response) {
+    	console.log("create");
+ 		response.render('questionnaire/create_new_questionnaire');
+    },
+
+    async cancel(request, response) {
+ 		return response.redirect('/questionnaires');
+    }
+
+    /*
     async processCreate(request, response) {
         if (request.params.id === request.user.id) {
             request.flash(

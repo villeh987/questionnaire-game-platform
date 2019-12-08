@@ -14,9 +14,11 @@ router.use(auth.ensureTeacher);
 router.get('/', csrfProtection, QuestionnaireController.list);
 
 router.get('/:id([a-f0-9]{24})', QuestionnaireController.show);
-/*
+
 // Create documents
 router.get('/new', QuestionnaireController.create);
+router.get('/cancel', QuestionnaireController.cancel);
+/*
 router.post('/new', QuestionnaireController.processCreate);
 
 // Update documents
