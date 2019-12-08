@@ -1,0 +1,36 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title"><i class="fas fa-question"></i> {{this.title}}</h5>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Submissions: {{this.submissions}}</h5>
+        <p class="card-text">
+            <h5>Questions:</h5> 
+            <p></p>
+
+            {{#each this.questions as |question index|}}
+            <h6><u>{{question.title}}</u></h6>
+            <h6>Max points: <b>{{question.maxPoints}}</b></h6>
+                <ul>
+                    {{#each question.options as |option index|}}
+                    <li>
+                        {{#if option.correctness}}
+                        <b>{{option.option}}</b>
+                        {{else}}
+                        {{option.option}}
+                        {{/if}}
+                    </li>
+                    {{/each}}                    
+                </ul>
+
+
+            {{/each}}
+
+
+        </p>
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-primary" href="/questionnaires/delete/{{this.id}}"><i class="fas fa-trash-alt"></i>Remove</a>
+        <a class="btn btn-primary" href="/questionnaires/edit/{{this.id}}"><i class="fas fa-edit"></i>Update</a>
+    </div>
+</div>

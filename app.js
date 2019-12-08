@@ -28,8 +28,7 @@ const db = require('./models/db');
 db.connectDB(dbConfig);
 
 // setup admin user
-// TODO: pass config with the right key to add admin user
-require('./setup/createusers') /*TODO: add here;*/;
+require('./setup/createusers')(config.get('admin'));
 
 if (app.get('env') === 'development') {
     app.use(logger('dev'));
