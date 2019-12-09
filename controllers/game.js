@@ -2,7 +2,6 @@
 
 module.exports = {
     showExercise(request, response) {
-        console.log('helloa');
         response.render('game');
     },
 
