@@ -18,9 +18,10 @@ router.get('/:id([a-f0-9]{24})', QuestionnaireController.show);
 // Create documents
 router.get('/new', QuestionnaireController.create);
 router.get('/cancel', QuestionnaireController.cancel);
-/*
+
 router.post('/new', QuestionnaireController.processCreate);
 
+/*
 // Update documents
 router.get('/edit/:id([a-f0-9]{24})', QuestionnaireController.update);
 router.post('/edit/:id([a-f0-9]{24})', QuestionnaireController.processUpdate);
