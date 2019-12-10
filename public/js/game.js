@@ -34,6 +34,74 @@ function preload () {
     this.load.spritesheet('ship', '../img/pixel_ship.png',
         { frameWidth: 30, frameHeight: 15 }
     );
+
+    //TODO: Load questionnaire from database
+
+    /* TEST STUFF:
+    /  generate list of random string questionnaires
+    */
+
+    const NUM_TESTQUESTIONS = 3;
+
+    const MIN_TITLELENGTH = 1;
+    const MAX_TITLELENGTH = 100;
+    const MIN_OPTIONS = 2;
+    const MAX_OPTIONS = 7;
+    const MIN_POINTS = 1;
+
+    const MIN_OPTIONLENGTH = 1;
+    const MAX_OPTIONLENGTH = 50;
+
+    //Generate random number between min and max
+    function randomIntBetween(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    //Generates random string from set of characters
+    function generateRandomString(min, max) {
+        let string = "";
+        const SELECTION = "ABCDEFGHIJKLMNOPQRSTUVWXYZOÄÖabcdefghijklmnopqrstuvwxyzoäö01234567890";
+
+        let numChars = randomIntBetween(min, max);
+
+        for(let i = 0; i < numChars; ++i) {
+            string += SELECTION.charAt(Math.floor(Math.random() * SELECTION.length));
+        }
+
+        return string;
+    }
+
+    //Generates list of random test options
+    function generateOptions(min, max) {
+        let options = [];
+
+        let numOptions = randomIntBetween(min, max);
+
+        for(let i = 0; i < numOptions; ++i) {
+            options.push(
+                {
+                    title: generateRandomString(MIN_OPTIONLENGTH, MAX_OPTIONLENGTH),
+                    correctness: false
+                }
+            );
+        }
+
+        //set one option as the correct one
+        options[randomIntBetween(0, options.length -1)]['correctness'] = true;
+
+        return options;
+    }
+
+    let questionnaire = [];
+    for(int i = 0; i < NUM_TESTQUESTIONS; ++i) {
+        questionnaire.push(
+            {
+                title: generateRandomString(MIN_TITLELENGTH, MAX_TITLELENGTH),
+                options: generateOptions(MIN_OPTIONS, MAX_OPTIONS)
+            }
+        );
+    }
+    //END of test stuff
 }
 
 function create () {
