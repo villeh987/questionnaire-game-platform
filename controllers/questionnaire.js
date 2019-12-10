@@ -41,12 +41,45 @@ module.exports = {
 
     
     async processCreate(request, response) {
-    	console.log(request.body);
-    	console.log("tulee");
-    	console.log(request.body.questions[0].title);
+    	//console.log(request.body);
+    	//console.log("tulee");
+    	//console.log(request.body.questions[0].title);
     	//request.body.questions[0].option.forEach(e => console.log(e));
-    	console.log(request.body.questions[0].options);
-    	console.log(request.body.questions[1].options);
+    	//console.log(request.body.questions[0].options);
+    	//console.log(request.body.questions[1].options);
+
+    	let parsed_questionnaire = request.body;
+
+    	request.body.questions.forEach( (question) => {
+    		question.options.forEach( (option) => {
+    			if (option.correctness === undefined) {
+    				option.correctness = false;
+
+    			} else if (option.correctness === 'on') {
+    				option.correctness = true;
+    			}
+
+    			if (option.hint === '') {
+    				delete option.hint;
+    			}
+
+    		} )
+
+    	});
+
+
+
+    	//parsed_questionnaire.questions[0].options.forEach( (e) => { console.log(e.correctness) });
+    	//console.log(parsed_questionnaire.questions[0].options);
+    	//console.log(parsed_questionnaire.questions[1].options);
+
+    	//console.log(parsed_questionnaire);
+
+    	//console.log(JSON.stringify(parsed_questionnaire));
+
+    	await Questionnaire.create(parsed_questionnaire);
+    	request.flash('successMessage', 'Questionnaire added successfully.');
+        response.redirect('/questionnaires');
     }
 
 /*

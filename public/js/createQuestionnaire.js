@@ -42,7 +42,7 @@ const add = `	<div class="form-group" id="question${question_number}">
 						  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[${question_number}][options][1][option]" id="optionInput1">
 							<div class="input-group-append">
 							  	<div class="input-group-text"> 		
-							    	<input type="checkbox" name="questions[1][options][1][correctness]" id="correctAnswerCheckbox" aria-label="Checkbox for text input">
+							    	<input type="checkbox" name="questions[${question_number}][options][1][correctness]" id="correctAnswerCheckbox" aria-label="Checkbox for text input">
 									<label for="correctAnswerCheckbox">Correct</label>
 								</div>
 							</div>
@@ -57,7 +57,7 @@ const add = `	<div class="form-group" id="question${question_number}">
 						  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[${question_number}][options][2][option]" id="optionInput2">
 							<div class="input-group-append">
 							  	<div class="input-group-text"> 		
-							    	<input type="checkbox" name="questions[1][options][2][correctness]" id="correctAnswerCheckbox" aria-label="Checkbox for text input">
+							    	<input type="checkbox" name="questions[${question_number}][options][2][correctness]" id="correctAnswerCheckbox" aria-label="Checkbox for text input">
 									<label for="correctAnswerCheckbox">Correct</label>
 								</div>
 							</div>
