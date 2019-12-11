@@ -30,7 +30,6 @@ var config = {
 let game = new Phaser.Game(config);
 
 function preload () {
-    //TODO: add better suited asset
     this.load.spritesheet('ship', '../img/pixel_ship.png',
         { frameWidth: 32, frameHeight: 32 }
     );
@@ -107,13 +106,11 @@ function preload () {
 function create () {
     this.physics.world.setBounds(0, 0, 1600, 1200);
 
-    this.player = this.physics.add.sprite(800, 600, 'ship');
-    //TODO: fix the angle of acceleration and sprite or just use 4way movement
+    this.player = this.physics.add.sprite(500, 500, 'ship');
 
-    //background.setOrigin(0.5, 0.5).setDisplaySize(1600, 1200);
-    this.player.setOrigin(0.5, 0.5).setDisplaySize(132, 120).setCollideWorldBounds(true).setDrag(0.99);
+    this.player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(false).setDrag(0.99);
 
-    this.cameras.main.zoom = 0.5;
+    this.cameras.main.zoom = 1;
 
     //movement with arrow keys and SPACE
     /*
@@ -130,9 +127,13 @@ function create () {
     this.input.keyboard.on('keydown_SPACE', function (event) {
         console.log('bang');
     })
+
 }
 
 function update (time, delta) {
+    //wrap objects that go around the edge to the other side
+    this.physics.world.wrap(this.player, 32);
+
     if(this.cursors.up.isDown) {
         this.physics.velocityFromRotation(this.player.rotation, 200, this.player.body.acceleration);
     } else {
