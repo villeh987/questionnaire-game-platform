@@ -104,6 +104,11 @@ function preload () {
     //END of test stuff
 }
 
+//Spawns one option from questionnaire on the playfield
+function spawnOption() {
+
+}
+
 function create () {
     this.physics.world.setBounds(0, this.topMargin + this.magicTopMarginNumber,
                                  config['width'], config['height'] - this.topMargin);
@@ -121,26 +126,39 @@ function create () {
         origin: { x: 0, y: 0 },
         style: {
             font: 'bold 18px Arial',
-            fill: 'red',
+            fill: 'white',
             wordWrap: { width: config['width']-110, useAdvancedWrap: true }
         }
     });
 
-    question.text = "hello";
-    //movement with arrow keys and SPACE
-    /*
-    let moveKeys = this.input.keyboard.addKeys({
-        'accelerate': Phaser.Input.Keyboard.KeyCodes.UP,
-        'turnRight': Phaser.Input.Keyboard.KeyCodes.RIGHT,
-        'turnLeft': Phaser.Input.Keyboard.KeyCodes.LEFT,
-        'shoot': Phaser.Input.Keyboard.KeyCodes.SPACE
+    //test putting text box in there
+    let testOption = this.make.text({
+        x: 200,
+        y: 300,
+        text: 'answeransweransl aölskdjfa ölskdjf aölskdjf ö',
+        origin: { x: 0, y: 0 },
+        style: {
+            font: 'bold 18px Arial',
+            fill: 'white',
+            wordWrap: { width: 100, useAdvancedWrap: true }
+        }
     });
-    */
 
+    this.physics.world.enable(testOption);
+    testOption.body.setVelocity(29);
+    question.text = "hello";
+
+    //Input config
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    this.input.keyboard.on('keydown_SPACE', function (event) {
-        console.log('bang');
+    //Shoot wrong options with this
+    this.input.keyboard.on('keydown_X', function (event) {
+        console.log('shoot1');
+    })
+
+    //Shoot right options with this
+    this.input.keyboard.on('keydown_Z', function (event) {
+        console.log('shoot2');
     })
 
 }
