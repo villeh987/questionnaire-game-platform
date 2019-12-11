@@ -5,8 +5,8 @@
 var config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 800,
     physics: {
         default: 'arcade',
         arcade: {
@@ -20,9 +20,10 @@ var config = {
         update: update,
         extend: {
             player: null,
-            moveKeys: null,
             bullets: null,
             time: 0,
+            topMargin: 100,
+            magicTopMarginNumber: 48
         }
     }
 };
@@ -104,14 +105,28 @@ function preload () {
 }
 
 function create () {
-    this.physics.world.setBounds(0, 0, 1600, 1200);
+    this.physics.world.setBounds(0, this.topMargin + this.magicTopMarginNumber,
+                                 config['width'], config['height'] - this.topMargin);
 
     this.player = this.physics.add.sprite(500, 500, 'ship');
-
     this.player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(false).setDrag(0.99);
 
+    let border = this.add.line(0, 0, 0, this.topMargin, 3200, this.topMargin, 0xff0000);
     this.cameras.main.zoom = 1;
 
+    let question = this.make.text({
+        x: 50,
+        y: 20,
+        text: '',
+        origin: { x: 0, y: 0 },
+        style: {
+            font: 'bold 18px Arial',
+            fill: 'red',
+            wordWrap: { width: config['width']-110, useAdvancedWrap: true }
+        }
+    });
+
+    question.text = "hello";
     //movement with arrow keys and SPACE
     /*
     let moveKeys = this.input.keyboard.addKeys({
