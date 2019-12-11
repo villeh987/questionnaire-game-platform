@@ -32,7 +32,7 @@ let game = new Phaser.Game(config);
 function preload () {
     //TODO: add better suited asset
     this.load.spritesheet('ship', '../img/pixel_ship.png',
-        { frameWidth: 30, frameHeight: 15 }
+        { frameWidth: 32, frameHeight: 32 }
     );
 
     //TODO: Load questionnaire from database
