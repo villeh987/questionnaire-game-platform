@@ -93,7 +93,7 @@ function preload () {
     }
 
     let questionnaire = [];
-    for(int i = 0; i < NUM_TESTQUESTIONS; ++i) {
+    for(let i = 0; i < NUM_TESTQUESTIONS; ++i) {
         questionnaire.push(
             {
                 title: generateRandomString(MIN_TITLELENGTH, MAX_TITLELENGTH),
