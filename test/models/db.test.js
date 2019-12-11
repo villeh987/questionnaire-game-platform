@@ -4,28 +4,28 @@
 
 // NPM install mongoose and chai. Make sure mocha is globally
 // installed
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+// const mongoose = require('mongoose');
+// const Schema = mongoose.Schema;
 const chai = require('chai');
 const expect = chai.expect;
-const assert = require('assert');
+// const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const config = require('config');
 
-describe('Config', function () {
+describe('Config', function() {
 
-    describe('mongo config', function () {
-        it('must have mongo key', function () {
+    describe('mongo config', function() {
+        it('must have mongo key', function() {
             const mongoConfig = config.mongo;
             expect(mongoConfig).to.exist;
 
         });
-        it('must have a JSON object as a value', function () {
+        it('must have a JSON object as a value', function() {
             const mongoConfig = config.mongo;
             expect(mongoConfig).to.be.an('object');
         });
-        it('must define keys host, port, and db in the JSON object', function () {
+        it('must define keys host, port, and db in the JSON object', function() {
             const mongoConfig = config.mongo;
             expect(mongoConfig.host).to.exist;
             expect(mongoConfig.port).to.exist;
@@ -38,7 +38,7 @@ describe('Config', function () {
         // let db;
         // let mongoConfig;
 
-        it('must be able to store data', async function () {
+        it('must be able to store data', async function() {
 
             const dbConfig = config.get('mongo');
             // connect to database

@@ -93,27 +93,27 @@ const userSchema = new Schema({
             // transparently encrypt password when setting it using:
             // setter must be synchronous or errors will happen
             // TODO: hash password here with bcrypt, use length of 10,
-            return //TODO: here;
+            //TODO: here;
         }
-    },
+    }
     //TODO: add role, trim, lowercase, and it should enumerate possible schemaDefults.role.values, and default to defaultValues
 });
 
 userSchema.virtual('isAdmin').get(function() {
-    // eslint-disable-next-line babel/no-invalid-this
+    // eslint-disable-next-line no-invalid-this
     //TODO: add the admin check for the role of this object
     // the helper function should return either true of false
 });
 
 userSchema.virtual('isTeacher').get(function() {
-    // eslint-disable-next-line babel/no-invalid-this
+    // eslint-disable-next-line no-invalid-this
     //TODO: add the teacher check for the role of this object
     // Note that admin can be anything
     // the helper function should return either true of false
 });
 
 userSchema.virtual('isStudent').get(function() {
-    // eslint-disable-next-line babel/no-invalid-this
+    // eslint-disable-next-line no-invalid-this
     //TODO: add the teacher check for the role of this object
     //Note that admin can be anything
     // the helper function should return either true of false

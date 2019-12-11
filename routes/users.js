@@ -10,7 +10,6 @@ const router = express.Router();
 const UserController = require('../controllers/user');
 
 
-
 // Register user
 router
     .route('/register')
