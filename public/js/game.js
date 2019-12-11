@@ -20,7 +20,8 @@ var config = {
         update: update,
         extend: {
             player: null,
-            bullets: null,
+            oks: null,
+            crosses: null,
             time: 0,
             topMargin: 100,
             magicTopMarginNumber: 48
@@ -28,11 +29,64 @@ var config = {
     }
 };
 
+let Bullet = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Image,
+
+    initialize:
+
+    function Bullet(scene, type) {
+        if(type == 'ok') {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'ok');
+        } else {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cross');
+        }
+        this.speed = 1;
+        this.born = 0;
+        this.direction = 0;
+        this.xSpeed = 0;
+        this.ySpeed = 0;
+        this.setSize(16, 16, true);
+        this.lifespan = 100;
+    },
+
+    fire: function(shooter) {
+        this.lifespan = 100;
+
+        this.setActive(true);
+        this.setVisible(true);
+        this.setAngle(shooter.body.rotation);
+        this.setPosition(shooter.x, shooter.y);
+        this.body.reset(shooter.x, shooter.y);
+        var angle = Phaser.Math.DegToRad(shooter.body.rotation);
+        this.scene.physics.velocityFromRotation(angle, 300, this.body.velocity);
+        this.body.velocity.x *= 2;
+        this.body.velocity.y *= 2;
+    },
+
+    update: function(time, delta) {
+        this.lifespan -= delta/10;
+
+        if(this.lifespan <= 0) {
+            this.setActive(false);
+            this.setVisible(false);
+            this.body.stop();
+        }
+    }
+});
+
+
 let game = new Phaser.Game(config);
 
 function preload () {
     this.load.spritesheet('ship', '../img/pixel_ship.png',
         { frameWidth: 32, frameHeight: 32 }
+    );
+    this.load.spritesheet('ok', '../img/ok.png',
+        { frameWidth: 16, frameHeight: 16 }
+    );
+    this.load.spritesheet('cross', '../img/cross.png',
+        { frameWidth: 16, frameHeight: 16 }
     );
 
     //TODO: Load questionnaire from database
@@ -109,16 +163,44 @@ function spawnOption() {
 
 }
 
+
+
 function create () {
+    //Create groups
+    let oks = this.physics.add.group({
+        classType: Bullet,
+        defaultKey: 'ok',
+        maxSize: 10,
+        runChildUpdate: true
+    });
+    this.oks = oks;
+
+    let crosses = this.physics.add.group({
+        classType: Bullet,
+        defaultKey: 'cross',
+        maxSize: 10,
+        runChildUpdate: true
+    });
+    this.crosses = crosses;
+
+    let options = this.physics.add.group({
+        defaultKey: 'option',
+        maxSize: 3
+    });
+    this.options = options;
+
+    //initialize play area
     this.physics.world.setBounds(0, this.topMargin + this.magicTopMarginNumber,
                                  config['width'], config['height'] - this.topMargin);
 
-    this.player = this.physics.add.sprite(500, 500, 'ship');
-    this.player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(false).setDrag(0.99);
 
     let border = this.add.line(0, 0, 0, this.topMargin, 3200, this.topMargin, 0xff0000);
     this.cameras.main.zoom = 1;
 
+    this.player = this.physics.add.sprite(500, 500, 'ship');
+    this.player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(false).setDrag(0.99);
+
+    //Test stuff
     let question = this.make.text({
         x: 50,
         y: 20,
@@ -146,7 +228,10 @@ function create () {
 
     this.physics.world.enable(testOption);
     testOption.body.setVelocity(29);
-    question.text = "hello";
+    question.text = "Question";
+
+    //END test stuff
+
 
     //Input config
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -154,11 +239,20 @@ function create () {
     //Shoot wrong options with this
     this.input.keyboard.on('keydown_X', function (event) {
         console.log('shoot1');
+        let cross = crosses.get();
+        if(cross) {
+            cross.fire(playeri);
+        }
     })
 
+    let playeri = this.player;
     //Shoot right options with this
     this.input.keyboard.on('keydown_Z', function (event) {
         console.log('shoot2');
+        let ok = oks.get();
+        if(ok) {
+            ok.fire(playeri);
+        }
     })
 
 }
@@ -166,6 +260,9 @@ function create () {
 function update (time, delta) {
     //wrap objects that go around the edge to the other side
     this.physics.world.wrap(this.player, 32);
+    this.physics.world.wrap(this.oks);
+    this.physics.world.wrap(this.crosses);
+    this.physics.world.wrap(this.options);
 
     if(this.cursors.up.isDown) {
         this.physics.velocityFromRotation(this.player.rotation, 200, this.player.body.acceleration);
