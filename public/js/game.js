@@ -35,7 +35,7 @@ let Bullet = new Phaser.Class({
 
     initialize:
 
-    function Bullet(scene, type) {
+    function Bullet(scene) {
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cross');
         this.speed = 1;
         this.born = 0;
@@ -70,6 +70,16 @@ let Bullet = new Phaser.Class({
         }
     }
 });
+
+let Option = new Phaser.class({
+
+    Extends: Phaser.GameObjects.Text,
+
+    initialize:
+
+    function option()
+
+}
 
 
 let game = new Phaser.Game(config);
