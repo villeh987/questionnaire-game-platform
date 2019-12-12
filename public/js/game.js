@@ -165,6 +165,7 @@ let Option = new Phaser.Class({
             this.body.setVelocity(29);
             this.setActive(true);
             this.setPosition(400, 200);
+            this.correctness = questionnaire[questionNumber]['options'][optionNumber]['correctness'];
     },
 
     update: function(time, delta) {
@@ -235,6 +236,7 @@ function create () {
 
     let testOption = options.get();
 
+    console.log(testOption.correctness);
     question.text = "Question";
 
     //END test stuff
@@ -244,7 +246,7 @@ function create () {
         options,
         this.player,
         function (player, option) {
-            if(questionnaire[questionNumber]['options'][optionNumber]['correctness']) {
+            if(option.correctness) {
                 console.log("collected correct one");
                 //TODO keep track
             } else {
@@ -259,7 +261,7 @@ function create () {
         options,
         crosses,
         function (option, cross) {
-            if(!questionnaire[questionNumber]['options'][optionNumber]['correctness']) {
+            if(!option.correctness) {
                 console.log("removed wrong option");
                 //TODO Keep track
             } else {
