@@ -244,19 +244,31 @@ function create () {
         options,
         this.player,
         function (player, option) {
-            console.log(option);
-            console.log(player);
-            if(questionnaire[questionNumber].options[optionNumber].correct) {
+            if(questionnaire[questionNumber]['options'][optionNumber]['correctness']) {
                 console.log("collected correct one");
-                //TODO add point
+                //TODO keep track
             } else {
                 console.log("wrong one");
-                console.log(option);
                 //TODO what happens here?
             }
             option.destroy();
         }
     );
+
+    this.physics.add.collider(
+        options,
+        crosses,
+        function (option, cross) {
+            if(!questionnaire[questionNumber]['options'][optionNumber]['correctness']) {
+                console.log("removed wrong option");
+                //TODO Keep track
+            } else {
+                console.log("removed right option, FAILURE");
+                //TODO what happens here?
+            }
+            option.destroy();
+        }
+    )
 
 
     //Input config
@@ -266,7 +278,6 @@ function create () {
 
     //Shoot wrong options with this
     this.input.keyboard.on('keydown_SPACE', function (event) {
-        console.log('shoot1');
         let cross = crosses.get();
         if(cross) {
             cross.fire(playeri);
