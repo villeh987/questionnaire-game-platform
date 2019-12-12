@@ -36,11 +36,7 @@ let Bullet = new Phaser.Class({
     initialize:
 
     function Bullet(scene, type) {
-        if(type == 'ok') {
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'ok');
-        } else {
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cross');
-        }
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'cross');
         this.speed = 1;
         this.born = 0;
         this.direction = 0;
@@ -81,9 +77,6 @@ let game = new Phaser.Game(config);
 function preload () {
     this.load.spritesheet('ship', '../img/pixel_ship.png',
         { frameWidth: 32, frameHeight: 32 }
-    );
-    this.load.spritesheet('ok', '../img/ok.png',
-        { frameWidth: 16, frameHeight: 16 }
     );
     this.load.spritesheet('cross', '../img/cross.png',
         { frameWidth: 16, frameHeight: 16 }
@@ -167,14 +160,6 @@ function spawnOption() {
 
 function create () {
     //Create groups
-    let oks = this.physics.add.group({
-        classType: Bullet,
-        defaultKey: 'ok',
-        maxSize: 10,
-        runChildUpdate: true
-    });
-    this.oks = oks;
-
     let crosses = this.physics.add.group({
         classType: Bullet,
         defaultKey: 'cross',
@@ -236,31 +221,21 @@ function create () {
     //Input config
     this.cursors = this.input.keyboard.createCursorKeys();
 
+    let playeri = this.player;
+
     //Shoot wrong options with this
-    this.input.keyboard.on('keydown_X', function (event) {
+    this.input.keyboard.on('keydown_SPACE', function (event) {
         console.log('shoot1');
         let cross = crosses.get();
         if(cross) {
             cross.fire(playeri);
         }
-    })
-
-    let playeri = this.player;
-    //Shoot right options with this
-    this.input.keyboard.on('keydown_Z', function (event) {
-        console.log('shoot2');
-        let ok = oks.get();
-        if(ok) {
-            ok.fire(playeri);
-        }
-    })
-
+    });
 }
 
 function update (time, delta) {
     //wrap objects that go around the edge to the other side
     this.physics.world.wrap(this.player, 32);
-    this.physics.world.wrap(this.oks);
     this.physics.world.wrap(this.crosses);
     this.physics.world.wrap(this.options);
 
