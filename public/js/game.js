@@ -57,15 +57,45 @@ function generateOptions(min, max) {
     return options;
 }
 
-let questionnaire = [];
-for(let i = 0; i < NUM_TESTQUESTIONS; ++i) {
-    questionnaire.push(
-        {
-            title: generateRandomString(MIN_TITLELENGTH, MAX_TITLELENGTH),
-            options: generateOptions(MIN_OPTIONS, MAX_OPTIONS)
+//Object that handless keeping track of questions and progress of the game
+let questionnaire = {
+    questions: [],
+    questionNumber: 0,
+
+    //Fills it with tests stuff TODO: put real questions there
+    initialize: function() {
+        for(let i = 0; i < NUM_TESTQUESTIONS; ++i) {
+            this.questions.push(
+                {
+                    title: generateRandomString(MIN_TITLELENGTH, MAX_TITLELENGTH),
+                    options: generateOptions(MIN_OPTIONS, MAX_OPTIONS),
+                    optionNumber: 0
+                }
+            );
         }
-    );
-}
+    },
+
+    getQuestionTitle: function() {
+        return this.questions[questionNumber].title;
+    },
+
+    getOption: function() {
+        return this.questions[questionNumber].options[optionNumber];
+    },
+
+    isLastOption: function() {
+        return (this.optionNumber == this.questions[questionNumber].options.length - 1);
+    },
+
+    isLastQuestion: function() {
+        return (this.questionNumber == this.questions.length -1);
+    },
+};
+
+questionnaire.initialize();
+
+console.log(questionnaire);
+
 //END of test stuff
 
 var config = {
@@ -154,7 +184,7 @@ let Option = new Phaser.Class({
             scene,
             0,
             0,
-            questionnaire[questionNumber].options[optionNumber].title,
+            questionnaire.getOption().title,
             {
                 font: 'bold 18px Arial',
                 fill: 'white',
@@ -165,7 +195,7 @@ let Option = new Phaser.Class({
             this.body.setVelocity(29);
             this.setActive(true);
             this.setPosition(400, 200);
-            this.correctness = questionnaire[questionNumber]['options'][optionNumber]['correctness'];
+            this.correctness = questionnaire.getOption().correctness;
     },
 
     update: function(time, delta) {
