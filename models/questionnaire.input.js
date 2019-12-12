@@ -1,4 +1,4 @@
-/* eslint-disable babel/no-invalid-this */
+/* eslint-disable no-invalid-this */
 'use strict';
 
 const {
@@ -28,7 +28,7 @@ const optionInputSchema = Joi.object()
                 return 'Option must be given, it length is 1..50 chars.';
             }),
         hint: Joi.string()
-            .trim() 
+            .trim()
             .normalize()
             .min(1)
             .max(100)

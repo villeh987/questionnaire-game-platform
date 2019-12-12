@@ -6,6 +6,12 @@ const chai = require('chai');
 const expect = chai.expect;
 
 const User = require('../../models/user');
+const testEmail = 'testcase@tuni.fi';
+const testEmail2 = 'o.o@oolioo.com';
+const testEmail3 = 'postia@sahkoposti.fi';
+const testEmail4 = 'vilma.valkky@tuni.fi';
+const testName= 'Vilma Välkky';
+const teacherEmail='opettaja@sahkoposti.com';
 
 function createTestString(strLength, character = 'a') {
     return new Array(strLength + 1).join(character);
@@ -14,6 +20,7 @@ function createTestString(strLength, character = 'a') {
 describe('User', function() {
     describe('getAvailableRoles()', function() {});
 
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     describe('Input validation', function() {
         describe('validateLogin()', function() {
             it('must define email', function() {
@@ -35,7 +42,7 @@ describe('User', function() {
 
             it('must define password', function() {
                 const testUser = {
-                    email: 'testcase@tuni.fi'
+                    email: testEmail
                 };
                 const err = User.validateLogin(testUser).error;
                 assert(err && err.password, 'testUser does not define a password, however, no error was received');
@@ -43,7 +50,7 @@ describe('User', function() {
 
             it('must not allow an empty password', function() {
                 const testUser = {
-                    email: 'testcase@tuni.fi',
+                    email: testEmail,
                     password: ''
                 };
                 const err = User.validateLogin(testUser).error;
@@ -79,7 +86,7 @@ describe('User', function() {
         describe('validateRegistration()', function() {
             it('must define "name"', function() {
                 const testRegistration = {
-                    email: 'o.o@oolioo.com',
+                    email: testEmail2,
                     password: 'ohhoh12345',
                     passwordConfirmation: 'ohhoh12345'
                 };
@@ -87,12 +94,12 @@ describe('User', function() {
                 assert(err && err.name, 'must require name');
             });
 
-            it('must trim spaces from "name"', function() {
+            it('trims spaces from "name"', function() {
                 // eslint-disable-next-line no-shadow
                 const name = ' Oskari Olematon ';
                 const testRegistration = {
                     name: name,
-                    email: 'o.o@oolioo.com',
+                    email: testEmail2,
                     password: 'ohhoh12345',
                     passwordConfirmation: 'ohhoh12345'
                 };
@@ -101,10 +108,10 @@ describe('User', function() {
                 assert.strictEqual(name.trim(), value.name, 'must trim trailing spaces');
             });
 
-            it('must not allow "name" to have only spaces', function() {
+            it('must not allow "name" with spaces only', function() {
                 const testRegistration = {
                     name: '      ',
-                    email: 'o.o@oolioo.com',
+                    email: testEmail2,
                     password: 'ohhoh12345',
                     passwordConfirmation: 'ohhoh12345'
                 };
@@ -112,10 +119,10 @@ describe('User', function() {
                 assert(err && err.name, 'name must not comprise only spaces - there must be an error');
             });
 
-            it('must require "name" to be at least one character long', function() {
+            it('must require "name" to be at least one char long', function() {
                 const testRegistration = {
                     name: '',
-                    email: 'o.o@oolioo.com',
+                    email: testEmail2,
                     password: 'ohhoh12345',
                     passwordConfirmation: 'ohhoh12345'
                 };
@@ -123,7 +130,7 @@ describe('User', function() {
                 assert(err && err.name, 'name must be at least one character long');
                 const testRegistration2 = {
                     name: 'a',
-                    email: 'o.o@oolioo.com',
+                    email: testEmail2,
                     password: 'ohhoh12345',
                     passwordConfirmation: 'ohhoh12345'
                 };
@@ -131,10 +138,10 @@ describe('User', function() {
                 assert(!err, 'name is allowed to be one character long');
             });
 
-            it('must not allow "name" to be longer than 50 characters', function() {
+            it('must not allow "name" > 50 characters', function() {
                 const testRegistration = {
                     name: createTestString(51),
-                    email: 'o.o@oolioo.com',
+                    email: testEmail2,
                     password: 'ohhoh12345',
                     passwordConfirmation: 'ohhoh12345'
                 };
@@ -145,7 +152,7 @@ describe('User', function() {
             it('must not allow a dollar sign ($) inside "name"', function() {
                 const testRegistration = {
                     name: 'sadfj$$HK',
-                    email: 'o.o@oolioo.com',
+                    email: testEmail2,
                     password: 'ohhoh12345',
                     passwordConfirmation: 'ohhoh12345'
                 };
@@ -153,9 +160,9 @@ describe('User', function() {
                 assert(err && err.name, 'name must not contain $ char');
             });
 
-            it('must require "email"', function() {
+            it('must require an "email"', function() {
                 const testRegistration = {
-                    name: 'Vilma Välkky',
+                    name: testName,
                     password: 'ohhoh12345',
                     passwordConfirmation: 'ohhoh12345'
                 };
@@ -165,7 +172,7 @@ describe('User', function() {
 
             it('must require "email" to be valid email address', function() {
                 const testRegistration = {
-                    name: 'Vilma Välkky',
+                    name: testName,
                     email: 'o.ooolioo.com',
                     password: 'ohhoh12345',
                     passwordConfirmation: 'ohhoh12345'
@@ -176,8 +183,8 @@ describe('User', function() {
 
             it('must require "password"', function() {
                 const testRegistration = {
-                    name: 'Vilma Välkky',
-                    email: 'o.o@oolioo.com',
+                    name: testName,
+                    email: testEmail2,
                     passwordConfirmation: 'ohhoh'
                 };
                 const err = User.validateRegistration(testRegistration).error;
@@ -186,8 +193,8 @@ describe('User', function() {
 
             it('must not allow empty "password"', function() {
                 const testRegistration = {
-                    name: 'Vilma Välkky',
-                    email: 'o.o@oolioo.com',
+                    name: testName,
+                    email: testEmail2,
                     password: '',
                     passwordConfirmation: ''
                 };
@@ -197,8 +204,8 @@ describe('User', function() {
 
             it('must require minimum "password" length of 10 characters', function() {
                 const testRegistration = {
-                    name: 'Vilma Välkky',
-                    email: 'o.o@oolioo.com',
+                    name: testName,
+                    email: testEmail2,
                     password: 'ohhoh',
                     passwordConfirmation: 'ohhoh'
                 };
@@ -208,8 +215,8 @@ describe('User', function() {
 
             it('must require "passwordConfirmation" to match "password"', function() {
                 const testRegistration = {
-                    name: 'Vilma Välkky',
-                    email: 'o.o@oolioo.com',
+                    name: testName,
+                    email: testEmail2,
                     password: 'oho1234567',
                     passwordConfirmation: 'oho12345678'
                 };
@@ -281,7 +288,7 @@ describe('User', function() {
         describe('validateUpdate()', function() {
             it('must require "name"', function() {
                 const testUpdate = {
-                    email: 'o.o@oolioo.com',
+                    email: testEmail2,
                     password: 'oho1234567'
                 };
                 const err = User.validateUpdate(testUpdate).error;
@@ -290,19 +297,19 @@ describe('User', function() {
 
             it('must trim spaces from "name"', function() {
                 const testUpdate = {
-                    name: '  Vilma Välkky  ',
-                    email: 'o.o@oolioo.com',
+                    name: '  testName  ',
+                    email: testEmail2,
                     password: 'oho1234567'
                 };
                 const { error, value } = User.validateUpdate(testUpdate);
                 assert(!error, 'must accept name with spaces around it');
-                assert.strictEqual(value.name, 'Vilma Välkky', 'must trim spaces from name');
+                assert.strictEqual(value.name, 'testName', 'must trim spaces from name');
             });
 
             it('must not allow "name" to have only spaces', function() {
                 const testUpdate = {
                     name: '   ',
-                    email: 'o.o@oolioo.com',
+                    email: testEmail2,
                     password: 'oho1234567'
                 };
                 const err = User.validateUpdate(testUpdate).error;
@@ -312,7 +319,7 @@ describe('User', function() {
             it('must require "name" to be at least one character long', function() {
                 const testUpdate = {
                     name: '',
-                    email: 'o.o@oolioo.com',
+                    email: testEmail2,
                     password: 'oho1234567'
                 };
                 const err = User.validateUpdate(testUpdate).error;
@@ -320,10 +327,10 @@ describe('User', function() {
             });
 
             it('must not allow "name" to be longer than 50 characters', function() {
-                const testName = createTestString(51);
+                const testNameCreate = createTestString(51);
                 const testUpdate = {
-                    name: testName,
-                    email: 'o.o@oolioo.com',
+                    name: testNameCreate,
+                    email: testEmail2,
                     password: 'oho1234567'
                 };
                 const err = User.validateUpdate(testUpdate).error;
@@ -333,7 +340,7 @@ describe('User', function() {
             it('must not allow a dollar sign ($) inside "name"', function() {
                 const testUpdate = {
                     name: 'Vilma$$Välkky',
-                    email: 'o.o@oolioo.com',
+                    email: testEmail2,
                     password: 'oho1234567'
                 };
                 const err = User.validateUpdate(testUpdate).error;
@@ -342,7 +349,7 @@ describe('User', function() {
 
             it('must require "email"', function() {
                 const testUpdate = {
-                    name: 'Vilma Välkky',
+                    name: testName,
                     password: 'oho1234567'
                 };
                 const err = User.validateUpdate(testUpdate).error;
@@ -351,7 +358,7 @@ describe('User', function() {
 
             it('must require "email" to be a valid email address', function() {
                 const testUpdate = {
-                    name: 'Vilma Välkky',
+                    name: testName,
                     email: 'o.ooolioo.com',
                     password: 'oho1234567'
                 };
@@ -361,8 +368,8 @@ describe('User', function() {
 
             it('must require a password', function() {
                 const testUpdate = {
-                    name: 'Vilma Välkky',
-                    email: 'o.o@oolioo.com'
+                    name: testName,
+                    email: testEmail2
                 };
                 const err = User.validateUpdate(testUpdate).error;
                 assert(err && err.password, 'must require a password');
@@ -370,8 +377,8 @@ describe('User', function() {
 
             it('must not allow empty password', function() {
                 const testUpdate = {
-                    name: 'Vilma Välkky',
-                    email: 'o.o@oolioo.com',
+                    name: testName,
+                    email: testEmail2,
                     password: ''
                 };
                 const err = User.validateUpdate(testUpdate).error;
@@ -384,7 +391,7 @@ describe('User', function() {
         it('must define "name"', function() {
 
             const namelessUser = new User({
-                email: 'opettaja@sahkoposti.com',
+                email: teacherEmail,
                 password: 'SuperTurvallinen',
                 role: 'teacher'
             });
@@ -396,7 +403,7 @@ describe('User', function() {
         it('must trim spaces from "name"', function() {
             const TrimmedUser = new User({
                 name: '  Anton Aurinkoinen  ',
-                email: 'opettaja@sahkoposti.com',
+                email: teacherEmail,
                 password: 'SuperTurvallinen',
                 role: 'teacher'
             });
@@ -407,7 +414,7 @@ describe('User', function() {
         it('must not allow "name" to have only spaces', function() {
             const spaceNameUser = new User({
                 name: '    ',
-                email: 'opettaja@sahkoposti.com',
+                email: teacherEmail,
                 password: 'SuperTurvallinen',
                 role: 'teacher'
             });
@@ -419,7 +426,7 @@ describe('User', function() {
         it('must require "name" to be at least one character long', function() {
             const nameWithoutCharacters = new User({
                 name: '',
-                email: 'opettaja@sahkoposti.com',
+                email: teacherEmail,
                 password: 'SuperTurvallinen',
                 role: 'teacher'
             });
@@ -431,7 +438,7 @@ describe('User', function() {
         it('must not allow "name" to be longer than 50 characters', function() {
             const longNameUser = new User({
                 name: createTestString(51),
-                email: 'opettaja@sahkoposti.com',
+                email: teacherEmail,
                 password: 'SuperTurvallinen',
                 role: 'teacher'
             });
@@ -488,7 +495,7 @@ describe('User', function() {
         it('must hash password', function() {
             const hashedUser = new User({
                 name: 'Tiinu',
-                email: 'postia@sahkoposti.fi',
+                email: testEmail3,
                 password: 'salattu',
                 role: 'student'
             });
@@ -498,7 +505,7 @@ describe('User', function() {
         it('has an optional "role"', function() {
             const rolelessUser = new User({
                 name: 'Tupu',
-                email: 'posti@sposti.com',
+                email: testEmail3,
                 password: 'salaperaisyys'
             });
 
@@ -509,7 +516,7 @@ describe('User', function() {
         it('must set default value of "role" to student', function() {
             const defaultRoleUser = new User({
                 name: 'Hupu',
-                email: 'posti@sposti.com',
+                email: testEmail3,
                 password: 'salaperaisyys'
             });
 
@@ -519,7 +526,7 @@ describe('User', function() {
         it('must allow any known "role"', function() {
             const studentUser = new User({
                 name: 'Tiinu',
-                email: 'postia@sahkoposti.fi',
+                email: testEmail3,
                 password: 'salattu',
                 role: 'student'
             });
@@ -529,7 +536,7 @@ describe('User', function() {
 
             const teacherUser = new User({
                 name: 'Tiinu',
-                email: 'postia@sahkoposti.fi',
+                email: testEmail3,
                 password: 'salattu',
                 role: 'teacher'
             });
@@ -539,7 +546,7 @@ describe('User', function() {
 
             const adminUser = new User({
                 name: 'Tiinu',
-                email: 'postia@sahkoposti.fi',
+                email: testEmail3,
                 password: 'salattu',
                 role: 'admin'
             });
@@ -551,7 +558,7 @@ describe('User', function() {
         it('must trim "role"', function() {
             const roleTrimUser = new User({
                 name: 'Tiinu',
-                email: 'postia@sahkoposti.fi',
+                email: testEmail3,
                 password: 'salattu',
                 role: '   admin    '
             });
@@ -562,7 +569,7 @@ describe('User', function() {
         it('must cast "role" to lowercase', function() {
             const lowerCaseUser = new User({
                 name: 'Tiinu',
-                email: 'postia@sahkoposti.fi',
+                email: testEmail3,
                 password: 'salattu',
                 role: 'STUDENT'
             });
@@ -573,7 +580,7 @@ describe('User', function() {
         it('must not allow unknown "role"', function() {
             const unknownUser = new User({
                 name: 'HerraTuntematon',
-                email: 'postia@sahkoposti.fi',
+                email: testEmail3,
                 password: 'salattu',
                 role: 'maalari'
             });
@@ -590,8 +597,8 @@ describe('User', function() {
             describe('isStudent', function() {
                 it('must return true when role is a student', function() {
                     const testUser = new User({
-                        name: 'Vilma Välkky',
-                        email: 'vilma.valkky@tuni.fi',
+                        name: testName,
+                        email: testEmail4,
                         password: '1234567890',
                         role: 'student'
                     });
@@ -601,8 +608,8 @@ describe('User', function() {
 
                 it('must return true when "role" is admin', function() {
                     const testUser = new User({
-                        name: 'Vilma Välkky',
-                        email: 'vilma.valkky@tuni.fi',
+                        name: testName,
+                        email: testEmail4,
                         password: '1234567890',
                         role: 'admin'
                     });
@@ -612,8 +619,8 @@ describe('User', function() {
 
                 it('must return false when a role is neither student nor admin', function() {
                     const testUser = new User({
-                        name: 'Vilma Välkky',
-                        email: 'vilma.valkky@tuni.fi',
+                        name: testName,
+                        email: testEmail4,
                         password: '1234567890',
                         role: 'teacher'
                     });
@@ -625,8 +632,8 @@ describe('User', function() {
             describe('isTeacher', function() {
                 it('must return true when role is a teacher', function() {
                     const testUser = new User({
-                        name: 'Vilma Välkky',
-                        email: 'vilma.valkky@tuni.fi',
+                        name: testName,
+                        email: testEmail4,
                         password: '1234567890',
                         role: 'teacher'
                     });
@@ -637,8 +644,8 @@ describe('User', function() {
 
                 it('must return true when role is an admin', function() {
                     const testUser = new User({
-                        name: 'Vilma Välkky',
-                        email: 'vilma.valkky@tuni.fi',
+                        name: testName,
+                        email: testEmail4,
                         password: '1234567890',
                         role: 'admin'
                     });
@@ -649,8 +656,8 @@ describe('User', function() {
 
                 it('must return false when role is neither teacher nor admin', function() {
                     const testUser = new User({
-                        name: 'Vilma Välkky',
-                        email: 'vilma.valkky@tuni.fi',
+                        name: testName,
+                        email: testEmail4,
                         password: '1234567890',
                         role: 'student'
                     });
@@ -662,8 +669,8 @@ describe('User', function() {
             describe('isAdmin', function() {
                 it('must return true when role is an admin', function() {
                     const testUser = new User({
-                        name: 'Vilma Välkky',
-                        email: 'vilma.valkky@tuni.fi',
+                        name: testName,
+                        email: testEmail4,
                         password: '1234567890',
                         role: 'admin'
                     });
@@ -673,8 +680,8 @@ describe('User', function() {
 
                 it('must return false when the role is not an admin', function() {
                     const testUser = new User({
-                        name: 'Vilma Välkky',
-                        email: 'vilma.valkky@tuni.fi',
+                        name: testName,
+                        email: testEmail4,
                         password: '1234567890',
                         role: 'teacher'
                     });
@@ -689,8 +696,8 @@ describe('User', function() {
                 const password = '1234567890';
 
                 const testUser = new User({
-                    name: 'Vilma Välkky',
-                    email: 'vilma.valkky@tuni.fi',
+                    name: testName,
+                    email: testEmail4,
                     password: password,
                     role: 'teacher'
                 });
@@ -707,8 +714,8 @@ describe('User', function() {
             it('must hash "password" when set to a new value', function() {
                 const password = '1234567890';
                 const testUser = new User({
-                    name: 'Vilma Välkky',
-                    email: 'vilma.valkky@tuni.fi',
+                    name: testName,
+                    email: testEmail4,
                     password: password,
                     role: 'teacher'
                 });
@@ -720,8 +727,8 @@ describe('User', function() {
             it('must detect correct "password"', async function() {
                 const password = '1234567890';
                 const testUser = new User({
-                    name: 'Vilma Välkky',
-                    email: 'vilma.valkky@tuni.fi',
+                    name: testName,
+                    email: testEmail4,
                     password: password,
                     role: 'teacher'
                 });
@@ -732,8 +739,8 @@ describe('User', function() {
             it('must detect a false "password"', async function() {
                 const password = '1234567890';
                 const testUser = new User({
-                    name: 'Vilma Välkky',
-                    email: 'vilma.valkky@tuni.fi',
+                    name: testName,
+                    email: testEmail4,
                     password: password,
                     role: 'teacher'
                 });

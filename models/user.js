@@ -93,7 +93,7 @@ const userSchema = new Schema({
             if (!password || password.length === 0) return password;
             // transparently encrypt password when setting it using:
             // setter must be synchronous or errors will happen
-            
+
             return bcrypt.hashSync(password, 10);
         }
     },

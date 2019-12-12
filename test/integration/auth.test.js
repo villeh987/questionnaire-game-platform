@@ -1,19 +1,20 @@
 
 /* eslint-disable no-console */
-/* eslint-disable babel/no-invalid-this */
+/* eslint-disable no-invalid-this */
 'use strict';
 
 const http = require('http');
 const Browser = require('zombie');
-const assert = require('assert');
+// const assert = require('assert');
 const app = require('../../app.js');
 
+const registerUrl = '/users/register';
 
 const port = 3333;
 
 require('dotenv').config();
-const config = require('config');
-const admin = config.get('admin');
+// const config = require('config');
+// const admin = config.get('admin');
 const User = require('../../models/user');
 
 
@@ -28,7 +29,7 @@ const testUser = {
 };
 
 
-describe('Authentication requirements', function () {
+describe('Authentication requirements', function() {
 
     let server;
     let browser;
@@ -40,7 +41,7 @@ describe('Authentication requirements', function () {
     });
 
     this.afterAll(async function() {
-   
+
         await User.deleteOne({ email: testUser.email }, function(err) {
             if(err) console.log(err);
             else console.log('cleanup provided');
@@ -80,7 +81,7 @@ describe('Authentication requirements', function () {
     it('Registering the same user twice should cause an error', async function() {
         //Expecting that the first test passed
         await browser.visit('/users/logout');
-        await browser.visit('/users/register');
+        await browser.visit(registerUrl);
 
         browser.fill('name', testUser.name);
         browser.fill('email', testUser.email);
@@ -88,7 +89,7 @@ describe('Authentication requirements', function () {
         browser.fill('passwordConfirmation', testUser.password);
 
         await browser.pressButton('#btnRegister');
-        browser.assert.url({ pathname: '/users/register' });
+        browser.assert.url({ pathname: registerUrl });
         browser.assert.text('.alert.alert-danger', 'Email already registered for another user.');
     });
 

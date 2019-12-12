@@ -12,6 +12,7 @@ const Questionnaire = require('../../models/questionnaire');
  * AVOID REFERENCES AND CREATE ALWAYS COPIES!!
  */
 
+const dollarMsg='text value with a dollar($) sign';
 const validId = '1234567890aBfedcbA098765';
 const invalidIds = [
     '', // empty string, too short
@@ -65,6 +66,9 @@ const validQuestion = {
     })
 };
 
+const opt0 = 'questions.0.options';
+
+
 const validQuestions = [
     {
         title: 'question 1',
@@ -101,14 +105,14 @@ describe('Questionnaire', function() {
                 option = { ...validOption };
             });
 
-            it('should allow "id"', function() {
+            it('must validate "id" without errors', function() {
                 option.id = validId;
 
                 const { error } = Questionnaire.validateOption(option);
                 expect(error).not.to.exist;
             });
 
-            it('should not accept invalid mongo objectId for "id"', function() {
+            it('must not accept invalid mongo objectId for "id"', function() {
                 invalidIds.forEach((id) => {
                     option.id = id;
                     const { error } = Questionnaire.validateOption(option);
@@ -117,14 +121,14 @@ describe('Questionnaire', function() {
                 });
             });
 
-            it('should allow "_id"', function() {
+            it('must allow "_id"', function() {
                 option._id = validId;
 
                 const { error } = Questionnaire.validateOption(option);
                 expect(error).not.to.exist;
             });
 
-            it('should not accept invalid mongo objectId for "_id"', function() {
+            it('must not accept invalid or empty mongo objectId for "_id"', function() {
                 invalidIds.forEach((id) => {
                     option._id = id;
                     const { error } = Questionnaire.validateOption(option);
@@ -133,7 +137,7 @@ describe('Questionnaire', function() {
                 });
             });
 
-            it('should not allow both "id" and "_id" at the same time', function() {
+            it('must not allow both "id" and "_id" at the same time', function() {
                 option.id = validId;
                 option._id = validId;
 
@@ -142,7 +146,7 @@ describe('Questionnaire', function() {
                 expect(error).to.not.be.empty;
             });
 
-            it('should allow both "id" and "_id" be missing at the same time', function() {
+            it('allows both "id" and "_id" be missing at the same time', function() {
                 const { error } = Questionnaire.validateOption(option);
                 expect(error).not.to.exist;
             });
@@ -201,7 +205,7 @@ describe('Questionnaire', function() {
             });
 
             it('should not allow a dollar sign ($) inside "option"', function() {
-                option.option = 'Text value with a dollar sign $ in it';
+                option.option = dollarMsg;
 
                 const { error } = Questionnaire.validateOption(option);
                 expect(error).to.exist;
@@ -237,16 +241,15 @@ describe('Questionnaire', function() {
             });
 
             it('should not allow a dollar sign ($) inside "hint"', function() {
-                option.hint = 'Text value with a dollar sign $ in it';
+                option.hint = dollarMsg;
 
                 const { error } = Questionnaire.validateOption(option);
                 expect(error).to.exist;
                 expect(error).to.not.be.empty;
             });
 
-            it('should not allow "hint" to be longer than 100 characters', function() {
-                option.hint =
-                    'This very, very, very, very, very, very long text value is exactly one hundred an one characters long';
+            it('limits "hint" to 100 characters', function() {
+                option.hint = `${'happy'.repeat(20)  }y`;
 
                 const { error } = Questionnaire.validateOption(option);
                 expect(error).to.exist;
@@ -380,7 +383,7 @@ describe('Questionnaire', function() {
                 expect(error).not.to.exist;
             });
 
-            it('should require "title"', function() {
+            it('must require "title"', function() {
                 delete question.title;
 
                 const { error } = Questionnaire.validateQuestion(question);
@@ -388,7 +391,7 @@ describe('Questionnaire', function() {
                 expect(error).to.not.be.empty;
             });
 
-            it('should trim spaces from "title"', function() {
+            it('trims spaces from question "title"', function() {
                 question.title = '  question     ';
 
                 const { error, value } = Questionnaire.validateQuestion(
@@ -402,15 +405,15 @@ describe('Questionnaire', function() {
                 expect(value.title).to.equal('question');
             });
 
-            it('should not allow "title" to have only spaces', function() {
-                question.title = '       ';
+            it('must not allow "title" with spaces only', function() {
 
+                question.title = ' '.repeat(7);
                 const { error } = Questionnaire.validateQuestion(question);
                 expect(error).to.exist;
                 expect(error).to.not.be.empty;
             });
 
-            it('should require "title" to be at least one character long', function() {
+            it('requires "title" to be at least one character long', function() {
                 question.title = '';
 
                 const { error } = Questionnaire.validateQuestion(question);
@@ -424,17 +427,15 @@ describe('Questionnaire', function() {
                 expect(notError).to.not.exist;
             });
 
-            it('should not allow "title" to be longer than 100 characters', function() {
-                question.title =
-                    'This very, very, very, very, very, very long text value is exactly one hundred an one characters long';
-
+            it('must not allow "title" to be longer than 100 characters', function() {
+                question.title = `${'happy'.repeat(20)}y`;
                 const { error } = Questionnaire.validateQuestion(question);
                 expect(error).to.exist;
                 expect(error).to.not.be.empty;
             });
 
-            it('should not allow a dollar sign ($) inside "title"', function() {
-                question.title = 'Text value with a dollar sign $ in it';
+            it(`should not allow ${dollarMsg} in title`, function() {
+                question.title = dollarMsg;
 
                 const { error } = Questionnaire.validateQuestion(question);
                 expect(error).to.exist;
@@ -607,7 +608,7 @@ describe('Questionnaire', function() {
                 expect(error).not.to.exist;
             });
 
-            it('should require "title"', function() {
+            it('must require "title"', function() {
                 delete questionnaire.title;
 
                 const { error } = Questionnaire.validateQuestionnaire(
@@ -617,7 +618,7 @@ describe('Questionnaire', function() {
                 expect(error).to.not.be.empty;
             });
 
-            it('should trim spaces from "title"', function() {
+            it('trims spaces from "title"', function() {
                 questionnaire.title = '  title     ';
 
                 const {
@@ -632,7 +633,7 @@ describe('Questionnaire', function() {
                 expect(value.title).to.equal('title');
             });
 
-            it('should not allow "title" to have only spaces', function() {
+            it('must not allow "title" to have only spaces', function() {
                 questionnaire.title = '       ';
 
                 const { error } = Questionnaire.validateQuestionnaire(
@@ -642,7 +643,7 @@ describe('Questionnaire', function() {
                 expect(error).to.not.be.empty;
             });
 
-            it('should require "title" to be at least one character long', function() {
+            it('should require "title" to be longer than zero', function() {
                 questionnaire.title = '';
 
                 const { error } = Questionnaire.validateQuestionnaire(
@@ -658,9 +659,8 @@ describe('Questionnaire', function() {
                 expect(notError).to.not.exist;
             });
 
-            it('should not allow "title" to be longer than 100 characters', function() {
-                questionnaire.title =
-                    'This very, very, very, very, very, very long text value is exactly one hundred an one characters long';
+            it('should not allow "title" to > 100 characters', function() {
+                questionnaire.title = `${'happy'.repeat(20)}y`;
 
                 const { error } = Questionnaire.validateQuestionnaire(
                     questionnaire
@@ -670,7 +670,7 @@ describe('Questionnaire', function() {
             });
 
             it('should not allow a dollar sign ($) inside "title"', function() {
-                questionnaire.title = 'Text value with a dollar sign $ in it';
+                questionnaire.title = dollarMsg;
 
                 const { error } = Questionnaire.validateQuestionnaire(
                     questionnaire
@@ -780,7 +780,7 @@ describe('Questionnaire', function() {
                 expect(error).to.not.exist;
             });
 
-            it('should trim spaces from "title"', function() {
+            it('trims spaces from "title"', function() {
                 search.title = '  title     ';
 
                 const { error, value } = Questionnaire.validateSearch(
@@ -794,7 +794,7 @@ describe('Questionnaire', function() {
                 expect(value.title).to.equal('title');
             });
 
-            it('should not allow "title" to have only spaces', function() {
+            it('must not allow "title" to have only spaces', function() {
                 search.title = '       ';
 
                 const { error } = Questionnaire.validateSearch(search);
@@ -816,9 +816,8 @@ describe('Questionnaire', function() {
                 expect(notError).to.not.exist;
             });
 
-            it('should not allow "title" to be longer than 100 characters', function() {
-                search.title =
-                    'This very, very, very, very, very, very long text value is exactly one hundred an one characters long';
+            it('should not allow "title" > 100 characters', function() {
+                search.title = `${'happy'.repeat(20)}y`;
 
                 const { error } = Questionnaire.validateSearch(search);
                 expect(error).to.exist;
@@ -826,7 +825,7 @@ describe('Questionnaire', function() {
             });
 
             it('should not allow a dollar sign ($) inside "title"', function() {
-                search.title = 'Text value with a dollar sign $ in it';
+                search.title = dollarMsg;
 
                 const { error } = Questionnaire.validateSearch(search);
                 expect(error).to.exist;
@@ -874,6 +873,7 @@ describe('Questionnaire', function() {
                 questionnaire.title = '     ';
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error.errors).to.exist;
                     expect(error.errors.title).to.exist;
@@ -901,10 +901,10 @@ describe('Questionnaire', function() {
             });
 
             it('should not allow "title" to be longer than 100 characters', function(done) {
-                questionnaire.title =
-                    'This very, very, very, very, very, very long text value is exactly one hundred an one characters long';
+                questionnaire.title = `${'hello'.repeat(20)}o`;
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error.errors).to.exist;
                     expect(error.errors.title).to.exist;
@@ -977,6 +977,7 @@ describe('Questionnaire', function() {
                 questionnaire.questions = [];
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error.errors).to.exist;
                     expect(error.errors.questions).to.exist;
@@ -1003,6 +1004,7 @@ describe('Questionnaire', function() {
                 });
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error.errors).to.exist;
                     expect(error.errors.questions).to.exist;
@@ -1014,6 +1016,7 @@ describe('Questionnaire', function() {
         describe('Question Schema', function() {
             let options = [];
             let questionnaire = {};
+            const maxP = 'questions.0.maxPoints';
 
             beforeEach(function() {
                 // avoid object references and create copies
@@ -1030,6 +1033,7 @@ describe('Questionnaire', function() {
                 delete questionnaire.questions[0].title;
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error.errors).to.exist;
                     expect(error.errors.questions).to.exist;
@@ -1052,6 +1056,7 @@ describe('Questionnaire', function() {
                 questionnaire.questions[0].title = '     ';
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error.errors).to.exist;
                     expect(error.errors.questions).to.exist;
@@ -1096,7 +1101,7 @@ describe('Questionnaire', function() {
                 const q = new Questionnaire(questionnaire);
                 q.validate((error) => {
                     expect(error.errors).to.exist;
-                    expect(error.errors['questions.0.maxPoints']).to.exist;
+                    expect(error.errors[maxP]).to.exist;
                     done();
                 });
             });
@@ -1108,7 +1113,7 @@ describe('Questionnaire', function() {
                     const q = new Questionnaire(questionnaire);
                     q.validate((error) => {
                         expect(error.errors).to.exist;
-                        expect(error.errors['questions.0.maxPoints']).to.exist;
+                        expect(error.errors[maxP]).to.exist;
                     });
                 });
 
@@ -1121,14 +1126,14 @@ describe('Questionnaire', function() {
                 let q = new Questionnaire(questionnaire);
                 q.validate((error) => {
                     expect(error.errors).to.exist;
-                    expect(error.errors['questions.0.maxPoints']).to.exist;
+                    expect(error.errors[maxP]).to.exist;
                 });
 
                 questionnaire.questions[0].maxPoints = 0;
                 q = new Questionnaire(questionnaire);
                 q.validate((error) => {
                     expect(error.errors).to.exist;
-                    expect(error.errors['questions.0.maxPoints']).to.exist;
+                    expect(error.errors[maxP]).to.exist;
                 });
 
                 questionnaire.questions[0].maxPoints = 1;
@@ -1146,7 +1151,7 @@ describe('Questionnaire', function() {
                 const q = new Questionnaire(questionnaire);
                 q.validate((error) => {
                     expect(error.errors).to.exist;
-                    expect(error.errors['questions.0.options']).to.exist;
+                    expect(error.errors[opt0]).to.exist;
                     done();
                 });
             });
@@ -1155,9 +1160,10 @@ describe('Questionnaire', function() {
                 questionnaire.questions[0].options.pop();
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error.errors).to.exist;
-                    expect(error.errors['questions.0.options']).to.exist;
+                    expect(error.errors[opt0]).to.exist;
                     done();
                 });
             });
@@ -1169,9 +1175,10 @@ describe('Questionnaire', function() {
                 });
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error.errors).to.exist;
-                    expect(error.errors['questions.0.options']).to.exist;
+                    expect(error.errors[opt0]).to.exist;
                     done();
                 });
             });
@@ -1183,9 +1190,10 @@ describe('Questionnaire', function() {
                 });
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error.errors).to.exist;
-                    expect(error.errors['questions.0.options']).to.exist;
+                    expect(error.errors[opt0]).to.exist;
                     done();
                 });
             });
@@ -1213,9 +1221,10 @@ describe('Questionnaire', function() {
                 delete questionnaire.questions[0].options[0].option;
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error.errors).to.exist;
-                    expect(error.errors['questions.0.options']).to.exist;
+                    expect(error.errors[opt0]).to.exist;
                     done();
                 });
             });
@@ -1235,9 +1244,10 @@ describe('Questionnaire', function() {
                 questionnaire.questions[0].options[0].option = '    ';
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error.errors).to.exist;
-                    expect(error.errors['questions.0.options']).to.exist;
+                    expect(error.errors[opt0]).to.exist;
                     done();
                 });
             });
@@ -1248,7 +1258,7 @@ describe('Questionnaire', function() {
                 let q = new Questionnaire(questionnaire);
                 q.validate((error) => {
                     expect(error.errors).to.exist;
-                    expect(error.errors['questions.0.options']).to.exist;
+                    expect(error.errors[opt0]).to.exist;
                 });
 
                 questionnaire.questions[0].options[0].option = 'a';
@@ -1288,6 +1298,7 @@ describe('Questionnaire', function() {
                 questionnaire.questions[0].options[0].hint = '';
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error).to.not.exist;
                     expect(q.questions[0].options[0].hint).to.not.exist;
@@ -1299,6 +1310,7 @@ describe('Questionnaire', function() {
                 questionnaire.questions[0].options[0].hint = undefined;
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error).to.not.exist;
                     expect(q.questions[0].options[0].hint).to.not.exist;
@@ -1333,14 +1345,14 @@ describe('Questionnaire', function() {
                 delete questionnaire.questions[0].options[0].correctness;
 
                 const q = new Questionnaire(questionnaire);
+                // eslint-disable-next-line sonarjs/no-identical-functions
                 q.validate((error) => {
                     expect(error.errors).to.exist;
-                    expect(error.errors['questions.0.options']).to.exist;
+                    expect(error.errors[opt0]).to.exist;
                     done();
                 });
             });
         });
     });
 });
-
 
