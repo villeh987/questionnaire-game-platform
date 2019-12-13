@@ -90,6 +90,36 @@ let questionnaire = {
     isLastQuestion: function() {
         return (this.questionNumber == this.questions.length -1);
     },
+
+    /* indexing will point to the next option. If it's the last one of the
+    /  current question it will return false and point to 0 again and call
+    /  nextQuestion()
+    */
+    nextOption: function() {
+        console.log("next option");
+        this.optionNumber += 1;
+        if(this.optionNumber == this.questions[this.questionNumber].options.length) {
+            this.optionNumber = 0;
+            this.nextQuestion();
+            return false;
+        } else {
+            return true;
+        }
+    },
+
+    /* Indexing will point to the next question If it's the last one of the
+    /  questionnaire it will return false.
+    */
+    nextQuestion: function() {
+        console.log("next question");
+        this.questionNumber += 1;
+        if(this.questionNumber == this.questions.length) {
+            this.questionNumber == this.questions.length - 1;
+            return false;
+        } else {
+            return true;
+        }
+    }
 };
 
 questionnaire.initialize();
@@ -268,6 +298,8 @@ function create () {
     liveOptions.push(options.get());
     questionnaire.optionNumber += 1;
     console.log(questionnaire.getOption().title);
+    liveOptions.push(options.get());
+    questionnaire.optionNumber += 1;
 
     question.text = "Question";
 
