@@ -155,11 +155,9 @@ var config = {
     }
 };
 
-let questionNumber = 0;
-let optionNumber = 0;
-
 let game = new Phaser.Game(config);
 
+//Bullet that is fired by player
 let Bullet = new Phaser.Class({
 
     Extends: Phaser.GameObjects.Image,
@@ -202,6 +200,7 @@ let Bullet = new Phaser.Class({
     }
 });
 
+//Representation of an option of a question in the game world
 let Option = new Phaser.Class({
 
     Extends: Phaser.GameObjects.Text,
@@ -221,16 +220,21 @@ let Option = new Phaser.Class({
                 wordWrap: { width: 100, useAdvancedWrap: true }
             });
             this.scene.physics.world.enable(this);
-            //TODO: random speed
-            this.body.setVelocity(29);
             this.setActive(true);
             this.setPosition(400, 200);
             this.correctness = questionnaire.getOption().correctness;
+            this.xAcc = randomIntBetween(-10,10)/100;
+            this.yAcc = randomIntBetween(-10,10)/100;
     },
 
     update: function(time, delta) {
-        //TODO: increase speed in random dir
-        this.body.velocity.x += 0.001;
+        if(this.body.velocity.x == 0 && this.body.velocity.y == 0) {
+            this.body.setVelocity(randomIntBetween(10, 30), randomIntBetween(10, 30));
+        }
+        if (this.body.velocity.x < 100 && this.body.velocity.y < 100) {
+            this.body.velocity.x += this.xAcc;
+            this.body.velocity.y += this.yAcc;
+        }
     },
 
     destroy: function() {
@@ -293,7 +297,13 @@ function create () {
         }
     });
 
+
+    //TEST stuff
+
     let liveOptions = [];
+    console.log(questionnaire.getOption().title);
+    liveOptions.push(options.get());
+    questionnaire.optionNumber += 1;
     console.log(questionnaire.getOption().title);
     liveOptions.push(options.get());
     questionnaire.optionNumber += 1;
