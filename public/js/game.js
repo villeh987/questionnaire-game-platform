@@ -1,11 +1,15 @@
 'use strict';
 
-//TODO: Load questionnaire from database
+/*TODO: -Initialize questionnaire object from get request (the real questionnaire)
+ *      -Load questions from questionnaire
+ *      -Make destroying options load more options and keep track of progress in questionnaire
+ *      -Scoreboard
+ *      -Recognize when game is over
+ *      -Send post message to grader
+ */
 
-/* TEST STUFF:
-/  generate list of random string questionnaires
-*/
 
+//scema limits for testing
 const NUM_TESTQUESTIONS = 3;
 
 const MIN_TITLELENGTH = 1;
@@ -75,8 +79,8 @@ let questionnaire = {
         }
     },
 
-    getQuestionTitle: function() {
-        return this.questions[this.questionNumber].title;
+    getQuestion: function() {
+        return this.questions[this.questionNumber];
     },
 
     getOption: function() {
@@ -92,15 +96,14 @@ let questionnaire = {
     },
 
     /* indexing will point to the next option. If it's the last one of the
-    /  current question it will return false and point to 0 again and call
-    /  nextQuestion()
+    /  current question it will return false and point to 0 again
+    /
     */
     nextOption: function() {
         console.log("next option");
         this.optionNumber += 1;
         if(this.optionNumber == this.questions[this.questionNumber].options.length) {
             this.optionNumber = 0;
-            this.nextQuestion();
             return false;
         } else {
             return true;
@@ -126,7 +129,6 @@ questionnaire.initialize();
 
 console.log(questionnaire);
 
-//END of test stuff
 
 var config = {
     type: Phaser.AUTO,
@@ -151,6 +153,7 @@ var config = {
             time: 0,
             topMargin: 100,
             magicTopMarginNumber: 48,
+            optionsOnScreen: 3
         }
     }
 };
@@ -273,7 +276,7 @@ function preload () {
 
 //Phaser function. Creates the game objects.
 function create () {
-    //Create groups
+    //Create groups. For resource pooling.
     let crosses = this.physics.add.group({
         classType: Bullet,
         defaultKey: 'cross',
@@ -301,7 +304,7 @@ function create () {
     this.player = this.physics.add.sprite(500, 500, 'ship');
     this.player.setOrigin(0.5, 0.5).setDisplaySize(32, 32).setCollideWorldBounds(false).setDrag(0.99);
 
-    //Test stuff
+    //Current question
     let question = this.make.text({
         x: 50,
         y: 20,
@@ -314,21 +317,19 @@ function create () {
         }
     });
 
-
     //TEST stuff
 
     let liveOptions = [];
-    console.log(questionnaire.getOption().title);
-    liveOptions.push(options.get());
-    questionnaire.optionNumber += 1;
-    console.log(questionnaire.getOption().title);
-    liveOptions.push(options.get());
-    questionnaire.optionNumber += 1;
-    console.log(questionnaire.getOption().title);
-    liveOptions.push(options.get());
-    questionnaire.optionNumber += 1;
 
-    question.text = "Question";
+    while(liveOptions.length < this.optionsOnScreen) {
+        liveOptions.push(options.get());
+        console.log(questionnaire.getOption().title);
+        if(!questionnaire.nextOption()) {
+            break;
+        }
+    }
+
+    question.text = questionnaire.getQuestion().title;
 
     //END test stuff
 
