@@ -264,6 +264,7 @@ let Option = new Phaser.Class({
     }
 });
 
+
 //Phaser function. Preloads some resources.
 function preload () {
     this.load.spritesheet('ship', '../img/pixel_ship.png',
@@ -317,6 +318,8 @@ function create () {
         }
     });
 
+    question.text = questionnaire.getQuestion().title;
+
     //TEST stuff
 
     let liveOptions = [];
@@ -329,7 +332,6 @@ function create () {
         }
     }
 
-    question.text = questionnaire.getQuestion().title;
 
     //END test stuff
 
@@ -345,6 +347,7 @@ function create () {
                 console.log("wrong one");
                 //TODO what happens here?
             }
+            //TODO: spawn new ones
             option.destroy();
         }
     );
@@ -360,6 +363,7 @@ function create () {
                 console.log("removed right option, FAILURE");
                 //TODO what happens here?
             }
+            //TODO: spawn new ones
             option.destroy();
         }
     )
