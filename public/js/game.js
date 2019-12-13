@@ -221,17 +221,34 @@ let Option = new Phaser.Class({
             });
             this.scene.physics.world.enable(this);
             this.setActive(true);
-            this.setPosition(400, 200);
+
+            //cannot place option right next to player
+            let searchingPos = true;
+            let randPosX = 0;
+            let randPosY = 0;
+
+            while(searchingPos) {
+                randPosX = randomIntBetween(0, config.width);
+                randPosY = randomIntBetween(0, config.height - scene.topMargin);
+                if(Phaser.Math.Distance.Between(randPosX, randPosY, scene.player.x, scene.player.y) > 200) {
+                    searchingPos = false;
+                }
+            }
+
+            this.setPosition(randPosX, randPosY);
+
             this.correctness = questionnaire.getOption().correctness;
+
+            //Set to accelerate in random direction
             this.xAcc = randomIntBetween(-10,10)/100;
             this.yAcc = randomIntBetween(-10,10)/100;
     },
 
     update: function(time, delta) {
         if(this.body.velocity.x == 0 && this.body.velocity.y == 0) {
-            this.body.setVelocity(randomIntBetween(10, 30), randomIntBetween(10, 30));
+            this.body.setVelocity(randomIntBetween(-30, 30), randomIntBetween(-30, 30));
         }
-        if (this.body.velocity.x < 100 && this.body.velocity.y < 100) {
+        if (this.body.velocity.x < 300 && this.body.velocity.y < 300) {
             this.body.velocity.x += this.xAcc;
             this.body.velocity.y += this.yAcc;
         }
@@ -244,6 +261,7 @@ let Option = new Phaser.Class({
     }
 });
 
+//Phaser function. Preloads some resources.
 function preload () {
     this.load.spritesheet('ship', '../img/pixel_ship.png',
         { frameWidth: 32, frameHeight: 32 }
@@ -251,10 +269,9 @@ function preload () {
     this.load.spritesheet('cross', '../img/cross.png',
         { frameWidth: 16, frameHeight: 16 }
     );
-
-
 }
 
+//Phaser function. Creates the game objects.
 function create () {
     //Create groups
     let crosses = this.physics.add.group({
@@ -346,7 +363,6 @@ function create () {
         }
     )
 
-
     //Input config
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -361,11 +377,13 @@ function create () {
     });
 }
 
+//Phaser function. called every physics frame.
 function update (time, delta) {
+
     //wrap objects that go around the edge to the other side
     this.physics.world.wrap(this.player, 32);
     this.physics.world.wrap(this.crosses);
-    this.physics.world.wrap(this.options);
+    this.physics.world.wrap(this.options, 50);
 
     if(this.cursors.up.isDown) {
         this.physics.velocityFromRotation(this.player.rotation, 200, this.player.body.acceleration);
