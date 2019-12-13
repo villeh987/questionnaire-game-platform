@@ -61,6 +61,7 @@ function generateOptions(min, max) {
 let questionnaire = {
     questions: [],
     questionNumber: 0,
+    optionNumber: 0,
 
     //Fills it with tests stuff TODO: put real questions there
     initialize: function() {
@@ -69,22 +70,21 @@ let questionnaire = {
                 {
                     title: generateRandomString(MIN_TITLELENGTH, MAX_TITLELENGTH),
                     options: generateOptions(MIN_OPTIONS, MAX_OPTIONS),
-                    optionNumber: 0
                 }
             );
         }
     },
 
     getQuestionTitle: function() {
-        return this.questions[questionNumber].title;
+        return this.questions[this.questionNumber].title;
     },
 
     getOption: function() {
-        return this.questions[questionNumber].options[optionNumber];
+        return this.questions[this.questionNumber].options[this.optionNumber];
     },
 
     isLastOption: function() {
-        return (this.optionNumber == this.questions[questionNumber].options.length - 1);
+        return (this.optionNumber == this.questions[this.questionNumber].options.length - 1);
     },
 
     isLastQuestion: function() {
@@ -263,10 +263,12 @@ function create () {
         }
     });
 
+    let liveOptions = [];
+    console.log(questionnaire.getOption().title);
+    liveOptions.push(options.get());
+    questionnaire.optionNumber += 1;
+    console.log(questionnaire.getOption().title);
 
-    let testOption = options.get();
-
-    console.log(testOption.correctness);
     question.text = "Question";
 
     //END test stuff
