@@ -100,7 +100,6 @@ let questionnaire = {
     /
     */
     nextOption: function() {
-        console.log("next option");
         this.optionNumber += 1;
         if(this.optionNumber == this.questions[this.questionNumber].options.length) {
             this.optionNumber = 0;
@@ -114,7 +113,6 @@ let questionnaire = {
     /  questionnaire it will return false.
     */
     nextQuestion: function() {
-        console.log("next question");
         this.questionNumber += 1;
         if(this.questionNumber == this.questions.length) {
             this.questionNumber == this.questions.length - 1;
@@ -127,7 +125,20 @@ let questionnaire = {
 questionnaire.initialize();
 
 //options on the field physically
-let liveOptions = [];
+let liveOptions = {
+    num: 0,
+    opts: [],
+
+    push: function(option) {
+        this.opts.push(option);
+        this.num += 1;
+    },
+
+    kill: function() {
+        console.log("killed one ");
+        this.num -= 1;
+    }
+};
 
 //score
 let score = {points: 0, errors: 0};
@@ -338,6 +349,7 @@ function create () {
                 score.errors += 1;
             }
             option.destroy();
+            optionDestroyed(options);
         }
     );
 
@@ -353,6 +365,7 @@ function create () {
                 score.points += 1;
             }
             option.destroy();
+            optionDestroyed(options);
         }
     )
 
@@ -392,12 +405,27 @@ function update (time, delta) {
     }
 }
 
+//spawns all the options from current question of questionnaire on the field
 function spawnOptions(group) {
-    while(liveOptions.length < questionnaire.getQuestion().options.length) {
+    while(liveOptions.num < questionnaire.getQuestion().options.length) {
         liveOptions.push(group.get());
         console.log(questionnaire.getOption().title);
         if(!questionnaire.nextOption()) {
             break;
         }
+    }
+}
+
+//should be called when option is destroyed
+function optionDestroyed(group) {
+    console.log("options left: ", liveOptions.num);
+    liveOptions.kill();
+    if(liveOptions.num < 1) {
+        //options are all killed
+        //TODO: what if last question
+        console.log("next question");
+        questionnaire.nextQuestion();
+        group.clear();
+        spawnOptions(group);
     }
 }
