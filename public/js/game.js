@@ -152,7 +152,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0},
-            debug: true
+            debug: false
         }
     },
     scene: {
@@ -311,7 +311,7 @@ function create () {
                                  config['width'], config['height'] - this.topMargin);
 
 
-    let border = this.add.line(0, 0, 0, this.topMargin, 3200, this.topMargin, 0xff0000);
+    let border = this.add.line(0, 0, 0, this.topMargin, 3200, this.topMargin, 0xffffff);
     this.cameras.main.zoom = 1;
 
     this.player = this.physics.add.sprite(500, 500, 'ship');
@@ -330,6 +330,30 @@ function create () {
         }
     });
 
+    let posScore = this.make.text({
+        x: 10,
+        y: 10,
+        text: '0',
+        origin: { x: 0, y: 0},
+        style: {
+            font: 'bold 24px Arial',
+            fill: 'green'
+        }
+    });
+
+    let negScore = this.make.text({
+        x: 10,
+        y: 34,
+        text: '0',
+        origin: { x: 0, y: 0},
+        style: {
+            font: 'bold 24px Arial',
+            fill: 'red'
+        }
+    });
+
+
+
     question.text = questionnaire.getQuestion().title;
 
     //Put all options in the field.
@@ -343,8 +367,10 @@ function create () {
         function (player, option) {
             if(option.correctness) {
                 score.points += 1;
+                posScore.text = String(parseInt(posScore.text) + 1);
             } else {
                 score.errors += 1;
+                negScore.text = String(parseInt(negScore.text) + 1);
             }
             option.destroy();
             optionDestroyed(options);
@@ -357,8 +383,10 @@ function create () {
         function (option, cross) {
             if(!option.correctness) {
                 score.errors += 1;
+                negScore.text = String(parseInt(negScore.text) + 1);
             } else {
                 score.points += 1;
+                posScore.text = String(parseInt(posScore.text) + 1);
             }
             option.destroy();
             cross.lifespan = 0;
