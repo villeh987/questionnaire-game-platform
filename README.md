@@ -24,28 +24,88 @@ for high-school students, especially for the domains of mathematics and computer
 ├── index.js                --> bwa app
 ├── package.json            --> app info and dependencies
 ├── controllers             --> controllers (handle e.g. routing)
-│   ├──  ...                -->   ...
+│   ├── game.js             --> controller for the game
+│   ├── questionnaire.js    --> controller for viewing questionnaires
 │   └── hello.js            --> the same as "minimal viable grader"
 ├── models                  --> models that reflect the db schemes
-│                               and take care of storing data
+│   │                           and take care of storing data
+│   ├── db.js                    --> connecting/disconnecting from db
+│   ├── hello.js                 --> "minimal viable grader" grading logic
+│   ├── pagination.js            --> assigning page numbers
+│   ├── questionnaire.input.js   --> validating input for questionnaires
+│   ├── questionnaire.js         --> validating questionnaires
+│   ├── user.js                  --> validating users, authenticating
+│   └── validator.js             --> input filtering and errors
 ├── public                  --> location for public (static) files
 │   ├── img                 --> for images
+│   |   ├── cross.png       --> bullet. source: made for the project
+│   |   └── pixel_ship.png  --> player. source: made for the project
 │   ├── js                  --> for javascript
-│   └── css                 --> for styles
+│   |   ├── game.js                --> game logic
+│   |   └── createQuestionnaire.js --> creates a questionnaire
+│   └── css                        --> for styles
+│       └── style.css       --> general style file
 ├── routes                  --> a dir for router modules
 │   ├── hello.js            --> / (root) router
-│   ├──  ...                -->   ...
+│   ├── questionnaire.js    --> router for managing questionnaires
+│   ├── game.js             --> router for the game
 │   └── users.js            --> /users router
 ├── views                   --> views - visible parts
 │   ├── error.hbs           --> error view
+│   ├── game.hbs            --> game view
+│   ├── games.hbs           --> view of list of playable questionnaires
 │   ├── hello.hbs           --> main view - "minimal viable grader"
+│   ├── hello-graded.hbs    --> main view - "minimal viable grader", graded
 │   ├── layouts             --> layouts - handlebar concept
-│   │   └── layout.hbs      --> layout view, "template" to be rendered
+│   │   └── default.hbs      --> layout view, "template" to be rendered
 │   └── partials            --> smaller handlebar components to be included in views
+│   |   ├── bootstrap_scipts.hbs      --> loads bootstrap scripts
+│   |   ├── csrf.hbs                  --> adds csrf token
+│   |   ├── game_window.hbs           --> div that has the game window
+│   |   ├── games_info.hbs            --> info about a game
+│   |   ├── games_listing.hbs         --> lists games
+│   |   ├── grader_meta.hbs           --> grader meta information
+│   |   ├── messages.hbs              --> messages to be displayed on page
+│   |   ├── navigation.hbs            --> top navigation bar
+│   |   ├── questionnaire_info.hbs    --> info about a questionnaire
+│   |   ├── scripts.hbs               --> adds createquestionnaire.js
+│   |   ├── stylesheet.hbs            --> adds stylesheets
+│   |   ├── user_info.hbs             --> information about user
+│   |   └── user_listing.hbs          --> listing of users
+│   └── questionnaire            --> for managing questionnaires
+│   |   ├── create_new_questionnaire.hbs  --> creating questionnaire
+│   |   ├── questionnaire.hbs             --> information about a questionnaire
+│   |   └── questionnaires.hbs            --> lists questionnaires
+│   └── user            --> smaller handlebar components to be included in views
+│       ├── change_password.hbs   --> for changing password
+│       ├── change_role.hbs       --> for changing role
+│       ├── delete.hbs            --> for deleting a user
+│       ├── edit_user.hbs         --> for editing user information
+│       ├── login.hbs             --> for logging in
+│       ├── register.hbs          --> for registering a new user
+│       ├── user.hbs              --> information about one user
+│       └── users.hbs             --> user listing
 └── test                    --> tests
 │   ├── assignment          --> TODO: your tests here
 │   ├── integration         --> integration tests
-└── └── models              --> unit tests for models
+│   |   ├── auth.test       --> authentication
+│   |   └── user.test       --> managing users
+│   └── models                  --> unit tests for models
+│       ├── db.test             --> test database
+│       ├── questionnaire.test  --> test validating questionnaires
+│       └── user.test           --> test validating users
+└── setup                       --> scripts that modify initial app state
+│   ├── createdata.js           --> add data from json-file to db
+│   ├── createusers.js          --> create initial users
+│   └── game.questionnaire.js   --> questionnaire in json format for the game
+└── middleware                  --> middleware
+|   ├── auth          --> user role authentication
+|   ├── passport      --> passport middleware
+|   └── webpack       --> webpack middleware
+└── config                    --> configuration files
+    ├── custom-environment-variables  --> custom enviroment variables
+    ├── default                       --> mongoose and session settings
+    └── test                          --> sets db name
 
 
 ```
