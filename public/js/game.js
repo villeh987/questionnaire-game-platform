@@ -126,7 +126,11 @@ let questionnaire = {
 };
 questionnaire.initialize();
 
+//options on the field physically
 let liveOptions = [];
+
+//score
+let score = {points: 0, errors: 0};
 
 var config = {
     type: Phaser.AUTO,
@@ -328,10 +332,10 @@ function create () {
         function (player, option) {
             if(option.correctness) {
                 console.log("collected correct one");
-                //TODO keep track
+                score.points += 1;
             } else {
                 console.log("wrong one");
-                //TODO what happens here?
+                score.errors += 1;
             }
             option.destroy();
         }
@@ -343,10 +347,10 @@ function create () {
         function (option, cross) {
             if(!option.correctness) {
                 console.log("removed wrong option");
-                //TODO Keep track
+                score.errors += 1;
             } else {
                 console.log("removed right option, FAILURE");
-                //TODO what happens here?
+                score.points += 1;
             }
             option.destroy();
         }
