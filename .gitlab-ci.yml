@@ -14,10 +14,9 @@ MochaTests:
         - mongod --quiet --syslog &
         - cp .env.test .env
         - npm install
-        - npm test 
+        - npm test
     artifacts:
-        paths: 
-        - mochawesome-report/mochawesome.json   
+        paths:
+            - mochawesome-report/mochawesome.json
     when: always
-
-
+    timeout: "600"
