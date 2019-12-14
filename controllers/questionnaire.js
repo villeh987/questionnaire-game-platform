@@ -41,7 +41,7 @@ module.exports = {
 
     
     async processCreate(request, response) {
-    	console.log(request.body);
+    	//console.log(request.body);
     	//console.log("tulee");
     	//console.log(request.body.questions[0].title);
     	//request.body.questions[0].option.forEach(e => console.log(e));
@@ -67,19 +67,33 @@ module.exports = {
 
     	});
 
+    	const {error} = Questionnaire.validateQuestionnaire(request.body);
+    	if (error) {
+
+    		let error_message = "";
+    		for (let i in error) {
+    			console.log("i:", i);
+    			error_message = error_message + '\n' + error[i];
+    		}
+    		console.log("Tassa virhe:", error);
+    		request.flash('errorMessage', error_message);
+    		response.redirect('/questionnaires/new');
+    	} else{
+	    	//parsed_questionnaire.questions[0].options.forEach( (e) => { console.log(e.correctness) });
+	    	//console.log(parsed_questionnaire.questions[0].options);
+	    	//console.log(parsed_questionnaire.questions[1].options);
+
+	    	//console.log(parsed_questionnaire);
+
+	    	//console.log(JSON.stringify(parsed_questionnaire));
+
+	    	await Questionnaire.create(parsed_questionnaire);
+	    	request.flash('successMessage', 'Questionnaire added successfully.');
+	        response.redirect('/questionnaires');
+    	}
 
 
-    	//parsed_questionnaire.questions[0].options.forEach( (e) => { console.log(e.correctness) });
-    	//console.log(parsed_questionnaire.questions[0].options);
-    	//console.log(parsed_questionnaire.questions[1].options);
 
-    	//console.log(parsed_questionnaire);
-
-    	console.log(JSON.stringify(parsed_questionnaire));
-
-    	await Questionnaire.create(parsed_questionnaire);
-    	request.flash('successMessage', 'Questionnaire added successfully.');
-        response.redirect('/questionnaires');
     }
 
 /*
