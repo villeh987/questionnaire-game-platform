@@ -2,6 +2,8 @@
 'use strict';
 
 const Questionnaire = require('../models/questionnaire');
+const csurf = require('csurf');
+const csrfProtection = csurf({ cookie: false });
 
 module.exports = {
 
@@ -92,8 +94,20 @@ module.exports = {
 	        response.redirect('/questionnaires');
     	}
 
+    },
+
+    async delete(request, response) {
+    	const questionnaire = await Questionnaire.findById(request.params.id).exec();
+
+    	response.render('questionnaire/delete', {questionnaire} );
+    },
 
 
+    async processDelete(request, response) {
+
+    	await Questionnaire.findByIdAndDelete(request.params.id).exec();
+    	request.flash('successMessage', 'Questionnaire removed successfully.');
+        response.redirect('/questionnaires');
     }
 
 /*
