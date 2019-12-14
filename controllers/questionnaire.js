@@ -41,7 +41,7 @@ module.exports = {
 
     
     async processCreate(request, response) {
-    	//console.log(request.body);
+    	console.log(request.body);
     	//console.log("tulee");
     	//console.log(request.body.questions[0].title);
     	//request.body.questions[0].option.forEach(e => console.log(e));
@@ -75,7 +75,7 @@ module.exports = {
 
     	//console.log(parsed_questionnaire);
 
-    	//console.log(JSON.stringify(parsed_questionnaire));
+    	console.log(JSON.stringify(parsed_questionnaire));
 
     	await Questionnaire.create(parsed_questionnaire);
     	request.flash('successMessage', 'Questionnaire added successfully.');
