@@ -1,0 +1,44 @@
+<div class="container">
+    {{>messages}}
+    <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-trash-alt"></i> Remove questionnaire: {{questionnaire.title}}</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Submissions: {{questionnaire.submissions}}</h5>
+                    <p class="card-text">
+                        <h5>Questions:</h5> 
+                        <p></p>
+
+                        {{#each questionnaire.questions as |question index|}}
+                        <h6><u>{{question.title}}</u></h6>
+                        <h6>Max points: <b>{{question.maxPoints}}</b></h6>
+                            <ul>
+                                {{#each question.options as |option index|}}
+                                <li>
+                                    {{#if option.correctness}}
+                                    <b>{{option.option}}</b>
+                                    {{else}}
+                                    {{option.option}}
+                                    {{/if}}
+                                </li>
+                                {{/each}}                    
+                            </ul>
+
+                        {{/each}}
+
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <form method="POST" action="/questionnaires/delete/{{questionnaire.id}}">
+                        <!--<input type="hidden" name="_csrf" value="{{csrfToken}}"> -->
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-trash-alt"></i>Remove</button>
+                    </form>
+                    <p class="lead mt-4"><a href="/questionnaires">Cancel</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

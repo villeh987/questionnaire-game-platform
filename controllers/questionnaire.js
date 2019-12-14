@@ -2,6 +2,8 @@
 'use strict';
 
 const Questionnaire = require('../models/questionnaire');
+const csurf = require('csurf');
+const csrfProtection = csurf({ cookie: false });
 
 module.exports = {
 
@@ -67,18 +69,44 @@ module.exports = {
 
     	});
 
+    	const {error} = Questionnaire.validateQuestionnaire(request.body);
+    	if (error) {
+
+    		let error_message = "";
+    		for (let i in error) {
+    			console.log("i:", i);
+    			error_message = error_message + '\n' + error[i];
+    		}
+    		console.log("Tassa virhe:", error);
+    		request.flash('errorMessage', error_message);
+    		response.redirect('/questionnaires/new');
+    	} else{
+	    	//parsed_questionnaire.questions[0].options.forEach( (e) => { console.log(e.correctness) });
+	    	//console.log(parsed_questionnaire.questions[0].options);
+	    	//console.log(parsed_questionnaire.questions[1].options);
+
+	    	//console.log(parsed_questionnaire);
+
+	    	//console.log(JSON.stringify(parsed_questionnaire));
+
+	    	await Questionnaire.create(parsed_questionnaire);
+	    	request.flash('successMessage', 'Questionnaire added successfully.');
+	        response.redirect('/questionnaires');
+    	}
+
+    },
+
+    async delete(request, response) {
+    	const questionnaire = await Questionnaire.findById(request.params.id).exec();
+
+    	response.render('questionnaire/delete', {questionnaire} );
+    },
 
 
-    	//parsed_questionnaire.questions[0].options.forEach( (e) => { console.log(e.correctness) });
-    	//console.log(parsed_questionnaire.questions[0].options);
-    	//console.log(parsed_questionnaire.questions[1].options);
+    async processDelete(request, response) {
 
-    	//console.log(parsed_questionnaire);
-
-    	//console.log(JSON.stringify(parsed_questionnaire));
-
-    	await Questionnaire.create(parsed_questionnaire);
-    	request.flash('successMessage', 'Questionnaire added successfully.');
+    	await Questionnaire.findByIdAndDelete(request.params.id).exec();
+    	request.flash('successMessage', 'Questionnaire removed successfully.');
         response.redirect('/questionnaires');
     }
 
