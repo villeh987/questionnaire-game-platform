@@ -153,7 +153,6 @@ var config = {
             time: 0,
             topMargin: 100,
             magicTopMarginNumber: 48,
-            optionsOnScreen: 3
         }
     }
 };
@@ -289,7 +288,7 @@ function create () {
     let options = this.physics.add.group({
         classType: Option,
         defaultKey: 'option',
-        maxSize: 3,
+        maxSize: 7,
         runChildUpdate: true
     });
     this.options = options;
@@ -324,7 +323,8 @@ function create () {
 
     let liveOptions = [];
 
-    while(liveOptions.length < this.optionsOnScreen) {
+    console.log(questionnaire.getQuestion().options.length);
+    while(liveOptions.length < questionnaire.getQuestion().options.length) {
         liveOptions.push(options.get());
         console.log(questionnaire.getOption().title);
         if(!questionnaire.nextOption()) {
