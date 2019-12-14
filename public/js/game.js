@@ -361,6 +361,7 @@ function create () {
                 score.points += 1;
             }
             option.destroy();
+            cross.lifespan = 0;
             optionDestroyed(options);
         }
     )
