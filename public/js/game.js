@@ -1,8 +1,8 @@
 'use strict';
 
 /*TODO: -Initialize questionnaire object from get request (the real questionnaire)
- *      -Load questions from questionnaire
- *      -Make destroying options load more options and keep track of progress in questionnaire
+ *
+ *
  *      -Scoreboard
  *      -Recognize when game is over
  *      -Send post message to grader
@@ -342,10 +342,8 @@ function create () {
         this.player,
         function (player, option) {
             if(option.correctness) {
-                console.log("collected correct one");
                 score.points += 1;
             } else {
-                console.log("wrong one");
                 score.errors += 1;
             }
             option.destroy();
@@ -358,10 +356,8 @@ function create () {
         crosses,
         function (option, cross) {
             if(!option.correctness) {
-                console.log("removed wrong option");
                 score.errors += 1;
             } else {
-                console.log("removed right option, FAILURE");
                 score.points += 1;
             }
             option.destroy();
@@ -422,10 +418,17 @@ function optionDestroyed(group) {
     liveOptions.kill();
     if(liveOptions.num < 1) {
         //options are all killed
-        //TODO: what if last question
         console.log("next question");
-        questionnaire.nextQuestion();
-        group.clear();
-        spawnOptions(group);
+        if(questionnaire.nextQuestion()) {
+            group.clear();
+            spawnOptions(group);
+        } else {
+            gameOver();
+        }
     }
+}
+
+function gameOver() {
+    //TODO: send post message with the Scoreboard
+    console.log("game over");
 }
