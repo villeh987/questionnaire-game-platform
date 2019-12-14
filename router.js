@@ -11,5 +11,5 @@ module.exports = function(app) {
     app.use('/users', UsersRouter);
     app.use('/', HelloRouter);
     app.use('/questionnaires', QuestionnairesRouter);
-    app.use('/game', GameRouter);
+    app.use('/games', GameRouter);
 };
