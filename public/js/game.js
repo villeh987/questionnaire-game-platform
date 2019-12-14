@@ -3,8 +3,8 @@
 /*TODO: -Initialize questionnaire object from get request (the real questionnaire)
  *
  *
- *      -Scoreboard
- *      -Recognize when game is over
+ *
+ *      
  *      -Send post message to grader
  */
 
