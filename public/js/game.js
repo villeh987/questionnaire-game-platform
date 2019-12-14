@@ -124,11 +124,9 @@ let questionnaire = {
         }
     }
 };
-
 questionnaire.initialize();
 
-console.log(questionnaire);
-
+let liveOptions = [];
 
 var config = {
     type: Phaser.AUTO,
@@ -319,21 +317,9 @@ function create () {
 
     question.text = questionnaire.getQuestion().title;
 
-    //TEST stuff
+    //Put all options in the field.
+    spawnOptions(options);
 
-    let liveOptions = [];
-
-    console.log(questionnaire.getQuestion().options.length);
-    while(liveOptions.length < questionnaire.getQuestion().options.length) {
-        liveOptions.push(options.get());
-        console.log(questionnaire.getOption().title);
-        if(!questionnaire.nextOption()) {
-            break;
-        }
-    }
-
-
-    //END test stuff
 
     //collision detection between groups with callback
     this.physics.add.collider(
@@ -347,7 +333,6 @@ function create () {
                 console.log("wrong one");
                 //TODO what happens here?
             }
-            //TODO: spawn new ones
             option.destroy();
         }
     );
@@ -363,7 +348,6 @@ function create () {
                 console.log("removed right option, FAILURE");
                 //TODO what happens here?
             }
-            //TODO: spawn new ones
             option.destroy();
         }
     )
@@ -401,5 +385,15 @@ function update (time, delta) {
         this.player.setAngularVelocity(-300);
     } else {
         this.player.setAngularVelocity(0);
+    }
+}
+
+function spawnOptions(group) {
+    while(liveOptions.length < questionnaire.getQuestion().options.length) {
+        liveOptions.push(group.get());
+        console.log(questionnaire.getOption().title);
+        if(!questionnaire.nextOption()) {
+            break;
+        }
     }
 }
