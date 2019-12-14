@@ -434,7 +434,6 @@ function update (time, delta) {
 function spawnOptions(group) {
     while(liveOptions.num < questionnaire.getQuestion().options.length) {
         liveOptions.push(group.get());
-        console.log(questionnaire.getOption().title);
         if(!questionnaire.nextOption()) {
             break;
         }

@@ -11,11 +11,22 @@ module.exports = {
           response.render('games', { questionnaires });
     },
 
-    showExercise(request, response) {
-        response.render('game');
+    async showExercise(request, response) {
+        const questionnaire = await Questionnaire.findById(request.params.id).exec();
+
+        if (!questionnaire) {
+            request.flash(
+                'errorMessage',
+                `Questionnaire not found (id: ${request.params.id})`
+            );
+            return response.redirect('/games');
+        }
+
+        response.render('game', {questionnaire});
     },
 
     gradeExercise(request, response) {
         //TODO
-    }
+    },
+
 };
