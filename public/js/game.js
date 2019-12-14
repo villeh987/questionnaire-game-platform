@@ -4,7 +4,7 @@
  *
  *
  *
- *      
+ *
  *      -Send post message to grader
  */
 
@@ -145,7 +145,7 @@ let score = {points: 0, errors: 0};
 
 var config = {
     type: Phaser.AUTO,
-    parent: 'phaser-example',
+    parent: 'phaser-game',
     width: 1000,
     height: 800,
     physics: {
