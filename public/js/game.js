@@ -67,7 +67,7 @@ function generateRandomString(min, max) {
     return string;
 }
 
-//Generates list of random test options
+//Generates a list of options from the HTML document
 function getOptions(question, optionAmount) {
     let options = [];
 
@@ -158,7 +158,6 @@ let questionnaire = {
     }
 };
 questionnaire.initialize();
-
 //options on the field physically
 let liveOptions = {
     num: 0,
@@ -290,8 +289,8 @@ let Option = new Phaser.Class({
             this.correctness = questionnaire.getOption().correctness;
 
             //Set to accelerate in random direction
-            this.xAcc = randomIntBetween(-10,10)/100;
-            this.yAcc = randomIntBetween(-10,10)/100;
+            this.xAcc = randomIntBetween(-10,10)/1000;
+            this.yAcc = randomIntBetween(-10,10)/1000;
     },
 
     update: function(time, delta) {
@@ -364,6 +363,7 @@ function create () {
             wordWrap: { width: config['width']-110, useAdvancedWrap: true }
         }
     });
+    this.question = question;
 
     let posScore = this.make.text({
         x: 10,
@@ -389,7 +389,6 @@ function create () {
 
 
 
-    question.text = questionnaire.getQuestion().title;
 
     //Put all options in the field.
     spawnOptions(options);
@@ -451,6 +450,9 @@ function update (time, delta) {
     this.physics.world.wrap(this.player, 32);
     this.physics.world.wrap(this.crosses);
     this.physics.world.wrap(this.options, 50);
+    if(liveOptions.num > 1) {
+        this.question.text = questionnaire.getQuestion().title;
+    }
 
     if(this.cursors.up.isDown) {
         this.physics.velocityFromRotation(this.player.rotation, 200, this.player.body.acceleration);
