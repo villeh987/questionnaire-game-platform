@@ -35,10 +35,6 @@ function getOptionNumber(element) {
 }
 
 
-console.log("loaded");
-
-
-
 
 
 function addNewQuestion() {
@@ -118,8 +114,68 @@ function addNewOption(element) {
 	$(element.parentElement.parentElement).append(add2);
 	element.remove();
 
-
-
 };
+
+function removeQuestion(element) {
+
+	
+	$(element).parent().nextAll().each( (i, el) => {
+		let question_id_number = Number($(el).attr("id").slice($(el).attr("id").length - 1));
+		question_id_number -= 1;
+		$(el).attr("id", `question${question_id_number}`)
+		$(el).children().find("b").text(`Question ${question_id_number}`);
+		$(el).find("label").first().attr("for", `questionInput${question_id_number}`);
+		$(el).find("input").first().attr("name", `questions[${question_id_number}][title]`);
+		$(el).find("input").first().attr("id", `questionInput${question_id_number}`);
+		$(el).find("div").first().find("input").attr("name", `questions[${question_id_number}][maxPoints]`);
+
+		$(el).children().each( (i, option) => {
+			if (i > 5 && $(option).is("div")) {
+				//console.log(option);
+
+				// Option Name
+
+				let old_name = $(option).find("div").first().find("input").first().attr("name");
+				//console.log(old_name);
+				let name_pt1 = `questions[${question_id_number}]`;
+				let name_pt2 = old_name.slice(12, old_name.length);
+				let new_name = name_pt1 + name_pt2;
+				$(option).find("div").first().find("input").first().attr("name", new_name);
+
+
+				// Correctness name
+
+				let old_corretness = $(option).find("#correctAnswerCheckbox").attr("name");
+				//console.log(old_corretness);
+				let corr_name_pt1 = `questions[${question_id_number}]`;
+				let corr_name_pt2 = old_corretness.slice(12, old_corretness.length);
+				let new_correctness = corr_name_pt1 + corr_name_pt2;
+				$(option).find("#correctAnswerCheckbox").attr("name", new_correctness);
+
+				// Hint name
+
+				let old_hint_name = $(option).find("input").last().attr("name");
+				//console.log(old_hint_name);
+				let hint_name_pt1 = `questions[${question_id_number}]`;
+				let hint_name_pt2 = old_hint_name.slice(12, old_hint_name.length);
+				let new_hint_name = hint_name_pt1 + hint_name_pt2;
+				$(option).find("input").last().attr("name", new_hint_name);
+			}
+		})
+
+
+	}); 
+
+	
+
+	/*$("div[id^='question']").each( (i, el) => {
+		if ( Number(el.attr("id").slice(el.attr("id").length - 1)) > element.parentElement.id) 
+	}) */
+	element.parentElement.remove();
+}
+
+function removeOption (element) {
+
+}
 
 $("#javascript_end").html("[OK] The end of your javascript file was reached. (meaning there were no huge errors) Hopefully your code works too! ");

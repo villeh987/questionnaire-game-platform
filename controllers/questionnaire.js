@@ -77,17 +77,10 @@ module.exports = {
     			console.log("i:", i);
     			error_message = error_message + '\n' + error[i];
     		}
-    		console.log("Tassa virhe:", error);
+
     		request.flash('errorMessage', error_message);
     		response.redirect('/questionnaires/new');
     	} else{
-	    	//parsed_questionnaire.questions[0].options.forEach( (e) => { console.log(e.correctness) });
-	    	//console.log(parsed_questionnaire.questions[0].options);
-	    	//console.log(parsed_questionnaire.questions[1].options);
-
-	    	//console.log(parsed_questionnaire);
-
-	    	//console.log(JSON.stringify(parsed_questionnaire));
 
 	    	await Questionnaire.create(parsed_questionnaire);
 	    	request.flash('successMessage', 'Questionnaire added successfully.');
@@ -108,15 +101,53 @@ module.exports = {
     	await Questionnaire.findByIdAndDelete(request.params.id).exec();
     	request.flash('successMessage', 'Questionnaire removed successfully.');
         response.redirect('/questionnaires');
+    },
+
+    async update(request, response) {
+    	let questionnaire = await Questionnaire.findById(request.params.id).exec();
+
+    	response.render('questionnaire/update', {questionnaire} );
+    },
+
+
+    async processUpdate(request, response) {
+    	//console.log(request.body);
+
+    	request.body.questions.forEach( (question) => {
+    		question.options.forEach( (option) => {
+    			if (option.correctness === undefined) {
+    				option.correctness = false;
+
+    			} else if (option.correctness === 'on') {
+    				option.correctness = true;
+    			}
+
+    			if (option.hint === '') {
+    				delete option.hint;
+    			}
+
+    		} )
+
+    	});
+    	//console.log(JSON.stringify(request.body, null, 4));
+
+    	const {error} = Questionnaire.validateQuestionnaire(request.body);
+    	if (error) {
+
+    		let error_message = "";
+    		for (let i in error) {
+    			console.log("i:", i);
+    			error_message = error_message + '\n' + error[i];
+    		}
+
+    		request.flash('errorMessage', error_message);
+    		response.redirect(`/questionnaires/edit/${request.params.id}`);
+    	} else {
+	    	await Questionnaire.findByIdAndUpdate(request.params.id, request.body).exec();
+	    	request.flash('successMessage', 'Questionnaire updated successfully.');
+	        response.redirect('/questionnaires');
+    	}
     }
 
-/*
-    async changeRole(request, response) {} 
-
-
-
-
-
-*/
 
 };

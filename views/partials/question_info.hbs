@@ -1,0 +1,15 @@
+<div class="form-group" id="question{{add @index 1}}">
+    <label for="questionInput{{add @index 1}}"><b>Question {{add @index 1}}</b></label><span> </span><button type="button" class="btn btn-primary" onclick="removeQuestion(this)"><i class="fas fa-trash-alt"></i></button>
+    <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter question" name="questions[{{add @index 1}}][title]" id="questionInput{{add @index 1}}" value="{{this.title}}" required="true">  
+
+    <br>
+    <div class="form-group ml-3">
+        <label for="max_points">Max Points</label>
+        <input type="number" value="2" min="1" class="form-control" name="questions[{{add @index 1}}][maxPoints]" id="max_points" required="true" value="{{this.maxPoints}}">
+    </div>
+
+    {{#each this.options as |option index|}}
+    {{>option_info option}}
+    {{/each}}
+
+</div>
