@@ -110,13 +110,33 @@ for high-school students, especially for the domains of mathematics and computer
 
 ```
 
-TODO: add your files here and give a short description
+TODO: update this
 
 ## Game
 
-TODO: describe your work
+For game part of the assignment we created a top down Asteroid-style shooter
+that can be used to answer multi choice questionnaires. One game runs for the
+length of one questionnaire. Every question is represented in upper part of the
+screen and options are flying text boxes that are going in random directions
+with somewhat accelerating speeds. Player's task is to shoot all the wrong
+answers by hitting them with projectiles that the ship launches by pressing
+spacebar key. Right options must be collected by flying in to them. Ship can be
+controlled with cursor keys. Up accelerates while left and right rotate the
+ship. When player has either collected or shot all the options new options and
+a new question will arrive. After all questions are done score is sent to them
+grader for evaluation.
 
-"Create a short document that describes how your coursework handles these requirements." Ja erikseen maininta sitten että pitää selvittää miten se softa ajetaan.
+Most of the game is created with Phaserjs, a game engine for creating web based
+games that uses MIT license. It was chosen because of it's popularity, web first
+-approach and the convenient license. It is available as a Node module from Npm
+but the page also needs to include it as a script to make some functionality
+accessible to the client side. We have chosen to include it from a well known
+public location.
+
+Running: Install with npm install, run with npm start and navigate to
+localhost:3000, if the port is availabla for local testing.
+
+TODO: check in the end that those instructions are valid
 
 ## Management view
 
