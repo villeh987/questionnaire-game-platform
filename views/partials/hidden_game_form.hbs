@@ -1,0 +1,20 @@
+<div id="exercise">
+  <form action="/games/{{this.id}}" method="post">
+    <input type="hidden" id="amountOfQuestions" value={{length this.questions}}>
+    {{#eachIndex this.questions}}
+      <input type="hidden" id="question{{index}}_title" value="{{item.title}}">
+      <input type="hidden" id="question{{index}}_options" value="{{length item.options}}">
+      <input type="hidden" id="question{{index}}_maxPoints" value="{{item.maxPoints}}">
+      {{#eachIndex item.options}}
+        <input type="hidden" id="question{{../index}}_option{{index}}" value="{{item.option}}">
+        {{#if item.correctness}}
+        <input type="hidden" id="question{{../index}}_option{{index}}_correctness" value="true">
+        {{else}}
+        <input type="hidden" id="question{{../index}}_option{{index}}_correctness" value="false">
+        {{/if}}
+      {{/eachIndex}}
+    {{/eachIndex}}
+    <input type="hidden" id="title" value="{{this.title}}">
+    <button type="submit" id="grade">Grade</button>
+  </form>
+</div>

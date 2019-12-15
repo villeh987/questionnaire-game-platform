@@ -8,14 +8,41 @@
  *      -Send post message to grader
  */
 
+const NUM_QUESTIONS = document.getElementById("amountOfQuestions").value;
+const MAX_POINTS = function getMaxPoints() {
+    let maxPoints = 0;
+    for(let i = 0; i < NUM_QUESTIONS; ++i) {
+        let element = document.getElementById("question" + i + "_maxPoints");
+        maxPoints += element.value;
+    }
+    return maxPoints;
+}
+// questions();
+//
+// function questions() {
+//     for(let i = 0; i < QUESTIONS_AMOUNT; ++i)
+//     {
+//         let title = "question" + i + "Title";
+//         let optionAmount = "question" + i + "options";
+//         console.log(document.getElementById(title))
+//         console.log("Question: " + document.getElementById(title).value);
+//         console.log("Amount of options: " + document.getElementById(optionAmount).value);
+//         for (let j = 0; j < document.getElementById(optionAmount).value; ++j)
+//         {
+//             let elementId = "question" + i + "_option" + j;
+//             console.log(document.getElementById(elementId));
+//             console.log(document.getElementById(elementId + "_correctness").value);
+//         }
+//     }
+// }
 
 //scema limits for testing
-const NUM_TESTQUESTIONS = 3;
+const NUM_TESTQUESTIONS = 2;
 
 const MIN_TITLELENGTH = 1;
 const MAX_TITLELENGTH = 100;
 const MIN_OPTIONS = 2;
-const MAX_OPTIONS = 7;
+const MAX_OPTIONS = 3;
 const MIN_POINTS = 1;
 
 const MIN_OPTIONLENGTH = 1;
@@ -41,22 +68,26 @@ function generateRandomString(min, max) {
 }
 
 //Generates list of random test options
-function generateOptions(min, max) {
+function getOptions(question, optionAmount) {
     let options = [];
 
-    let numOptions = randomIntBetween(min, max);
-
-    for(let i = 0; i < numOptions; ++i) {
+    for(let i = 0; i < optionAmount; ++i) {
+        let option = question + "_option" + i;
+        let optionCorrectness = option + "_correctness";
+        let correctness = document.getElementById(optionCorrectness).value;
+        if (correctness == "true") {
+          correctness = true;
+        } else {
+          correctness = false;
+        }
+        console.log(option);
         options.push(
             {
-                title: generateRandomString(MIN_OPTIONLENGTH, MAX_OPTIONLENGTH),
-                correctness: false
+                title: document.getElementById(option).value,
+                correctness: correctness,
             }
         );
     }
-
-    //set one option as the correct one
-    options[randomIntBetween(0, options.length -1)]['correctness'] = true;
 
     return options;
 }
@@ -67,13 +98,17 @@ let questionnaire = {
     questionNumber: 0,
     optionNumber: 0,
 
-    //Fills it with tests stuff TODO: put real questions there
+    // Fills it with tests stuff TODO: put real questions there
     initialize: function() {
-        for(let i = 0; i < NUM_TESTQUESTIONS; ++i) {
+        for(let i = 0; i < NUM_QUESTIONS; ++i) {
+            let question = "question" + i;
+            let questionTitle = "question" + i + "_title";
+            let optionAmount = "question" + i + "_options";
             this.questions.push(
                 {
-                    title: generateRandomString(MIN_TITLELENGTH, MAX_TITLELENGTH),
-                    options: generateOptions(MIN_OPTIONS, MAX_OPTIONS),
+                    title: document.getElementById(questionTitle).value,
+                    options: getOptions(question, document.getElementById(optionAmount).value),
+                    optionAmount: document.getElementById(optionAmount).value,
                 }
             );
         }
@@ -301,7 +336,7 @@ function create () {
     let options = this.physics.add.group({
         classType: Option,
         defaultKey: 'option',
-        maxSize: 7,
+        maxSize: questionnaire.getOption.optionAmount,
         runChildUpdate: true
     });
     this.options = options;
@@ -406,6 +441,7 @@ function create () {
             cross.fire(playeri);
         }
     });
+
 }
 
 //Phaser function. called every physics frame.
@@ -435,6 +471,7 @@ function spawnOptions(group) {
     while(liveOptions.num < questionnaire.getQuestion().options.length) {
         liveOptions.push(group.get());
         if(!questionnaire.nextOption()) {
+            console.log("Spawning finished");
             break;
         }
     }
@@ -459,4 +496,6 @@ function optionDestroyed(group) {
 function gameOver() {
     //TODO: send post message with the Scoreboard
     console.log("game over");
+    // const submitButton = document.getElementById('grade');
+    // submitButton.click();
 }
