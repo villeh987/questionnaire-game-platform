@@ -134,7 +134,7 @@ accessible to the client side. We have chosen to include it from a well known
 public location.
 
 Running: Install with npm install, run with npm start and navigate to
-localhost:3000, if the port is availabla for local testing.
+localhost:3000, if the port is available for local testing.
 
 TODO: check in the end that those instructions are valid
 
@@ -148,9 +148,24 @@ TODO: describe your work
 
 ## Security concerns
 
-TODO: list the security threats represented in the course slides.
-Document how your application protects against the threats.
-You are also free to add more security threats + protection here, if you will.
+TODO: this part needs more improvement
+
+Cross Site Request Forgery attack: Malicious website could include a POST form
+that sends a request to this application which causes logged in user to perform
+unwanted actions on the serve. For example: Admin user could be tricked into
+removing other users. Site protects against this by including csrf token on
+every form and demanding that to be used when handling POST-requests.
+
+Cross Site Scripting attack: User add questions or options that when listed are
+interpret as html-code. This could be used to add a script that could potentially
+do something damaging. This can be protected against by sanitizing all user
+input before it is put into the database or displayed. Node has a module for
+doing that, xss-filters.
+
+Man in the middle attack: When not using protected connection information sent
+by the users is visible to possible eavesdroppers in the network. Some third
+party could use this information to collect sensive information or even pose
+as the server.
 
 Application uses Helmet to protect itself against many common threats. More info here: https://helmetjs.github.io/
 
