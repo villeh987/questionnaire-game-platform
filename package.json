@@ -9,7 +9,7 @@
         "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=html mocha --recursive --timeout 20000",
         "start": "node index.js",
         "nodemon": "nodemon index.js",
-        "test": "NODE_ENV=test mocha --recursive --reporter mochawesome --timeout 20000 --inline-diffs"
+        "test": "NODE_ENV=test mocha --recursive --reporter mochawesome --timeout 20000 --inline-diffs --exit"
     },
     "author": "",
     "license": "ISC",
