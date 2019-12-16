@@ -1,6 +1,8 @@
 'use strict';
 
 const Questionnaire = require('../models/questionnaire');
+const Grader         = require('../models/grader');
+
 module.exports = {
 
     async listExercises(request, response) {
@@ -26,7 +28,21 @@ module.exports = {
     },
 
     gradeExercise(request, response) {
-        //TODO
+        //Get the values from the form body, and turn into numbers for grading
+        let maxPoints = parseInt(request.body.maxPoints);
+        let points = parseInt(request.body.points);
+        let errors = parseInt(request.body.errors);
+
+        let score = Grader.grade(points, errors, maxPoints);
+
+        response.render('hello-graded', {
+            points: score,
+            maxPoints: maxPoints,
+            status: 'accepted',
+            description: 'minimal viable grader in the express framework',
+            title: 'A+ greetings'
+        });
+
     },
 
 };
