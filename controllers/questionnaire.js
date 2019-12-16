@@ -33,25 +33,27 @@ module.exports = {
 
 
     async create(request, response) {
-    	console.log("create");
- 		response.render('questionnaire/create_new_questionnaire');
+        //console.log("create");
+        response.render('questionnaire/create_new_questionnaire');
     },
 
     async cancel(request, response) {
- 		return response.redirect('/questionnaires');
+    	return response.redirect('/questionnaires');
     },
 
     
     async processCreate(request, response) {
-    	//console.log(request.body);
-    	//console.log("tulee");
-    	//console.log(request.body.questions[0].title);
-    	//request.body.questions[0].option.forEach(e => console.log(e));
-    	//console.log(request.body.questions[0].options);
-    	//console.log(request.body.questions[1].options);
+        //console.log(request.body);
+        //console.log(JSON.stringify(request.body, null, 4));
+        //console.log("tulee");
+        //console.log(request.body.questions[0].title);
+        //request.body.questions[0].option.forEach(e => console.log(e));
+        //console.log(request.body.questions[0].options);
+        //console.log(request.body.questions[1].options);
 
-    	let parsed_questionnaire = request.body;
+        let parsed_questionnaire = request.body;
 
+        // Remove hint, if not given. Also parse correctness checkbox value to be true/false.
     	request.body.questions.forEach( (question) => {
     		question.options.forEach( (option) => {
     			if (option.correctness === undefined) {
@@ -69,18 +71,58 @@ module.exports = {
 
     	});
 
+        // Check whether questionnaire with given title exists
+        let existing_questionnaire = await Questionnaire.findOne({title : request.body.title}).exec();
+        if (existing_questionnaire) {
+            request.flash('errorMessage', "A Questionnaire with that title already exists.");
+            return response.redirect('/questionnaires/new');
+        }
+
+        // Check whether questions and options are unique
+        let unique_questions = [];
+        let unique_error;
+        request.body.questions.forEach( (question, index) => {
+
+            if (unique_questions.includes(question.title)) {
+                unique_error = "Question title \"" + question.title + "\" must be unique!"
+
+            } else {
+                unique_questions.push(question.title);
+            }
+
+            let unique_options = [];
+            question.options.forEach( (option, index) => {
+            if (unique_options.includes(option.option)) {
+                unique_error = "Option title \"" + option.option + "\" must be unique!"
+
+            } else {
+                unique_options.push(option.option);
+            }
+
+            });
+
+        }); 
+
+        console.log(unique_error);
+        if (unique_error) {
+            request.flash('errorMessage', unique_error);
+            return response.redirect('/questionnaires/new');
+        }
+
+        // Validate Questionnaire
     	const {error} = Questionnaire.validateQuestionnaire(request.body);
     	if (error) {
 
     		let error_message = "";
     		for (let i in error) {
-    			console.log("i:", i);
+    			//console.log("i:", i);
     			error_message = error_message + '\n' + error[i];
     		}
 
     		request.flash('errorMessage', error_message);
     		response.redirect('/questionnaires/new');
-    	} else{
+
+    	} else {
 
 	    	await Questionnaire.create(parsed_questionnaire);
 	    	request.flash('successMessage', 'Questionnaire added successfully.');
@@ -129,7 +171,7 @@ module.exports = {
     		} )
 
     	});
-    	console.log(JSON.stringify(request.body, null, 4));
+    	//console.log(JSON.stringify(request.body, null, 4));
 
     	const {error} = Questionnaire.validateQuestionnaire(request.body);
     	if (error) {
