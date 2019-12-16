@@ -1,11 +1,16 @@
 <div id="exercise">
   <form id="game_form" action="/games/{{this.id}}" method="post">
     <input type="hidden" id="amountOfQuestions" value={{length this.questions}}>
-    <input type="hidden" id="points">
+    <input type="hidden" id="points" name="points" value="0">
+    <input type="hidden" id="errors" name="errors" value="0">
+    <input type="hidden" id="maxPoints" name="maxPoints" value="0">
+    {{!-- Form makes a hidden input field for every question, its option amount
+    and max points for data gathering purposes. --}}
     {{#eachIndex this.questions}}
       <input type="hidden" id="question{{index}}_title" value="{{item.title}}">
       <input type="hidden" id="question{{index}}_options" value="{{length item.options}}">
-      <input type="hidden" id="question{{index}}_maxPoints" value="{{item.maxPoints}}">
+      <input type="hidden" id="question{{index}}_maxPoints" name="question{{index}}_maxPoints" value="{{item.maxPoints}}">
+      {{!-- Input field for every option in the question --}}
       {{#eachIndex item.options}}
         <input type="hidden" id="question{{../index}}_option{{index}}" value="{{item.option}}">
         {{#if item.correctness}}
