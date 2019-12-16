@@ -412,7 +412,9 @@ function update (time, delta) {
     }
 
     if(this.cursors.up.isDown) {
-        this.physics.velocityFromRotation(this.player.rotation, 200, this.player.body.acceleration);
+        this.physics.velocityFromRotation(this.player.rotation, 300, this.player.body.acceleration);
+    } else if (this.cursors.down.isDown){
+        this.physics.velocityFromAngle(this.player.rotation, -200, this.player.body.acceleration);
     } else {
         this.player.setAcceleration(0);
     }
