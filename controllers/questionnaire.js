@@ -129,7 +129,7 @@ module.exports = {
     		} )
 
     	});
-    	//console.log(JSON.stringify(request.body, null, 4));
+    	console.log(JSON.stringify(request.body, null, 4));
 
     	const {error} = Questionnaire.validateQuestionnaire(request.body);
     	if (error) {

@@ -1,5 +1,5 @@
 <div class="form-group" id="question{{add @index 1}}">
-    <label for="questionInput{{add @index 1}}"><b>Question {{add @index 1}}</b></label><span> </span><button type="button" class="btn btn-primary" onclick="removeQuestion(this)"><i class="fas fa-trash-alt"></i></button>
+    <label for="questionInput{{add @index 1}}"><b>Question {{add @index 1}}</b></label> {{#compare @index ">" 0}}<span> </span><button type="button" class="btn btn-primary" onclick="removeQuestion(this)"><i class="fas fa-trash-alt"></i></button> {{/compare}}
     <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter question" name="questions[{{add @index 1}}][title]" id="questionInput{{add @index 1}}" value="{{this.title}}" required="true">  
 
     <br>
@@ -11,5 +11,6 @@
     {{#each this.options as |option index|}}
     {{>option_info option}}
     {{/each}}
+    <button type="button" class="btn btn-primary" onclick="addNewOption(this)">Add option</button>
 
 </div>

@@ -1,6 +1,9 @@
-<div class="form-group ml-5">
+<div class="form-group ml-5" id="option{{add @index 1}}">
 	<label for="optionInput{{add @index 1}}">Option {{add @index 1}}</label>
 	<div class="input-group mb-3">
+		{{#compare @index ">" 1}}
+		<span><button type="button" class="btn btn-primary" onclick="removeOption(this)"><i class="fas fa-times-circle"></i></button></span>
+		{{/compare}}
 	  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[{{add @../index 1}}][options][{{add @index 1}}][option]" id="optionInput{{add @index 1}}" value="{{this.option}}">
 		<div class="input-group-append">
 		  	<div class="input-group-text"> 		
