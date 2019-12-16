@@ -1,5 +1,25 @@
 [
     {
+        "title": "Test for game",
+        "submissions": 1,
+        "questions": [
+            {
+                "title": "Select the calculations that result in 40",
+                "maxPoints": 10,
+                "options": [
+                    {
+                        "option": "25 + 15",
+                        "correctness": true
+                    },
+                    {
+                        "option": "10 + 25",
+                        "correctness": false
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "title": "Count without a calculator",
         "submissions": 1,
         "questions": [
