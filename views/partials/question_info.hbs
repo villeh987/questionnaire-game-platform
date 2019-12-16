@@ -5,7 +5,7 @@
     <br>
     <div class="form-group ml-3">
         <label for="max_points">Max Points</label>
-        <input type="number" value="2" min="1" class="form-control" name="questions[{{add @index 1}}][maxPoints]" id="max_points" required="true" value="{{this.maxPoints}}">
+        <input type="number" min="1" class="form-control" name="questions[{{add @index 1}}][maxPoints]" id="max_points" required="true" value="{{this.maxPoints}}">
     </div>
 
     {{#each this.options as |option index|}}
