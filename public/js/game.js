@@ -1,13 +1,5 @@
 'use strict';
 
-/*TODO: -Initialize questionnaire object from get request (the real questionnaire)
- *
- *
- *
- *
- *      -Send post message to grader
- */
-
 const NUM_QUESTIONS = document.getElementById("amountOfQuestions").value;
 const MAX_POINTS = function getMaxPoints() {
     let maxPoints = 0;
@@ -17,55 +9,15 @@ const MAX_POINTS = function getMaxPoints() {
     }
     return maxPoints;
 }
-// questions();
-//
-// function questions() {
-//     for(let i = 0; i < QUESTIONS_AMOUNT; ++i)
-//     {
-//         let title = "question" + i + "Title";
-//         let optionAmount = "question" + i + "options";
-//         console.log(document.getElementById(title))
-//         console.log("Question: " + document.getElementById(title).value);
-//         console.log("Amount of options: " + document.getElementById(optionAmount).value);
-//         for (let j = 0; j < document.getElementById(optionAmount).value; ++j)
-//         {
-//             let elementId = "question" + i + "_option" + j;
-//             console.log(document.getElementById(elementId));
-//             console.log(document.getElementById(elementId + "_correctness").value);
-//         }
-//     }
-// }
 
-//scema limits for testing
-const NUM_TESTQUESTIONS = 2;
-
-const MIN_TITLELENGTH = 1;
-const MAX_TITLELENGTH = 100;
-const MIN_OPTIONS = 2;
-const MAX_OPTIONS = 3;
-const MIN_POINTS = 1;
-
-const MIN_OPTIONLENGTH = 1;
-const MAX_OPTIONLENGTH = 50;
+const submitButton = document.getElementById('grade');
+submitButton.classList.add('hidden');
 
 //Generate random number between min and max
 function randomIntBetween(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-//Generates random string from set of characters
-function generateRandomString(min, max) {
-    let string = "";
-    const SELECTION = "ABCDEFGHIJKLMNOPQRSTUVWXYZOÄÖabcdefghijklmnopqrstuvwxyzoäö01234567890";
-
-    let numChars = randomIntBetween(min, max);
-
-    for(let i = 0; i < numChars; ++i) {
-        string += SELECTION.charAt(Math.floor(Math.random() * SELECTION.length));
-    }
-
-    return string;
-}
 
 //Generates a list of options from the HTML document
 function getOptions(question, optionAmount) {
@@ -75,6 +27,7 @@ function getOptions(question, optionAmount) {
         let option = question + "_option" + i;
         let optionCorrectness = option + "_correctness";
         let correctness = document.getElementById(optionCorrectness).value;
+        console.log(correctness);
         if (correctness == "true") {
           correctness = true;
         } else {
@@ -415,7 +368,7 @@ function create () {
         options,
         crosses,
         function (option, cross) {
-            if(!option.correctness) {
+            if(option.correctness) {
                 score.errors += 1;
                 negScore.text = String(parseInt(negScore.text) + 1);
             } else {
@@ -498,6 +451,7 @@ function optionDestroyed(group) {
 function gameOver() {
     //TODO: send post message with the Scoreboard
     console.log("game over");
-    // const submitButton = document.getElementById('grade');
-    // submitButton.click();
+    document.getElementById('points').value = score.points;
+
+    submitButton.click();
 }
