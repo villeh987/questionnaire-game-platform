@@ -1,15 +1,19 @@
 'use strict';
 
-const NUM_QUESTIONS = document.getElementById("amountOfQuestions").value;
-const MAX_POINTS = function getMaxPoints() {
+//Fetches the maxPoints of each question and adds them to the total maxPoints
+function getMaxPoints() {
     let maxPoints = 0;
     for(let i = 0; i < NUM_QUESTIONS; ++i) {
         let element = document.getElementById("question" + i + "_maxPoints");
-        maxPoints += element.value;
+        maxPoints += parseInt(element.value, 10);
     }
     return maxPoints;
 }
 
+const NUM_QUESTIONS = document.getElementById("amountOfQuestions").value;
+const MAX_POINTS = getMaxPoints();
+
+//Hide the submit button from the page
 const submitButton = document.getElementById('grade');
 submitButton.classList.add('hidden');
 
@@ -449,9 +453,14 @@ function optionDestroyed(group) {
 }
 
 function gameOver() {
-    //TODO: send post message with the Scoreboard
-    console.log("game over");
-    document.getElementById('points').value = score.points;
 
+    console.log("game over");
+
+    //Save the game data to the hidden input fields
+    document.getElementById('points').value = score.points;
+    document.getElementById('errors').value = score.errors;
+    document.getElementById('maxPoints').value = MAX_POINTS;
+
+    //Send the game form (POST-method) to /games/id
     submitButton.click();
 }
