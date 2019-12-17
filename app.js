@@ -13,6 +13,7 @@ const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
 const config = require('config');
+const expressSanitizer = require('express-sanitizer');
 
 // NOTE: This must be required BEFORE calling express()
 //       as in: const app = express()
@@ -118,6 +119,7 @@ app.use((request, response, next) => {
 });
 
 app.use(express.json());
+app.use(expressSanitizer());
 app.use(express.urlencoded({ extended: true }));
 
 // send app to router

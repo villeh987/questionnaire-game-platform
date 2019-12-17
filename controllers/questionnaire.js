@@ -71,10 +71,12 @@ module.exports = {
 
     	});
 
-        console.log(JSON.stringify(request.body, null, 4));
+        //console.log(JSON.stringify(request.body, null, 4));
 
         // Check whether questionnaire with given title exists
-        let existing_questionnaire = await Questionnaire.findOne({title : request.body.title}).exec();
+        let questionnaire_title = request.sanitize(request.body.title);
+        let existing_questionnaire = await Questionnaire.findOne({title : questionnaire_title}).exec();
+
         if (existing_questionnaire) {
             request.flash('errorMessage', "A Questionnaire with that title already exists.");
             return response.redirect('/questionnaires/new');
@@ -136,7 +138,7 @@ module.exports = {
     async delete(request, response) {
     	const questionnaire = await Questionnaire.findById(request.params.id).exec();
 
-    	response.render('questionnaire/delete', {questionnaire} );
+    	response.render('questionnaire/delete', {questionnaire, csrfToken: request.csrfToken()} );
     },
 
 

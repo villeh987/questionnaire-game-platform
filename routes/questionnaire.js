@@ -28,7 +28,15 @@ router.post('/edit/:id([a-f0-9]{24})', QuestionnaireController.processUpdate);
 
 
 // Delete documents
-router.get('/delete/:id([a-f0-9]{24})', QuestionnaireController.delete);
-router.post('/delete/:id([a-f0-9]{24})', QuestionnaireController.processDelete); 
+router
+    .route('/delete/:id([a-f0-9]{24})')
+    .all(
+        csrfProtection
+    )
+    .get(QuestionnaireController.delete)
+    .post(QuestionnaireController.processDelete);
+
+//router.get('/delete/:id([a-f0-9]{24})', QuestionnaireController.delete);
+//router.post('/delete/:id([a-f0-9]{24})', QuestionnaireController.processDelete); 
 
 module.exports = router;
