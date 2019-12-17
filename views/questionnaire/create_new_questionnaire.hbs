@@ -32,13 +32,13 @@
 						  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[1][options][1][option]" id="optionInput1" required="true">
 							<div class="input-group-append">
 							  	<div class="input-group-text"> 		
-							    	<input type="checkbox" name="questions[1][options][1][correctness]" id="correctAnswerCheckbox" aria-label="Checkbox for text input">
+							    	<input class="correct-answer-checkbox" type="checkbox" name="questions[1][options][1][correctness]" aria-label="Checkbox for text input">
 									<label for="correctAnswerCheckbox">Correct</label>
 								</div>
 							</div>
 						</div>	
 						<label for="hint">Hint (optional):</label>
-						<input type="text" class="form-control "name="questions[1][options][1][hint]" placeholder="Enter hint" id="hint">  
+						<input type="text" class="form-control option-hint" name="questions[1][options][1][hint]" placeholder="Enter hint">  
 					</div>
 
 					<div class="form-group ml-5" id="option2">
@@ -47,13 +47,13 @@
 						  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[1][options][2][option]" id="optionInput2" required="true">
 							<div class="input-group-append">
 							  	<div class="input-group-text"> 		
-							    	<input type="checkbox" name="questions[1][options][2][correctness]" id="correctAnswerCheckbox" aria-label="Checkbox for text input">
+							    	<input class="correct-answer-checkbox" type="checkbox" name="questions[1][options][2][correctness]" aria-label="Checkbox for text input">
 									<label for="correctAnswerCheckbox">Correct</label>
 								</div>
 							</div>
 						</div>	
 						<label for="hint">Hint (optional):</label>
-						<input type="text" class="form-control "name="questions[1][options][2][hint]" placeholder="Enter hint" id="hint">  
+						<input type="text" class="form-control option-hint" name="questions[1][options][2][hint]" placeholder="Enter hint">  
 					</div>
 					<button type="button" class="btn btn-primary" onclick="addNewOption(this)">Add option</button>
 				</div>

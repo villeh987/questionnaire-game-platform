@@ -81,13 +81,13 @@ function addNewQuestion() {
 						  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[${question_number}][options][1][option]" id="optionInput1" required="true">
 							<div class="input-group-append">
 							  	<div class="input-group-text"> 		
-							    	<input type="checkbox" name="questions[${question_number}][options][1][correctness]" id="correctAnswerCheckbox" aria-label="Checkbox for text input">
+							    	<input class="correct-answer-checkbox" type="checkbox" name="questions[${question_number}][options][1][correctness]" aria-label="Checkbox for text input">
 									<label for="correctAnswerCheckbox">Correct</label>
 								</div>
 							</div>
 						</div>	
 						<label for="hint">Hint (optional):</label>
-						<input type="text" class="form-control "name="questions[${question_number}][options][1][hint]" placeholder="Enter hint" id="hint">  
+						<input type="text" class="form-control option-hint" name="questions[${question_number}][options][1][hint]" placeholder="Enter hint">  
 					</div>
 
 					<div class="form-group ml-5" id="option2">
@@ -96,13 +96,13 @@ function addNewQuestion() {
 						  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[${question_number}][options][2][option]" id="optionInput2" required="true">
 							<div class="input-group-append">
 							  	<div class="input-group-text"> 		
-							    	<input type="checkbox" name="questions[${question_number}][options][2][correctness]" id="correctAnswerCheckbox" aria-label="Checkbox for text input">
+							    	<input class="correct-answer-checkbox" type="checkbox" name="questions[${question_number}][options][2][correctness]" aria-label="Checkbox for text input">
 									<label for="correctAnswerCheckbox">Correct</label>
 								</div>
 							</div>
 						</div>	
 						<label for="hint">Hint (optional):</label>
-						<input type="text" class="form-control "name="questions[${question_number}][options][2][hint]" placeholder="Enter hint" id="hint">
+						<input type="text" class="form-control option-hint" name="questions[${question_number}][options][2][hint]" placeholder="Enter hint">
 					</div>
 					<button type="button" class="btn btn-primary" onclick="addNewOption(this)">Add option</button>
 				</div>`
@@ -124,13 +124,13 @@ function addNewOption(element) {
 				  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[${parent_question_number}][options][${option_number}][option]" required="true">
 					<div class="input-group-append">
 					  	<div class="input-group-text"> 		
-					    	<input type="checkbox" name="questions[${parent_question_number}][options][${option_number}][correctness]" id="correctAnswerCheckbox" aria-label="Checkbox for text input">
+					    	<input class="correct-answer-checkbox" type="checkbox" name="questions[${parent_question_number}][options][${option_number}][correctness]" aria-label="Checkbox for text input">
 							<label for="correctAnswerCheckbox">Correct</label>
 						</div>
 					</div>
 				</div>	
 				<label for="hint">Hint (optional):</label>
-				<input type="text" class="form-control "name="questions[${parent_question_number}][options][${option_number}][hint]" placeholder="Enter hint" id="hint">
+				<input type="text" class="form-control option-hint" name="questions[${parent_question_number}][options][${option_number}][hint]" placeholder="Enter hint">
 			</div>
 			<button type="button" class="btn btn-primary" onclick="addNewOption(this)">Add option</button>`
 
@@ -156,14 +156,13 @@ function removeQuestion(element) {
 		$(el).find("div").first().find("input").attr("name", `questions[${question_id_number}][maxPoints]`);
 
 		$(el).children().each( (i, option) => {
-			//console.log(option);
+			console.log("optio", option);
 			if ($(option).is("div") && $(option).find("label").first().text() !== "Max Points") {
 				
 
 				// Option Name
 
 				let old_name = $(option).find("div").first().find("input").first().attr("name");
-				//console.log(old_name);
 				let name_pt1 = `questions[${question_id_number}]`;
 				let name_pt2 = old_name.slice(12, old_name.length);
 				let new_name = name_pt1 + name_pt2;
@@ -172,21 +171,19 @@ function removeQuestion(element) {
 
 				// Correctness name
 
-				let old_corretness = $(option).find("#correctAnswerCheckbox").attr("name");
-				//console.log(old_corretness);
+				let old_corretness = $(option).find($(".correct-answer-checkbox")).attr("name");
 				let corr_name_pt1 = `questions[${question_id_number}]`;
 				let corr_name_pt2 = old_corretness.slice(12, old_corretness.length);
 				let new_correctness = corr_name_pt1 + corr_name_pt2;
-				$(option).find("#correctAnswerCheckbox").attr("name", new_correctness);
+				$(option).find($(".correct-answer-checkbox")).attr("name", new_correctness); 
 
 				// Hint name
 
-				let old_hint_name = $(option).find("input").last().attr("name");
-				//console.log(old_hint_name);
+				let old_hint_name = $(option).find($(".form-control.option-hint")).attr("name");
 				let hint_name_pt1 = `questions[${question_id_number}]`;
 				let hint_name_pt2 = old_hint_name.slice(12, old_hint_name.length);
 				let new_hint_name = hint_name_pt1 + hint_name_pt2;
-				$(option).find("input").last().attr("name", new_hint_name);
+				$(option).find($(".form-control.option-hint")).attr("name", new_hint_name);
 			}
 		})
 
@@ -194,10 +191,6 @@ function removeQuestion(element) {
 	}); 
 
 	
-
-	/*$("div[id^='question']").each( (i, el) => {
-		if ( Number(el.attr("id").slice(el.attr("id").length - 1)) > element.parentElement.id) 
-	}) */
 	element.parentElement.remove();
 
 }
@@ -219,7 +212,6 @@ function removeOption (element) {
 			// Option Name
 
 			let old_name = $(option).find("div").first().find("input").first().attr("name");
-			//console.log(old_name);
 			let name_pt1 = old_name.slice(0, 21); 
 			let name_pt2 = `[${new_option_number}][option]`;
 			let new_name = name_pt1 + name_pt2;
@@ -227,21 +219,19 @@ function removeOption (element) {
 
 			// Correctness name
 
-			let old_corretness = $(option).find("#correctAnswerCheckbox").attr("name");
-			//console.log(old_corretness);
+			let old_corretness = $(option).find($(".correct-answer-checkbox")).attr("name");
 			let corr_name_pt1 = old_corretness.slice(0, 21);
 			let corr_name_pt2 = `[${new_option_number}][correctness]`;
 			let new_correctness = corr_name_pt1 + corr_name_pt2;
-			$(option).find("#correctAnswerCheckbox").attr("name", new_correctness);
+			$(option).find($(".correct-answer-checkbox")).attr("name", new_correctness); 
 
 			// Hint name
 
-			let old_hint_name = $(option).find("input").last().attr("name");
-			//console.log(old_hint_name);
+			let old_hint_name = $(option).find($(".form-control.option-hint")).attr("name");
 			let hint_name_pt1 = old_hint_name.slice(0, 21);
 			let hint_name_pt2 = `[${new_option_number}][hint]`;
 			let new_hint_name = hint_name_pt1 + hint_name_pt2;
-			$(option).find("input").last().attr("name", new_hint_name);
+			$(option).find($(".form-control.option-hint")).attr("name", new_hint_name);
 		}
 	})
 

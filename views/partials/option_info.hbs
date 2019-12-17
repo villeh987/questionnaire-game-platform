@@ -7,11 +7,11 @@
 	  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[{{add @../index 1}}][options][{{add @index 1}}][option]" id="optionInput{{add @index 1}}" value="{{this.option}}">
 		<div class="input-group-append">
 		  	<div class="input-group-text"> 		
-		    	<input type="checkbox" name="questions[{{add @../index 1}}][options][{{add @index 1}}][correctness]" id="correctAnswerCheckbox" aria-label="Checkbox for text input" {{#if this.correctness}} checked {{/if}}>
+		    	<input class="correct-answer-checkbox" type="checkbox" name="questions[{{add @../index 1}}][options][{{add @index 1}}][correctness]" aria-label="Checkbox for text input" {{#if this.correctness}} checked {{/if}}>
 				<label for="correctAnswerCheckbox">Correct</label>
 			</div>
 		</div>
 	</div>
 	<label for="hint">Hint (optional):</label>
-	<input type="text" class="form-control "name="questions[{{add @../index 1}}][options][{{add @index 1}}][hint]" placeholder="Enter hint" id="hint" value="{{this.hint}}">  
+	<input type="text" class="form-control option-hint" name="questions[{{add @../index 1}}][options][{{add @index 1}}][hint]" placeholder="Enter hint" value="{{this.hint}}">  
 </div>

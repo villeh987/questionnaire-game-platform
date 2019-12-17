@@ -103,7 +103,7 @@ module.exports = {
 
         }); 
 
-        console.log(unique_error);
+        //console.log(unique_error);
         if (unique_error) {
             request.flash('errorMessage', unique_error);
             return response.redirect('/questionnaires/new');
