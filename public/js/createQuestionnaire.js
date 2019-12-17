@@ -43,7 +43,7 @@ function getOptionNumber(element) {
 
 
 function getNewOptionNumberOnRemove(element) {
-	let parent_question = $(element).parent();;
+	let parent_question = $(element).parent();
 
 	let counter = 0;
 
@@ -57,6 +57,23 @@ function getNewOptionNumberOnRemove(element) {
 	} )
 
 	return counter - 1;
+}
+
+function getNewQuestionNumberOnRemove(element) {
+
+    let questions = $(element).parent();
+    let counter = 0;
+
+    $(questions).children().each( (i, child) =>{
+        if ($(child).is("div")) {
+            counter += 1;
+            if ($(element).attr("id") == $(child).attr("id")) {
+                return false;
+            }
+        }
+    } )
+
+    return counter - 1;
 }
 
 
@@ -145,9 +162,9 @@ function removeQuestion(element) {
 
 	
 	$(element).parent().nextAll().each( (i, el) => {
-		console.log(el);
-		let question_id_number = Number($(el).attr("id").slice($(el).attr("id").length - 1));  // TODO: laske optionit
-		question_id_number -= 1;
+		//console.log(el);
+		let question_id_number = getNewQuestionNumberOnRemove(el);  // TODO: laske optionit
+		//question_id_number -= 1;
 		$(el).attr("id", `question${question_id_number}`)
 		$(el).children().find("b").text(`Question ${question_id_number}`);
 		$(el).find("label").first().attr("for", `questionInput${question_id_number}`);
@@ -156,34 +173,28 @@ function removeQuestion(element) {
 		$(el).find("div").first().find("input").attr("name", `questions[${question_id_number}][maxPoints]`);
 
 		$(el).children().each( (i, option) => {
-			console.log("optio", option);
+			//console.log("optio", option);
 			if ($(option).is("div") && $(option).find("label").first().text() !== "Max Points") {
 				
 
 				// Option Name
 
-				let old_name = $(option).find("div").first().find("input").first().attr("name");
-				let name_pt1 = `questions[${question_id_number}]`;
-				let name_pt2 = old_name.slice(12, old_name.length);
-				let new_name = name_pt1 + name_pt2;
-				$(option).find("div").first().find("input").first().attr("name", new_name);
+				let option_name = $(option).find("div").first().find("input").first().attr("name");
+                option_name = option_name.replace(/questions\[\d*\]/, `questions[${question_id_number}]`);
+				$(option).find("div").first().find("input").first().attr("name", option_name);
 
 
 				// Correctness name
 
-				let old_corretness = $(option).find($(".correct-answer-checkbox")).attr("name");
-				let corr_name_pt1 = `questions[${question_id_number}]`;
-				let corr_name_pt2 = old_corretness.slice(12, old_corretness.length);
-				let new_correctness = corr_name_pt1 + corr_name_pt2;
-				$(option).find($(".correct-answer-checkbox")).attr("name", new_correctness); 
+				let correctness_name = $(option).find($(".correct-answer-checkbox")).attr("name");
+				correctness_name = correctness_name.replace(/questions\[\d*\]/, `questions[${question_id_number}]`);
+				$(option).find($(".correct-answer-checkbox")).attr("name", correctness_name); 
 
 				// Hint name
 
-				let old_hint_name = $(option).find($(".form-control.option-hint")).attr("name");
-				let hint_name_pt1 = `questions[${question_id_number}]`;
-				let hint_name_pt2 = old_hint_name.slice(12, old_hint_name.length);
-				let new_hint_name = hint_name_pt1 + hint_name_pt2;
-				$(option).find($(".form-control.option-hint")).attr("name", new_hint_name);
+				let hint_name = $(option).find($(".form-control.option-hint")).attr("name");
+				hint_name = hint_name.replace(/questions\[\d*\]/, `questions[${question_id_number}]`);
+				$(option).find($(".form-control.option-hint")).attr("name", hint_name);
 			}
 		})
 
@@ -203,7 +214,9 @@ function removeOption (element) {
 	following_options.each( (i, option) => {
 		if ($(option).is("div") && $(option).attr("id").includes("option")) {
 
+
 			let new_option_number = getNewOptionNumberOnRemove(option);
+            console.log(new_option_number);
 			$(option).attr("id", `option${new_option_number}`);
 			$(option).find("label").first().text(`Option ${new_option_number}`);
 			$(option).find("label").first().attr("for", `optionInput${new_option_number}`);
@@ -211,27 +224,21 @@ function removeOption (element) {
 
 			// Option Name
 
-			let old_name = $(option).find("div").first().find("input").first().attr("name");
-			let name_pt1 = old_name.slice(0, 21); 
-			let name_pt2 = `[${new_option_number}][option]`;
-			let new_name = name_pt1 + name_pt2;
-			$(option).find("div").first().find("input").first().attr("name", new_name);
+			let option_name = $(option).find("div").first().find("input").first().attr("name");
+			option_name = option_name.replace(/\[\d*\]\[option\]/, `[${new_option_number}][option]`); 
+			$(option).find("div").first().find("input").first().attr("name", option_name);
 
 			// Correctness name
 
-			let old_corretness = $(option).find($(".correct-answer-checkbox")).attr("name");
-			let corr_name_pt1 = old_corretness.slice(0, 21);
-			let corr_name_pt2 = `[${new_option_number}][correctness]`;
-			let new_correctness = corr_name_pt1 + corr_name_pt2;
-			$(option).find($(".correct-answer-checkbox")).attr("name", new_correctness); 
+			let correctness_name = $(option).find($(".correct-answer-checkbox")).attr("name");
+			correctness_name = correctness_name.replace(/\[\d*\]\[correctness\]/, `[${new_option_number}][correctness]`); 
+			$(option).find($(".correct-answer-checkbox")).attr("name", correctness_name); 
 
 			// Hint name
 
-			let old_hint_name = $(option).find($(".form-control.option-hint")).attr("name");
-			let hint_name_pt1 = old_hint_name.slice(0, 21);
-			let hint_name_pt2 = `[${new_option_number}][hint]`;
-			let new_hint_name = hint_name_pt1 + hint_name_pt2;
-			$(option).find($(".form-control.option-hint")).attr("name", new_hint_name);
+			let hint_name = $(option).find($(".form-control.option-hint")).attr("name");
+			hint_name = hint_name.replace(/\[\d*\]\[hint\]/, `[${new_option_number}][hint]`)
+			$(option).find($(".form-control.option-hint")).attr("name", hint_name);
 		}
 	})
 

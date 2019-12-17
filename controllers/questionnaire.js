@@ -71,6 +71,8 @@ module.exports = {
 
     	});
 
+        console.log(JSON.stringify(request.body, null, 4));
+
         // Check whether questionnaire with given title exists
         let existing_questionnaire = await Questionnaire.findOne({title : request.body.title}).exec();
         if (existing_questionnaire) {
