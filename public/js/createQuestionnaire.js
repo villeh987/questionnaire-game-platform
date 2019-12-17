@@ -50,7 +50,7 @@ function getNewOptionNumberOnRemove(element) {
 	$(parent_question).children().each( (i, child) =>{
 		if ($(child).is("div") && $(child).find("label").first().text() !== "Max Points") {
 			counter += 1;
-			if ($(element).attr("id") == $(child).attr("id")) {
+			if (element == child) {
 				return false;
 			}
 		}
@@ -63,11 +63,11 @@ function getNewQuestionNumberOnRemove(element) {
 
     let questions = $(element).parent();
     let counter = 0;
-
     $(questions).children().each( (i, child) =>{
         if ($(child).is("div")) {
             counter += 1;
-            if ($(element).attr("id") == $(child).attr("id")) {
+            
+            if (element == child) {
                 return false;
             }
         }
@@ -89,7 +89,7 @@ function addNewQuestion() {
 			  		<br>
 					<div class="form-group ml-3">
 					    <label for="max_points">Max Points</label>
-					    <input type="number" value="2" min="1" class="form-control" name="questions[${question_number}][maxPoints]" id="max_points" required="true">
+					    <input type="number" value="2" min="1" class="form-control" name="questions[${question_number}][maxPoints]" required="true">
 					</div>
 
 					<div class="form-group ml-5">
@@ -216,7 +216,7 @@ function removeOption (element) {
 
 
 			let new_option_number = getNewOptionNumberOnRemove(option);
-            console.log(new_option_number);
+            //console.log(new_option_number);
 			$(option).attr("id", `option${new_option_number}`);
 			$(option).find("label").first().text(`Option ${new_option_number}`);
 			$(option).find("label").first().attr("for", `optionInput${new_option_number}`);
