@@ -84,7 +84,7 @@ function addNewQuestion() {
 	incrementQuestionNumber();
 	const add = `<div class="form-group" id="question${question_number}">
 				    <label for="questionInput${question_number}"><b>Question ${question_number}</b></label><span> </span><button type="button" class="btn btn-primary" onclick="removeQuestion(this)"><i class="fas fa-trash-alt"></i></button>
-			  		<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter question" name="questions[${question_number}][title]" id="questionInput${question_number}" required="true">  
+			  		<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter question" name="questions[${question_number}][title]" required="true">  
 
 			  		<br>
 					<div class="form-group ml-3">
@@ -95,7 +95,7 @@ function addNewQuestion() {
 					<div class="form-group ml-5">
 						<label for="optionInput1">Option 1</label>
 						<div class="input-group mb-3">
-						  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[${question_number}][options][1][option]" id="optionInput1" required="true">
+						  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[${question_number}][options][1][option]" required="true">
 							<div class="input-group-append">
 							  	<div class="input-group-text"> 		
 							    	<input class="correct-answer-checkbox" type="checkbox" name="questions[${question_number}][options][1][correctness]" aria-label="Checkbox for text input">
@@ -110,7 +110,7 @@ function addNewQuestion() {
 					<div class="form-group ml-5" id="option2">
 						<label for="optionInput2">Option 2</label>
 						<div class="input-group mb-3">
-						  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[${question_number}][options][2][option]" id="optionInput2" required="true">
+						  	<input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Enter option" name="questions[${question_number}][options][2][option]" required="true">
 							<div class="input-group-append">
 							  	<div class="input-group-text"> 		
 							    	<input class="correct-answer-checkbox" type="checkbox" name="questions[${question_number}][options][2][correctness]" aria-label="Checkbox for text input">
@@ -169,7 +169,7 @@ function removeQuestion(element) {
 		$(el).children().find("b").text(`Question ${question_id_number}`);
 		$(el).find("label").first().attr("for", `questionInput${question_id_number}`);
 		$(el).find("input").first().attr("name", `questions[${question_id_number}][title]`);
-		$(el).find("input").first().attr("id", `questionInput${question_id_number}`);
+		//$(el).find("input").first().attr("id", `questionInput${question_id_number}`);
 		$(el).find("div").first().find("input").attr("name", `questions[${question_id_number}][maxPoints]`);
 
 		$(el).children().each( (i, option) => {
@@ -220,7 +220,7 @@ function removeOption (element) {
 			$(option).attr("id", `option${new_option_number}`);
 			$(option).find("label").first().text(`Option ${new_option_number}`);
 			$(option).find("label").first().attr("for", `optionInput${new_option_number}`);
-			$(option).find("input").first().attr("id", `optionInput${new_option_number}`);
+			//$(option).find("input").first().attr("id", `optionInput${new_option_number}`);
 
 			// Option Name
 
