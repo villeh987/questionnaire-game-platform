@@ -8,6 +8,11 @@ const csrfProtection = csurf({ cookie: false });
 module.exports = {
 
 
+    /**
+     * Returns list of questionnaires
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
     async list(request, response) {
         const questionnaires = await Questionnaire.find()
             .sort('title')
@@ -16,7 +21,11 @@ module.exports = {
         response.render('questionnaire/questionnaires', { questionnaires });
     },
 
-    
+    /**
+     * Returns a questionnaire with specific id
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
     async show(request, response) {
         const questionnaire = await Questionnaire.findById(request.params.id).exec();
 
@@ -31,17 +40,29 @@ module.exports = {
         response.render('questionnaire/questionnaire', { questionnaire });
     },
 
-
+    /**
+     * Returns a form to create new questionnaire
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
     async create(request, response) {
-        //console.log("create");
         response.render('questionnaire/create_new_questionnaire');
     },
 
+    /**
+     * Cancels current new operation
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
     async cancel(request, response) {
     	return response.redirect('/questionnaires');
     },
 
-    
+    /**
+     * Creates new questionnaire
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
     async processCreate(request, response) {
         //console.log(request.body);
         //console.log(JSON.stringify(request.body, null, 4));
@@ -135,13 +156,22 @@ module.exports = {
 
     },
 
+    /**
+     * Returns a form to remove a questionnaire
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
     async delete(request, response) {
     	const questionnaire = await Questionnaire.findById(request.params.id).exec();
 
     	response.render('questionnaire/delete', {questionnaire, csrfToken: request.csrfToken()} );
     },
 
-
+    /**
+     * Removes a questionnaire with specific id
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
     async processDelete(request, response) {
 
     	await Questionnaire.findByIdAndDelete(request.params.id).exec();
@@ -149,13 +179,22 @@ module.exports = {
         response.redirect('/questionnaires');
     },
 
+    /**
+     * Returns a form to update questionnaire info
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
     async update(request, response) {
     	let questionnaire = await Questionnaire.findById(request.params.id).exec();
 
     	response.render('questionnaire/update', {questionnaire} );
     },
 
-
+     /**
+     * Updates questionnaire
+     * @param {Object} request is express request object
+     * @param {Object} response is express response object
+     */
     async processUpdate(request, response) {
     	//console.log(request.body);
 
