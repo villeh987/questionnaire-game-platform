@@ -25,7 +25,7 @@ for high-school students, especially for the domains of mathematics and computer
 ├── package.json            --> app info and dependencies
 ├── controllers             --> controllers (handle e.g. routing)
 │   ├── game.js             --> controller for the game
-│   ├── questionnaire.js    --> controller for viewing questionnaires
+│   ├── questionnaire.js    --> controller for questionnaire CRUD operations
 │   └── hello.js            --> the same as "minimal viable grader"
 ├── models                  --> models that reflect the db schemes
 │   │                           and take care of storing data
@@ -33,8 +33,8 @@ for high-school students, especially for the domains of mathematics and computer
 │   ├── hello.js                 --> "minimal viable grader" grading logic
 │   ├── pagination.js            --> assigning page numbers
 │   ├── questionnaire.input.js   --> validating input for questionnaires
-│   ├── questionnaire.js         --> validating questionnaires
-│   ├── user.js                  --> validating users, authenticating
+│   ├── questionnaire.js         --> describes questionnaire, question and option schemas
+│   ├── user.js                  --> user CRUD operations, validating users, authenticating
 │   └── validator.js             --> input filtering and errors
 ├── public                  --> location for public (static) files
 │   ├── img                 --> for images
@@ -42,7 +42,8 @@ for high-school students, especially for the domains of mathematics and computer
 │   |   └── pixel_ship.png  --> player. source: made for the project
 │   ├── js                  --> for javascript
 │   |   ├── game.js                --> game logic
-│   |   └── createQuestionnaire.js --> creates a questionnaire
+│   |   └── createQuestionnaire.js --> logic for dynamically adding form elements
+│   |   └── filterQuestionnaire.js --> logic for questionnaire search
 │   └── css                        --> for styles
 │       └── style.css       --> general style file
 ├── routes                  --> a dir for router modules
@@ -67,15 +68,21 @@ for high-school students, especially for the domains of mathematics and computer
 │   |   ├── grader_meta.hbs           --> grader meta information
 │   |   ├── messages.hbs              --> messages to be displayed on page
 │   |   ├── navigation.hbs            --> top navigation bar
-│   |   ├── questionnaire_info.hbs    --> info about a questionnaire
-│   |   ├── scripts.hbs               --> adds createquestionnaire.js
+│   |   ├── option_info.hbs           --> info about a single option
+│   |   ├── pagination.hbs            --> TODO
+│   |   ├── question_info.hbs         --> info about a single question
+│   |   ├── questionnaire_info.hbs    --> info about a single questionnaire
+│   |   ├── questionnaire_listing.hbs --> displays questionnaires in groups of 3
+│   |   ├── scripts.hbs               --> loads client side javascript
 │   |   ├── stylesheet.hbs            --> adds stylesheets
 │   |   ├── user_info.hbs             --> information about user
 │   |   └── user_listing.hbs          --> listing of users
 │   └── questionnaire            --> for managing questionnaires
-│   |   ├── create_new_questionnaire.hbs  --> creating questionnaire
+│   |   ├── create_new_questionnaire.hbs  --> view fo creating questionnaire
+│   |   ├── delete.hbs                    --> view for deleting questionnaire
 │   |   ├── questionnaire.hbs             --> information about a questionnaire
-│   |   └── questionnaires.hbs            --> lists questionnaires
+│   |   ├── questionnaires.hbs            --> lists questionnaires
+│   |   └── update.hbs                    --> view for updating questionnaire
 │   └── user            --> smaller handlebar components to be included in views
 │       ├── change_password.hbs   --> for changing password
 │       ├── change_role.hbs       --> for changing role
@@ -140,7 +147,19 @@ TODO: check in the end that those instructions are valid
 
 ## Management view
 
-TODO: describe your work
+In management view, users with teacher or admin rights may perform CRUD operations
+for questionnaires:
+
+Create - A new questionnaire may be added by using a dynamic form, where more
+questions and options can be added with help of client side javascript.
+
+Read (view) - All existing questionnaires may be viewed, and also simple search
+functionality may be utilised to find questionnaires containing given search string.
+
+Update - Existing questionnaires may be edited: new questions and options may be
+added, and also removed.
+
+Delete - Existing questionnaires may be deleted.
 
 ## Tests and documentation
 
