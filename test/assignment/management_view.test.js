@@ -37,12 +37,12 @@ describe('Management view', function() {
 
 
         // Login as admin
-        const response = await request
+        /*const response = await request
             .post(loginUrl)
             .type('form')
             .send(admin);
         expect(response).to.have.cookie('bwa');
-        expect(response).to.redirectTo(/\/users\/me$/);
+        expect(response).to.redirectTo(/\/users\/me$/); */
 
         // Empty database
         await Questionnaire.deleteMany({});
