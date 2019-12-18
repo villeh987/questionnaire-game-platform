@@ -7,6 +7,8 @@
             {{#if questionnaire}}
                 {{>hidden_game_form questionnaire}}
             {{/if}}
+            {{>game_info}}
+            <button type="button" id="startButton">Start Game</button>
             <script src="//cdn.jsdelivr.net/npm/phaser@3.21.0/dist/phaser.min.js"></script>
             <script type="text/javascript" src="/js/game.js"></script>
         </div>

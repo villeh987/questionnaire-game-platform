@@ -55,7 +55,7 @@ let questionnaire = {
     questionNumber: 0,
     optionNumber: 0,
 
-    // Fills it with tests stuff TODO: put real questions there
+    //Save the questions from the HTML document
     initialize: function() {
         for(let i = 0; i < NUM_QUESTIONS; ++i) {
             let question = "question" + i;
@@ -160,8 +160,14 @@ var config = {
         }
     }
 };
+let startButton = document.getElementById("startButton");
 
-let game = new Phaser.Game(config);
+startButton.onclick = function (evt) {
+    new Phaser.Game(config);
+    startButton.disabled = true;
+    startButton.classList.add('hidden');
+}
+
 
 //Bullet that is fired by player
 let Bullet = new Phaser.Class({
