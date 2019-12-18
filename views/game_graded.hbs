@@ -4,5 +4,8 @@
             Submission successful! You got {{points}} out of {{maxPoints}}!
             With {{errors}} wrong and {{rights}} right answers.
         </div>
+        <form action="/leaderboard/{{questionnaire.id}}" method="get">
+            <button type="submit">Show leaderboards</button>
+        </form>
     </div>
 </div>
