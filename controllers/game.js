@@ -29,20 +29,29 @@ module.exports = {
 
     gradeExercise(request, response) {
         //Get the values from the form body, and turn into numbers for grading
-        let maxPoints = parseInt(request.body.maxPoints);
-        let points = parseInt(request.body.points);
-        let errors = parseInt(request.body.errors);
+        let maxPoints = parseInt(request.sanitize(request.body.maxPoints));
+        let rights = parseInt(request.sanitize(request.body.points));
+        let errors = parseInt(request.sanitize(request.body.errors));
 
-        let score = Grader.grade(points, errors, maxPoints);
+        if (maxPoints == undefined || rights == undefined || errors == undefined) {
+            response.render('game_graded_rejected', {
+                  status: 'rejected',
+                  description: 'Submission rejected',
+                  title: 'Rejected'
+            });
+        } else {
+          let score = Grader.grade(rights, errors, maxPoints);
 
-        response.render('hello-graded', {
-            points: score,
-            maxPoints: maxPoints,
-            status: 'accepted',
-            description: 'minimal viable grader in the express framework',
-            title: 'A+ greetings'
-        });
-
+          response.render('game_graded', {
+                points: score,
+                maxPoints: maxPoints,
+                status: 'accepted',
+                description: 'Simple grader',
+                title: 'Accepted submission',
+                errors,
+                rights
+          });
+        }
     },
 
 };

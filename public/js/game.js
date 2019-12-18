@@ -13,10 +13,6 @@ function getMaxPoints() {
 const NUM_QUESTIONS = document.getElementById("amountOfQuestions").value;
 const MAX_POINTS = getMaxPoints();
 
-//Hide the submit button from the page
-const submitButton = document.getElementById('grade');
-submitButton.classList.add('hidden');
-
 //Generate random number between min and max
 function randomIntBetween(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -31,13 +27,11 @@ function getOptions(question, optionAmount) {
         let option = question + "_option" + i;
         let optionCorrectness = option + "_correctness";
         let correctness = document.getElementById(optionCorrectness).value;
-        console.log(correctness);
         if (correctness == "true") {
           correctness = true;
         } else {
           correctness = false;
         }
-        console.log(option);
         options.push(
             {
                 title: document.getElementById(option).value,
@@ -55,7 +49,7 @@ let questionnaire = {
     questionNumber: 0,
     optionNumber: 0,
 
-    // Fills it with tests stuff TODO: put real questions there
+    //Save the questions from the HTML document
     initialize: function() {
         for(let i = 0; i < NUM_QUESTIONS; ++i) {
             let question = "question" + i;
@@ -126,7 +120,6 @@ let liveOptions = {
     },
 
     kill: function() {
-        console.log("killed one ");
         this.num -= 1;
     }
 };
@@ -160,8 +153,17 @@ var config = {
         }
     }
 };
+//Hide the submit button from the page
+const submitButton = document.getElementById('grade');
+submitButton.classList.add('hidden');
 
-let game = new Phaser.Game(config);
+//When start button is clicked, start the game and hide the button
+const startButton = document.getElementById("startButton");
+startButton.onclick = function (evt) {
+    new Phaser.Game(config);
+    startButton.disabled = true;
+    startButton.classList.add('hidden');
+}
 
 //Bullet that is fired by player
 let Bullet = new Phaser.Class({
@@ -298,8 +300,9 @@ function create () {
     this.options = options;
 
     //initialize play area
-    this.physics.world.setBounds(0, this.topMargin + this.magicTopMarginNumber,
-                                 config['width'], config['height'] - this.topMargin);
+    this.physics.world.setBounds(0, this.topMargin + 2,
+                                 config['width'],
+                                 config['height'] - this.topMargin);
 
 
     let border = this.add.line(0, 0, 0, this.topMargin, 3200, this.topMargin, 0xffffff);
@@ -317,7 +320,8 @@ function create () {
         style: {
             font: 'bold 18px Arial',
             fill: 'white',
-            wordWrap: { width: config['width']-110, useAdvancedWrap: true }
+            wordWrap: { width: config['width'] - 110,
+                        useAdvancedWrap: true }
         }
     });
     this.question = question;
@@ -344,12 +348,8 @@ function create () {
         }
     });
 
-
-
-
     //Put all options in the field.
     spawnOptions(options);
-
 
     //collision detection between groups with callback
     this.physics.add.collider(
@@ -400,21 +400,41 @@ function create () {
 
 }
 
+//Limit the speed of ship
+function constrainVelocity(sprite, maxVelocity) {
+    if (!sprite || !sprite.body) {
+        return;
+    }
+    var body = sprite.body
+    var angle, currVelocitySqr, vx, vy;
+    vx = body.velocity.x;
+    vy = body.velocity.y;
+    currVelocitySqr = vx * vx + vy * vy;
+    if (currVelocitySqr > maxVelocity * maxVelocity) {
+        angle = Math.atan2(vy, vx);
+        vx = Math.cos(angle) * maxVelocity;
+        vy = Math.sin(angle) * maxVelocity;
+        body.velocity.x = vx;
+        body.velocity.y = vy;
+    }
+};
+
 //Phaser function. called every physics frame.
 function update (time, delta) {
 
     //wrap objects that go around the edge to the other side
-    this.physics.world.wrap(this.player, 32);
+    this.physics.world.wrap(this.player, -10);
     this.physics.world.wrap(this.crosses);
-    this.physics.world.wrap(this.options, 50);
+    this.physics.world.wrap(this.options);
     if(liveOptions.num > 1) {
         this.question.text = questionnaire.getQuestion().title;
     }
 
+    constrainVelocity(this.player, 400);
+
     if(this.cursors.up.isDown) {
-        this.physics.velocityFromRotation(this.player.rotation, 300, this.player.body.acceleration);
-    } else if (this.cursors.down.isDown){
-        this.physics.velocityFromRotation(this.player.rotation, -200, this.player.body.acceleration);
+        this.physics.velocityFromRotation(this.player.rotation, 300,
+                                          this.player.body.acceleration);
     } else {
         this.player.setAcceleration(0);
     }
@@ -432,7 +452,6 @@ function spawnOptions(group) {
     while(liveOptions.num < questionnaire.getQuestion().options.length) {
         liveOptions.push(group.get());
         if(!questionnaire.nextOption()) {
-            console.log("Spawning finished");
             break;
         }
     }
@@ -440,11 +459,9 @@ function spawnOptions(group) {
 
 //should be called when option is destroyed
 function optionDestroyed(group) {
-    console.log("options left: ", liveOptions.num);
     liveOptions.kill();
     if(liveOptions.num < 1) {
         //options are all killed
-        console.log("next question");
         if(questionnaire.nextQuestion()) {
             group.clear();
             spawnOptions(group);
@@ -455,9 +472,6 @@ function optionDestroyed(group) {
 }
 
 function gameOver() {
-
-    console.log("game over");
-
     //Save the game data to the hidden input fields
     document.getElementById('points').value = score.points;
     document.getElementById('errors').value = score.errors;
