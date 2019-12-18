@@ -22,7 +22,11 @@ function incrementQuestionNumber() {
 
 function getParentQuestionNumber(element) {
 
-	parent_question_number = $("#questions").children().length;
+	//parent_question_number = $("#questions").children().length;
+
+    let parent_id = $(element).parent().attr("id");
+    parent_question_number = parent_id.replace(/question/, '');
+
 	/*
 	let parent_question_id = element.parentElement.id;
 	parent_question_number = parent_question_id.slice(parent_question_id.length - 1); */
