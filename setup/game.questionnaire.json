@@ -366,5 +366,201 @@
                 ]
             }
         ]
+    },
+    {
+        "title": "Teekkari questionnaire",
+        "submissions": 1,
+        "questions": [
+            {
+                "title": "Which of the following places can be found in Hervanta?",
+                "maxPoints": 10,
+                "options": [
+                    {
+                        "option": "Kauppakeskus Duo",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Keskustori",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Väinö Linnan aukio",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Plavna",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Insinöörinkatu",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Hakametsä",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Tampereen yliopiston Hervannan kampus",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Pyynikin näkötorni",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Suolijärvi",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Näsinneula",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Koskikeskus",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Hotelli Torni",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Lukonmäki",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Opiskelijankatu",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Teekkarinkatu",
+                        "correctness": true
+                    }
+                ]
+            },
+            {
+                "title": "Which of the following may be found at Hervannan kampus?",
+                "maxPoints": 6,
+                "options": [
+                    {
+                        "option": "Konetalo",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Linna",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Pinni",
+                        "correctness": false
+                    },
+                    {
+                        "option": "TAYS",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Kampusareena",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Arvo",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Bommari",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Tampere-talo",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Sähkötalo",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Festia",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Naisia",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Etunurtsi",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Obeliski",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Tietotalo",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Päätalo",
+                        "correctness": true
+                    }
+                ]
+            },
+            {
+                "title": "Which of the following people have been former Rectors of TUT?",
+                "maxPoints": 5,
+                "options": [
+                    {
+                        "option": "Jorma Uotinen",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Mika Hannula",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Markku Kivikoski",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Gandhi",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Jarl-Thure Eriksson",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Vesa Järvimäki",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Timo Lepistö",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Elton John",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Jimmy Hendrix",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Mikko Alatalo",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Osmo Hassi",
+                        "correctness": true
+                    },
+                    {
+                        "option": "Matti Vanhanen",
+                        "correctness": false
+                    },
+                    {
+                        "option": "Pekka Ahonen",
+                        "correctness": true
+                    }
+                ]
+            }
+        ]
     }
 ]

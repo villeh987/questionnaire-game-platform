@@ -1,0 +1,74 @@
+{
+    "title": "Test for management view API",
+    "submissions": 1,
+    "questions": [
+        {
+            "title": "Testquestion 1",
+            "maxPoints": 100,
+            "options": [
+                {
+                    "option": "Question 1 Option 1",
+                    "correctness": true
+                },
+                {
+                    "option": "Question 1 Option 2",
+                    "correctness": false
+                }
+            ]
+        },
+        {
+            "title": "Testquestion 2",
+            "maxPoints": 8,
+            "options": [
+                {
+                    "option": "Question 2 Option 1",
+                    "correctness": true
+                },
+                {
+                    "option": "Question 2 Option 2",
+                    "correctness": false
+                },
+                {
+                    "option": "Question 2 Option 3",
+                    "correctness": false
+                },
+                {
+                    "option": "Question 2 Option 4",
+                    "correctness": true
+                },
+                {
+                    "option": "Question 2 Option 5",
+                    "correctness": false
+                }
+            ]
+        },
+        {
+            "title": "Testquestion 3",
+            "maxPoints": 5,
+            "options": [
+                {
+                    "option": "Question 3 Option 1",
+                    "correctness": true
+                },
+                {
+                    "option": "Question 3 Option 2",
+                    "correctness": false
+                }
+            ]
+        },
+        {
+            "title": "Testquestion 4",
+            "maxPoints": 7,
+            "options": [
+                {
+                    "option": "Question 4 Option 1",
+                    "correctness": true
+                },
+                {
+                    "option": "Question 4 Option 2",
+                    "correctness": false
+                }
+            ]
+        }
+    ]
+}
