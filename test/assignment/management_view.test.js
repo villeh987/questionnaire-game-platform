@@ -18,6 +18,7 @@ const admin = config.get('admin');
 const loginUrl = '/users/login';
 const listURL = '/questionnaires';
 const newURL = '/questionnaires/new';
+const editURL = '/questionnaires/edit';
 
 const Questionnaire = require('../../models/questionnaire');
 
@@ -27,6 +28,8 @@ describe('Management view', function() {
     let request;
 
     let test_questionnaire;
+
+    let data;
 
     after(function(done) {
         //mongoose.disconnect(done);
@@ -51,7 +54,8 @@ describe('Management view', function() {
 
         // Create test data
         let raw_data = fs.readFileSync( path.resolve(__dirname, './test_data.json') );
-        await Questionnaire.create(JSON.parse(raw_data));
+        data =  JSON.parse(raw_data);
+        await Questionnaire.create(data);
 
         // Get test questionnaire
         test_questionnaire = await Questionnaire.findOne({title : "Test for management view API"}).exec();
@@ -101,6 +105,23 @@ describe('Management view', function() {
             .get(`/questionnaires/${test_questionnaire.id}`)
 
         expect(response.statusCode).to.equal(200);
+    });
+
+    it('Should be able to edit questionnaires', async function() {
+        //let edit_questionnaire = fs.readFileSync( path.resolve(__dirname, './test_data.json') );
+        //edit_questionnaire = JSON.parse(edit_questionnaire);
+        data.questions[0].title = 'This has been edited';
+
+        const response = await request
+            .post(editURL + '/' + test_questionnaire.id)
+            .type('form')
+            .send(data);
+
+        expect(response).to.redirectTo(/\/questionnaires$/);
+
+        //let questionnaires = await Questionnaire.find();
+        //console.log(questionnaires);
+
     });
 
 
