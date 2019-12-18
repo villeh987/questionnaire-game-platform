@@ -1,0 +1,47 @@
+{
+    "title": "Test for creating new questionnaire",
+    "submissions": 1,
+    "questions": [
+        {
+            "title": "Test_question 1",
+            "maxPoints": 10,
+            "options": [
+                {
+                    "option": "Question_1_Option 1",
+                    "correctness": true
+                },
+                {
+                    "option": "Question_1_Option 2",
+                    "correctness": false
+                }
+            ]
+        },
+        {
+            "title": "Testquestion_2",
+            "maxPoints": 8,
+            "options": [
+                {
+                    "option": "Question_2_Option_1",
+                    "correctness": true,
+                    "hint" : "Testhint"
+                },
+                {
+                    "option": "Question_2_Option_2",
+                    "correctness": false
+                },
+                {
+                    "option": "Question_2_Option_3",
+                    "correctness": false
+                },
+                {
+                    "option": "Question_2_Option_4",
+                    "correctness": true
+                },
+                {
+                    "option": "Question_2_Option_5",
+                    "correctness": false
+                }
+            ]
+        }
+    ]
+}
