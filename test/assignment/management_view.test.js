@@ -5,14 +5,14 @@ require('dotenv').config();
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const config = require('config');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const app = require('../../app');
 const Questionnaire = require('../../models/questionnaire');
 
-var DomParser = require('dom-parser');
-var parser = new DomParser();
+const DomParser = require('dom-parser');
+const parser = new DomParser();
 
 
 const expect = chai.expect;
@@ -30,7 +30,7 @@ const deleteURL = '/questionnaires/delete';
 function parseCsrfToken(res) {
     let htmlDoc = parser.parseFromString(res.text, 'text/html');
     return htmlDoc.getElementsByName('csrf-token')[0].getAttribute('content');
-};
+}
 
 
 describe('Management view', function() {
@@ -70,7 +70,7 @@ describe('Management view', function() {
         await Questionnaire.create(data);
 
         // Get test questionnaire
-        test_questionnaire = await Questionnaire.findOne({title : "Test for management view API"}).exec();
+        test_questionnaire = await Questionnaire.findOne({title : 'Test for management view API'}).exec();
 
 
         //done();
@@ -91,7 +91,7 @@ describe('Management view', function() {
 
     it('Should be able to GET new view', async function() {
         const response = await request
-            .get(newURL)
+            .get(newURL);
 
         expect(response.statusCode).to.equal(200);
     });
@@ -114,7 +114,7 @@ describe('Management view', function() {
 
     it('Should be able to cancel create', async function() {
         const response = await request
-            .get(cancelURL)
+            .get(cancelURL);
 
         expect(response.statusCode).to.equal(200);
     });
@@ -147,7 +147,7 @@ describe('Management view', function() {
     it('Should not be able to add new questionnaire with non-unique questions', async function() {
         let nonuniqure_form = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
         nonuniqure_form = JSON.parse(nonuniqure_form);
-        nonuniqure_form.questions[0].title = nonuniqure_form.questions[1].title
+        nonuniqure_form.questions[0].title = nonuniqure_form.questions[1].title;
 
         const response = await request
             .post(newURL)
@@ -160,7 +160,7 @@ describe('Management view', function() {
     it('Should not be able to add new questionnaire with non-unique options', async function() {
         let nonuniqure_form = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
         nonuniqure_form = JSON.parse(nonuniqure_form);
-        nonuniqure_form.questions[0].options[0] = nonuniqure_form.questions[0].options[0];
+        nonuniqure_form.questions[0].options[0] = nonuniqure_form.questions[0].options[1];
 
         const response = await request
             .post(newURL)
@@ -200,7 +200,7 @@ describe('Management view', function() {
         let hintless_form = fs.readFileSync( path.resolve(__dirname, './test_form_object.json') );
         hintless_form = JSON.parse(hintless_form);
         hintless_form.title = 'This questionnaire has no hints';
-        delete hintless_form.questions[1].options[0].hint
+        delete hintless_form.questions[1].options[0].hint;
 
         const response = await request
             .post(newURL)
@@ -213,21 +213,21 @@ describe('Management view', function() {
 
     it('Should be able to list all questionnaires', async function() {
         const response = await request
-            .get(listURL)
+            .get(listURL);
 
         expect(response.statusCode).to.equal(200);
     });
 
     it('Should be able to view a single questionnaire', async function() {
         const response = await request
-            .get(`/questionnaires/${test_questionnaire.id}`)
+            .get(`/questionnaires/${test_questionnaire.id}`);
 
         expect(response.statusCode).to.equal(200);
     });
 
     it('Should be able to GET edit view', async function() {
         const response = await request
-            .get(editURL + '/' + test_questionnaire.id)
+            .get(editURL + '/' + test_questionnaire.id);
 
         expect(response.statusCode).to.equal(200);
     });
@@ -263,7 +263,7 @@ describe('Management view', function() {
         hintless_form = JSON.parse(hintless_form);
         hintless_form.title = 'This questionnaire is hintless';
         let url = editURL + '/' + test_questionnaire.id;
-        delete hintless_form.questions[1].options[0].hint
+        delete hintless_form.questions[1].options[0].hint;
 
         const response = await request
             .post(url)
@@ -291,7 +291,7 @@ describe('Management view', function() {
 
     it('Should be able to GET delete view', async function() {
         const response = await request
-            .get(deleteURL + '/' + test_questionnaire.id)
+            .get(deleteURL + '/' + test_questionnaire.id);
 
         expect(response.statusCode).to.equal(200);
         csrfToken = parseCsrfToken(response);
@@ -311,7 +311,7 @@ describe('Management view', function() {
     it('Should not be able to delete questionnaires without csrf token', async function() {
         const response = await request
             .post(deleteURL + '/' + test_questionnaire.id)
-            .type('form')
+            .type('form');
 
         expect(response.statusCode).to.equal(403);
     });
