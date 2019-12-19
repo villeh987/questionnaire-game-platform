@@ -2,8 +2,8 @@
 'use strict';
 
 const Questionnaire = require('../models/questionnaire');
-const csurf = require('csurf');
-const csrfProtection = csurf({ cookie: false });
+//const csurf = require('csurf');
+//const csrfProtection = csurf({ cookie: false });
 
 module.exports = {
 
@@ -55,7 +55,7 @@ module.exports = {
      * @param {Object} response is express response object
      */
     async cancel(request, response) {
-    	return response.redirect('/questionnaires');
+        return response.redirect('/questionnaires');
     },
 
     /**
@@ -72,26 +72,25 @@ module.exports = {
         //console.log(request.body.questions[0].options);
         //console.log(request.body.questions[1].options);
 
-        let parsed_questionnaire = request.body;
+        //let parsed_questionnaire = request.body;
 
         // Remove hint, if not given. Also parse correctness checkbox value to be true/false.
-    	request.body.questions.forEach( (question) => {
-    		question.options.forEach( (option) => {
-    			if (option.correctness === undefined) {
-    				option.correctness = false;
+        request.body.questions.forEach( (question) => {
+            question.options.forEach( (option) => {
+                if (option.correctness === undefined) {
+                    option.correctness = false;
 
-    			} else if (option.correctness === 'on') {
-    				option.correctness = true;
-    			}
+                } else if (option.correctness === 'on') {
+                    option.correctness = true;
+                }
 
-    			if (option.hint === '') {
-    				delete option.hint;
-    			}
+                if (option.hint === '') {
+                    delete option.hint;
+                }
 
-    		} )
+            } );
 
-    	});
-
+        });
         //console.log(JSON.stringify(request.body, null, 4));
 
         // Check whether questionnaire with given title exists
@@ -99,30 +98,30 @@ module.exports = {
         let existing_questionnaire = await Questionnaire.findOne({title : questionnaire_title}).exec();
 
         if (existing_questionnaire) {
-            request.flash('errorMessage', "A Questionnaire with that title already exists.");
+            request.flash('errorMessage', 'A Questionnaire with that title already exists.');
             return response.redirect('/questionnaires/new');
         }
 
         // Check whether questions and options are unique
         let unique_questions = [];
         let unique_error;
-        request.body.questions.forEach( (question, index) => {
+        request.body.questions.forEach( (question) => {
 
             if (unique_questions.includes(question.title)) {
-                unique_error = "Question title \"" + question.title + "\" must be unique!"
+                unique_error = `Question title "${question.title}" must be unique!`;
 
             } else {
                 unique_questions.push(question.title);
             }
 
             let unique_options = [];
-            question.options.forEach( (option, index) => {
-            if (unique_options.includes(option.option)) {
-                unique_error = "Option title \"" + option.option + "\" must be unique!"
+            question.options.forEach( (option) => {
+                if (unique_options.includes(option.option)) {
+                    unique_error = `Option title "${option.option}" must be unique!`;
 
-            } else {
-                unique_options.push(option.option);
-            }
+                } else {
+                    unique_options.push(option.option);
+                }
 
             });
 
@@ -135,24 +134,24 @@ module.exports = {
         }
 
         // Validate Questionnaire
-    	const {error} = Questionnaire.validateQuestionnaire(request.body);
-    	if (error) {
+        const {error} = Questionnaire.validateQuestionnaire(request.body);
+        if (error) {
 
-    		let error_message = "";
-    		for (let i in error) {
-    			//console.log("i:", i);
-    			error_message = error_message + '\n' + error[i];
-    		}
+            let error_message = '';
+            for (let i in error) {
+                //console.log("i:", i);
+                error_message = error_message + '\n' + error[i];
+            }
 
-    		request.flash('errorMessage', error_message);
-    		response.redirect('/questionnaires/new');
+            request.flash('errorMessage', error_message);
+            response.redirect('/questionnaires/new');
 
-    	} else {
+        } else {
 
-	    	await Questionnaire.create(parsed_questionnaire);
-	    	request.flash('successMessage', 'Questionnaire added successfully.');
-	        response.redirect('/questionnaires');
-    	}
+            await Questionnaire.create(request.body);
+            request.flash('successMessage', 'Questionnaire added successfully.');
+            response.redirect('/questionnaires');
+        }
 
     },
 
@@ -162,9 +161,9 @@ module.exports = {
      * @param {Object} response is express response object
      */
     async delete(request, response) {
-    	const questionnaire = await Questionnaire.findById(request.params.id).exec();
+        const questionnaire = await Questionnaire.findById(request.params.id).exec();
 
-    	response.render('questionnaire/delete', {questionnaire, csrfToken: request.csrfToken()} );
+        response.render('questionnaire/delete', {questionnaire, csrfToken: request.csrfToken()} );
     },
 
     /**
@@ -174,8 +173,8 @@ module.exports = {
      */
     async processDelete(request, response) {
 
-    	await Questionnaire.findByIdAndDelete(request.params.id).exec();
-    	request.flash('successMessage', 'Questionnaire removed successfully.');
+        await Questionnaire.findByIdAndDelete(request.params.id).exec();
+        request.flash('successMessage', 'Questionnaire removed successfully.');
         response.redirect('/questionnaires');
     },
 
@@ -185,54 +184,53 @@ module.exports = {
      * @param {Object} response is express response object
      */
     async update(request, response) {
-    	let questionnaire = await Questionnaire.findById(request.params.id).exec();
+        let questionnaire = await Questionnaire.findById(request.params.id).exec();
 
-    	response.render('questionnaire/update', {questionnaire} );
+        response.render('questionnaire/update', {questionnaire} );
     },
 
-     /**
+    /**
      * Updates questionnaire
      * @param {Object} request is express request object
      * @param {Object} response is express response object
      */
     async processUpdate(request, response) {
-    	//console.log(request.body);
+    //console.log(request.body);
 
-    	request.body.questions.forEach( (question) => {
-    		question.options.forEach( (option) => {
-    			if (option.correctness === undefined) {
-    				option.correctness = false;
+        request.body.questions.forEach( (quest) => {
+            quest.options.forEach( (opt) => {
+                if (opt.correctness === undefined) {
+                    opt.correctness = false;
 
-    			} else if (option.correctness === 'on') {
-    				option.correctness = true;
-    			}
+                } else if (opt.correctness === 'on') {
+                    opt.correctness = true;
+                }
 
-    			if (option.hint === '') {
-    				delete option.hint;
-    			}
+                if (opt.hint === '') {
+                    delete opt.hint;
+                }
 
-    		} )
+            } );
 
-    	});
-    	//console.log(JSON.stringify(request.body, null, 4));
+        });
+        //console.log(JSON.stringify(request.body, null, 4));
 
-    	const {error} = Questionnaire.validateQuestionnaire(request.body);
-    	if (error) {
+        const {error} = Questionnaire.validateQuestionnaire(request.body);
+        if (error) {
 
-    		let error_message = "";
-    		for (let i in error) {
-    			//console.log("i:", i);
-    			error_message = error_message + '\n' + error[i];
-    		}
+            let error_message = '';
+            for (let i in error) {
+                //console.log("i:", i);
+                error_message = error_message + '\n' + error[i];
+            }
 
-    		request.flash('errorMessage', error_message);
-    		response.redirect(`/questionnaires/edit/${request.params.id}`);
-    	} else {
-	    	await Questionnaire.findByIdAndUpdate(request.params.id, request.body).exec();
-	    	request.flash('successMessage', 'Questionnaire updated successfully.');
-	        response.redirect('/questionnaires');
-    	}
+            request.flash('errorMessage', error_message);
+            response.redirect(`/questionnaires/edit/${request.params.id}`);
+        } else {
+            await Questionnaire.findByIdAndUpdate(request.params.id, request.body).exec();
+            request.flash('successMessage', 'Questionnaire updated successfully.');
+            response.redirect('/questionnaires');
+        }
     }
-
 
 };
