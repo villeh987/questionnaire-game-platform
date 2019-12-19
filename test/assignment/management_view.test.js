@@ -197,7 +197,7 @@ describe('Management view', function() {
     });
 
     it('Should be able to add new questionnaire without hint', async function() {
-        let hintless_form = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
+        let hintless_form = fs.readFileSync( path.resolve(__dirname, './test_form_object.json') );
         hintless_form = JSON.parse(hintless_form);
         hintless_form.title = 'This questionnaire has no hints';
         delete hintless_form.questions[1].options[0].hint
@@ -232,7 +232,7 @@ describe('Management view', function() {
         expect(response.statusCode).to.equal(200);
     });
 
-    it('Should be able to edit questionnaires', async function() {
+    it('Should be able to update questionnaires', async function() {
         data.questions[0].title = 'This has been edited';
 
         const response = await request
@@ -246,6 +246,48 @@ describe('Management view', function() {
         //console.log(questionnaires);
 
     });
+
+    it('Should be able to update questionnaire without changing anything', async function() {
+        let url = editURL + '/' + test_questionnaire.id;
+
+        const response = await request
+            .post(url)
+            .type('form')
+            .send(data);
+
+        expect(response).to.redirectTo(/\/questionnaires$/);
+    });
+
+    it('Should be able to update questionnaires without hint', async function() {
+        let hintless_form = fs.readFileSync( path.resolve(__dirname, './test_form_object.json') );
+        hintless_form = JSON.parse(hintless_form);
+        hintless_form.title = 'This questionnaire is hintless';
+        let url = editURL + '/' + test_questionnaire.id;
+        delete hintless_form.questions[1].options[0].hint
+
+        const response = await request
+            .post(url)
+            .type('form')
+            .send(hintless_form);
+
+        expect(response).to.redirectTo(/\/questionnaires$/);
+    });
+
+    it('Should not be able to update questionnaire with invalid title', async function() {
+        let invalid_form = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
+        invalid_form = JSON.parse(invalid_form);
+        invalid_form.title = '';
+        let url = editURL + '/' + test_questionnaire.id;
+        let pattern = new RegExp(url);
+
+        const response = await request
+            .post(url)
+            .type('form')
+            .send(invalid_form);
+
+        expect(response).to.redirectTo(pattern);
+    });
+
 
     it('Should be able to GET delete view', async function() {
         const response = await request

@@ -1,0 +1,49 @@
+{
+    "title": "Simulates a form send from view",
+    "submissions": 1,
+    "questions": [
+        {
+            "title": "Test_question 1",
+            "maxPoints": 10,
+            "options": [
+                {
+                    "option": "Question_1_Option 1",
+                    "correctness": "on",
+                    "hint": ""
+                },
+                {
+                    "option": "Question_1_Option 2",
+                    "hint": ""
+                }
+            ]
+        },
+        {
+            "title": "Testquestion_2",
+            "maxPoints": 5,
+            "options": [
+                {
+                    "option": "Question_2_Option_1",
+                    "correctness": "on",
+                    "hint" : "Testhint"
+                },
+                {
+                    "option": "Question_2_Option_2",
+                    "hint": ""
+                },
+                {
+                    "option": "Question_2_Option_3",
+                    "hint": ""
+                },
+                {
+                    "option": "Question_2_Option_4",
+                    "hint": ""
+                },
+                {
+                    "option": "Question_2_Option_5",
+                    "correctness": "on",
+                    "hint": ""
+                }
+            ]
+        }
+    ]
+}

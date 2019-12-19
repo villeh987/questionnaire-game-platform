@@ -221,7 +221,7 @@ module.exports = {
 
     		let error_message = "";
     		for (let i in error) {
-    			console.log("i:", i);
+    			//console.log("i:", i);
     			error_message = error_message + '\n' + error[i];
     		}
 
