@@ -108,20 +108,20 @@ const userSchema = new Schema({
 
 userSchema.virtual('isAdmin').get(function() {
     // eslint-disable-next-line babel/no-invalid-this
-    return this.role === "admin";
+    return this.role === 'admin';
     // the helper function should return either true of false
 });
 
 userSchema.virtual('isTeacher').get(function() {
     // eslint-disable-next-line babel/no-invalid-this
-    return this.role === "admin" || this.role === "teacher";
+    return this.role === 'admin' || this.role === 'teacher';
     // Note that admin can be anything
     // the helper function should return either true of false
 });
 
 userSchema.virtual('isStudent').get(function() {
     // eslint-disable-next-line babel/no-invalid-this
-    return this.role === "admin" || this.role === "student";
+    return this.role === 'admin' || this.role === 'student';
     //Note that admin can be anything
     // the helper function should return either true of false
 });
@@ -160,12 +160,12 @@ userSchema.statics.validateLogin = function(data) {
     const loginValidationSchema = {
         email: email.required(),
         password: Joi.string()
-        .min(1)
-        .max(schemaDefaults.password.maxLength)
-        .error( () => {
-            return `Password must be at least ${schemaDefaults.password.minLength} chars.`;
-        })
-        .required()
+            .min(1)
+            .max(schemaDefaults.password.maxLength)
+            .error( () => {
+                return `Password must be at least ${schemaDefaults.password.minLength} chars.`;
+            })
+            .required()
     };
     const result = Joi.validate(data, loginValidationSchema);
     if (result.error) result.error = buildErrorObject(result.error.details);
