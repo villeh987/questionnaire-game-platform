@@ -39,9 +39,12 @@ module.exports = {
         let found = false;
         for (let i = 0; i< rankings.length; ++i) {
             if (rankings[i].game == id) {
-                Ranking.update(
+
+                let unsortedLeaderboards = rankings[i].gameScore;
+                let sortedLB = sortTopTen(unsortedLeaderboards, gameScoreObject);
+                await Ranking.update(
                    {_id: rankings[i].id},
-                   {$addToSet: {"gameScore": gameScoreObject } })
+                   {$set: {"gameScore": sortedLB } });
                 found = true;
             }
         };
@@ -53,3 +56,24 @@ module.exports = {
     }
 
 };
+
+//Function to sort the games leaderboards with the new entry
+function sortTopTen(scoreBoard, newEntry) {
+    for (let i = 0; i < scoreBoard.length; ++i) {
+        if(newEntry.grade >= scoreBoard[i].grade) {
+            if(i == 0) {
+                scoreBoard.unshift(newEntry);
+            } else if(i == scoreBoard.length - 1) {
+                scoreBoard.push(newEntry);
+            } else {
+                scoreBoard.splice(i+1, 0, newEntry)
+            }
+            if(scoreBoard.length > 10) {
+                scoreBoard.pop();
+            }
+
+            return scoreBoard;
+        }
+    }
+    return scoreBoard;
+}
