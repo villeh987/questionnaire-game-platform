@@ -94,42 +94,42 @@ module.exports = {
         //console.log(JSON.stringify(request.body, null, 4));
 
         // Check whether questionnaire with given title exists
-        let questionnaire_title = request.sanitize(request.body.title);
-        let existing_questionnaire = await Questionnaire.findOne({title : questionnaire_title}).exec();
+        let questionnaireTitle = request.sanitize(request.body.title);
+        let existingQuestionnaire = await Questionnaire.findOne({title : questionnaireTitle}).exec();
 
-        if (existing_questionnaire) {
+        if (existingQuestionnaire) {
             request.flash('errorMessage', 'A Questionnaire with that title already exists.');
             return response.redirect('/questionnaires/new');
         }
 
         // Check whether questions and options are unique
-        let unique_questions = [];
-        let unique_error;
+        let uniqueQuestions = [];
+        let uniqueError;
         request.body.questions.forEach( (question) => {
 
-            if (unique_questions.includes(question.title)) {
-                unique_error = `Question title "${question.title}" must be unique!`;
+            if (uniqueQuestions.includes(question.title)) {
+                uniqueError = `Question title "${question.title}" must be unique!`;
 
             } else {
-                unique_questions.push(question.title);
+                uniqueQuestions.push(question.title);
             }
 
-            let unique_options = [];
+            let uniqueOptions = [];
             question.options.forEach( (option) => {
-                if (unique_options.includes(option.option)) {
-                    unique_error = `Option title "${option.option}" must be unique!`;
+                if (uniqueOptions.includes(option.option)) {
+                    uniqueError = `Option title "${option.option}" must be unique!`;
 
                 } else {
-                    unique_options.push(option.option);
+                    uniqueOptions.push(option.option);
                 }
 
             });
 
         }); 
 
-        //console.log(unique_error);
-        if (unique_error) {
-            request.flash('errorMessage', unique_error);
+        //console.log(uniqueError);
+        if (uniqueError) {
+            request.flash('errorMessage', uniqueError);
             return response.redirect('/questionnaires/new');
         }
 
@@ -137,13 +137,13 @@ module.exports = {
         const {error} = Questionnaire.validateQuestionnaire(request.body);
         if (error) {
 
-            let error_message = '';
+            let errorMessage = '';
             for (let i in error) {
                 //console.log("i:", i);
-                error_message = error_message + '\n' + error[i];
+                errorMessage = errorMessage + '\n' + error[i];
             }
 
-            request.flash('errorMessage', error_message);
+            request.flash('errorMessage', errorMessage);
             response.redirect('/questionnaires/new');
 
         } else {
@@ -218,13 +218,13 @@ module.exports = {
         const {error} = Questionnaire.validateQuestionnaire(request.body);
         if (error) {
 
-            let error_message = '';
+            let errorMessage = '';
             for (let i in error) {
                 //console.log("i:", i);
-                error_message = error_message + '\n' + error[i];
+                errorMessage = errorMessage + '\n' + error[i];
             }
 
-            request.flash('errorMessage', error_message);
+            request.flash('errorMessage', errorMessage);
             response.redirect(`/questionnaires/edit/${request.params.id}`);
         } else {
             await Questionnaire.findByIdAndUpdate(request.params.id, request.body).exec();
