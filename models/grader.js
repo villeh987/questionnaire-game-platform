@@ -51,7 +51,6 @@ module.exports = {
         if (!found) {
             Ranking.create(data);
         }
-
         return finalScore;
     }
 
@@ -63,10 +62,8 @@ function sortTopTen(scoreBoard, newEntry) {
         if(newEntry.grade >= scoreBoard[i].grade) {
             if(i == 0) {
                 scoreBoard.unshift(newEntry);
-            } else if(i == scoreBoard.length - 1) {
-                scoreBoard.push(newEntry);
             } else {
-                scoreBoard.splice(i+1, 0, newEntry)
+                scoreBoard.splice(i, 0, newEntry)
             }
             if(scoreBoard.length > 10) {
                 scoreBoard.pop();
