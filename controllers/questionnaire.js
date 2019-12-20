@@ -2,8 +2,6 @@
 'use strict';
 
 const Questionnaire = require('../models/questionnaire');
-//const csurf = require('csurf');
-//const csrfProtection = csurf({ cookie: false });
 
 module.exports = {
 
@@ -64,15 +62,6 @@ module.exports = {
      * @param {Object} response is express response object
      */
     async processCreate(request, response) {
-        //console.log(request.body);
-        //console.log(JSON.stringify(request.body, null, 4));
-        //console.log("tulee");
-        //console.log(request.body.questions[0].title);
-        //request.body.questions[0].option.forEach(e => console.log(e));
-        //console.log(request.body.questions[0].options);
-        //console.log(request.body.questions[1].options);
-
-        //let parsed_questionnaire = request.body;
 
         // Remove hint, if not given. Also parse correctness checkbox value to be true/false.
         request.body.questions.forEach( (question) => {
@@ -91,7 +80,6 @@ module.exports = {
             } );
 
         });
-        //console.log(JSON.stringify(request.body, null, 4));
 
         // Check whether questionnaire with given title exists
         let questionnaireTitle = request.sanitize(request.body.title);
@@ -127,7 +115,6 @@ module.exports = {
 
         }); 
 
-        //console.log(uniqueError);
         if (uniqueError) {
             request.flash('errorMessage', uniqueError);
             return response.redirect('/questionnaires/new');
@@ -139,7 +126,6 @@ module.exports = {
 
             let errorMessage = '';
             for (let i in error) {
-                //console.log("i:", i);
                 errorMessage = errorMessage + '\n' + error[i];
             }
 
@@ -195,7 +181,6 @@ module.exports = {
      * @param {Object} response is express response object
      */
     async processUpdate(request, response) {
-    //console.log(request.body);
 
         request.body.questions.forEach( (quest) => {
             quest.options.forEach( (opt) => {
@@ -213,7 +198,6 @@ module.exports = {
             } );
 
         });
-        //console.log(JSON.stringify(request.body, null, 4));
 
         const {error} = Questionnaire.validateQuestionnaire(request.body);
         if (error) {
@@ -226,6 +210,7 @@ module.exports = {
 
             request.flash('errorMessage', errorMessage);
             response.redirect(`/questionnaires/edit/${request.params.id}`);
+
         } else {
             await Questionnaire.findByIdAndUpdate(request.params.id, request.body).exec();
             request.flash('successMessage', 'Questionnaire updated successfully.');
