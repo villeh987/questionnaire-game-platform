@@ -34,7 +34,7 @@
                 <div class="card-footer">
                     <form method="POST" action="/questionnaires/delete/{{questionnaire.id}}">
                         <input type="hidden" name="_csrf" value="{{csrfToken}}">
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-trash-alt"></i>Remove</button>
+                        <button type="submit" id="deleteQuestionnaire" class="btn btn-primary"><i class="fas fa-trash-alt"></i>Remove</button>
                     </form>
                     <p class="lead mt-4"><a href="/questionnaires">Cancel</a></p>
                 </div>
