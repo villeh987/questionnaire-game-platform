@@ -86,7 +86,7 @@ describe('Management view', function() {
             .type('form')
             .send(admin);
         expect(response).to.have.cookie('bwa');
-        expect(response).to.redirectTo(/\/users\/me$/);
+        expect(response).to.redirectTo(/\/$/);
     });
 
     it('Should be able to GET new view', async function() {
