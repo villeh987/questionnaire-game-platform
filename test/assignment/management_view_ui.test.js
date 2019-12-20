@@ -68,7 +68,7 @@ describe('Management view UI test suite', function() {
 
         it('must be able to view questionnaires', function() {
             
-            browser.assert.element(`#questionnaireSearch`);
+            browser.assert.element('#questionnaireSearch');
             browser.fill('#questionnaireSearch', 'filter');
             browser.fire('#questionnaireSearch', 'keyup');
 
@@ -91,16 +91,16 @@ describe('Management view UI test suite', function() {
         it('must be able to add new questionnaire', async function() {
 
             browser.fill('#questionnairetitle', 'Automatically created questionnaire');
-            browser.fill("input[name='questions[1][title]']", 'Automatic question 1');
-            browser.fill("input[name='questions[1][maxPoints]']", '10');
-            browser.fill("input[name='questions[1][options][1][option]']", 'Automatic option 1');
-            browser.fill("input[name='questions[1][options][2][option]']", 'Automatic option 2');
-            await browser.check("input[name='questions[1][options][1][correctness]']");
+            browser.fill('input[name="questions[1][title]"]', 'Automatic question 1');
+            browser.fill('input[name="questions[1][maxPoints]"]', '10');
+            browser.fill('input[name="questions[1][options][1][option]"]', 'Automatic option 1');
+            browser.fill('input[name="questions[1][options][2][option]"]', 'Automatic option 2');
+            await browser.check('input[name="questions[1][options][1][correctness]"]');
 
             await browser.pressButton('#newQuestionnaireButton');
 
             browser.assert.success();
-            browser.assert.text('.alert.alert-success', 'Questionnaire added successfully.')
+            browser.assert.text('.alert.alert-success', 'Questionnaire added successfully.');
 
         });
 
@@ -114,16 +114,16 @@ describe('Management view UI test suite', function() {
         it('must be able to edit questionnaire', async function() {
 
             browser.fill('#questionnairetitle', 'Automatically edited questionnaire');
-            browser.fill("input[name='questions[1][title]']", 'Automatic edited question 1');
-            browser.fill("input[name='questions[1][maxPoints]']", '10');
-            browser.fill("input[name='questions[1][options][1][option]']", 'Automatic edited option 1');
-            browser.fill("input[name='questions[1][options][2][option]']", 'Automatic edited option 2');
-            await browser.check("input[name='questions[1][options][2][correctness]']");
+            browser.fill('input[name="questions[1][title]"]', 'Automatic edited question 1');
+            browser.fill('input[name="questions[1][maxPoints]"]', '10');
+            browser.fill('input[name="questions[1][options][1][option]"]', 'Automatic edited option 1');
+            browser.fill('input[name="questions[1][options][2][option]"]', 'Automatic edited option 2');
+            await browser.check('input[name="questions[1][options][2][correctness]"]');
 
             await browser.pressButton('#updateQuestionnaireButton');
 
             browser.assert.success();
-            browser.assert.text('.alert.alert-success', 'Questionnaire updated successfully.')
+            browser.assert.text('.alert.alert-success', 'Questionnaire updated successfully.');
 
         });
 
@@ -141,13 +141,10 @@ describe('Management view UI test suite', function() {
 
             //console.log(browser.html());
             browser.assert.success();
-            browser.assert.text('.alert.alert-success', 'Questionnaire removed successfully.')
+            browser.assert.text('.alert.alert-success', 'Questionnaire removed successfully.');
 
         });
 
     });
-
-
-
 
 });
