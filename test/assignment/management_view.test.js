@@ -37,7 +37,7 @@ describe('Management view', function() {
 
     let request;
 
-    let test_questionnaire;
+    let testQuestionnaire;
 
     let data;
 
@@ -65,12 +65,12 @@ describe('Management view', function() {
 
 
         // Create test data
-        let raw_data = fs.readFileSync( path.resolve(__dirname, './test_data.json') );
-        data =  JSON.parse(raw_data);
+        let rawData = fs.readFileSync( path.resolve(__dirname, './test_data.json') );
+        data =  JSON.parse(rawData);
         await Questionnaire.create(data);
 
         // Get test questionnaire
-        test_questionnaire = await Questionnaire.findOne({title : 'Test for management view API'}).exec();
+        testQuestionnaire = await Questionnaire.findOne({title : 'Test for management view API'}).exec();
 
 
         //done();
@@ -97,13 +97,13 @@ describe('Management view', function() {
     });
 
     it('Should be able to add new questionnaire', async function() {
-        let new_questionnaire = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
-        new_questionnaire = JSON.parse(new_questionnaire);
+        let newQuestionnaire = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
+        newQuestionnaire = JSON.parse(newQuestionnaire);
 
         const response = await request
             .post(newURL)
             .type('form')
-            .send(new_questionnaire);
+            .send(newQuestionnaire);
 
         //let questionnaires = await Questionnaire.find().exec();
         //console.log(questionnaires);
@@ -120,92 +120,92 @@ describe('Management view', function() {
     });
 
     it('Should not be able to add new questionnaire with invalid title', async function() {
-        let invalid_form = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
-        invalid_form = JSON.parse(invalid_form);
-        invalid_form.title = '';
+        let invalidForm = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
+        invalidForm = JSON.parse(invalidForm);
+        invalidForm.title = '';
 
         const response = await request
             .post(newURL)
             .type('form')
-            .send(invalid_form);
+            .send(invalidForm);
 
         expect(response).to.redirectTo(/\/questionnaires\/new$/);
     });
 
     it('Should not be able to add new questionnaire with duplicate title', async function() {
-        let duplicate_form = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
-        duplicate_form = JSON.parse(duplicate_form);
+        let duplicateForm = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
+        duplicateForm = JSON.parse(duplicateForm);
 
         const response = await request
             .post(newURL)
             .type('form')
-            .send(duplicate_form);
+            .send(duplicateForm);
 
         expect(response).to.redirectTo(/\/questionnaires\/new$/);
     });
 
     it('Should not be able to add new questionnaire with non-unique questions', async function() {
-        let nonuniqure_form = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
-        nonuniqure_form = JSON.parse(nonuniqure_form);
-        nonuniqure_form.questions[0].title = nonuniqure_form.questions[1].title;
+        let nonUniqueForm = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
+        nonUniqueForm = JSON.parse(nonUniqueForm);
+        nonUniqueForm.questions[0].title = nonUniqueForm.questions[1].title;
 
         const response = await request
             .post(newURL)
             .type('form')
-            .send(nonuniqure_form);
+            .send(nonUniqueForm);
 
         expect(response).to.redirectTo(/\/questionnaires\/new$/);
     });
 
     it('Should not be able to add new questionnaire with non-unique options', async function() {
-        let nonuniqure_form = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
-        nonuniqure_form = JSON.parse(nonuniqure_form);
-        nonuniqure_form.questions[0].options[0] = nonuniqure_form.questions[0].options[1];
+        let nonUniqueForm = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
+        nonUniqueForm = JSON.parse(nonUniqueForm);
+        nonUniqueForm.questions[0].options[0] = nonUniqueForm.questions[0].options[1];
 
         const response = await request
             .post(newURL)
             .type('form')
-            .send(nonuniqure_form);
+            .send(nonUniqueForm);
 
         expect(response).to.redirectTo(/\/questionnaires\/new$/);
     });
 
     it('Should not be able to add new questionnaire with less than 2 options', async function() {
-        let inadequate_form = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
-        inadequate_form = JSON.parse(inadequate_form);
-        delete inadequate_form.questions[0].options[0];
+        let inadequateForm = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
+        inadequateForm = JSON.parse(inadequateForm);
+        delete inadequateForm.questions[0].options[0];
 
         const response = await request
             .post(newURL)
             .type('form')
-            .send(inadequate_form);
+            .send(inadequateForm);
 
         expect(response).to.redirectTo(/\/questionnaires\/new$/);
     });
 
     it('Should not be able to add new questionnaire without correct option', async function() {
-        let inadequate_form = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
-        inadequate_form = JSON.parse(inadequate_form);
-        inadequate_form.questions[0].options[0].correctness = false;
+        let inadequateForm = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
+        inadequateForm = JSON.parse(inadequateForm);
+        inadequateForm.questions[0].options[0].correctness = false;
 
         const response = await request
             .post(newURL)
             .type('form')
-            .send(inadequate_form);
+            .send(inadequateForm);
 
         expect(response).to.redirectTo(/\/questionnaires\/new$/);
     });
 
     it('Should be able to add new questionnaire without hint', async function() {
-        let hintless_form = fs.readFileSync( path.resolve(__dirname, './test_form_object.json') );
-        hintless_form = JSON.parse(hintless_form);
-        hintless_form.title = 'This questionnaire has no hints';
-        delete hintless_form.questions[1].options[0].hint;
+        let hintlessForm = fs.readFileSync( path.resolve(__dirname, './test_form_object.json') );
+        hintlessForm = JSON.parse(hintlessForm);
+        hintlessForm.title = 'This questionnaire has no hints';
+        delete hintlessForm.questions[1].options[0].hint;
 
         const response = await request
             .post(newURL)
             .type('form')
-            .send(hintless_form);
+            .send(hintlessForm);
 
         expect(response).to.redirectTo(/\/questionnaires$/);
     });
@@ -220,14 +220,14 @@ describe('Management view', function() {
 
     it('Should be able to view a single questionnaire', async function() {
         const response = await request
-            .get(`/questionnaires/${test_questionnaire.id}`);
+            .get(`/questionnaires/${testQuestionnaire.id}`);
 
         expect(response.statusCode).to.equal(200);
     });
 
     it('Should be able to GET edit view', async function() {
         const response = await request
-            .get(editURL + '/' + test_questionnaire.id);
+            .get(`${editURL}/${testQuestionnaire.id}`);
 
         expect(response.statusCode).to.equal(200);
     });
@@ -236,7 +236,7 @@ describe('Management view', function() {
         data.questions[0].title = 'This has been edited';
 
         const response = await request
-            .post(editURL + '/' + test_questionnaire.id)
+            .post(`${editURL}/${testQuestionnaire.id}`)
             .type('form')
             .send(data);
 
@@ -248,7 +248,7 @@ describe('Management view', function() {
     });
 
     it('Should be able to update questionnaire without changing anything', async function() {
-        let url = editURL + '/' + test_questionnaire.id;
+        let url = `${editURL}/${testQuestionnaire.id}`;
 
         const response = await request
             .post(url)
@@ -259,31 +259,31 @@ describe('Management view', function() {
     });
 
     it('Should be able to update questionnaires without hint', async function() {
-        let hintless_form = fs.readFileSync( path.resolve(__dirname, './test_form_object.json') );
-        hintless_form = JSON.parse(hintless_form);
-        hintless_form.title = 'This questionnaire is hintless';
-        let url = editURL + '/' + test_questionnaire.id;
-        delete hintless_form.questions[1].options[0].hint;
+        let hintlessForm = fs.readFileSync( path.resolve(__dirname, './test_form_object.json') );
+        hintlessForm = JSON.parse(hintlessForm);
+        hintlessForm.title = 'This questionnaire is hintless';
+        let url = `${editURL}/${testQuestionnaire.id}`;
+        delete hintlessForm.questions[1].options[0].hint;
 
         const response = await request
             .post(url)
             .type('form')
-            .send(hintless_form);
+            .send(hintlessForm);
 
         expect(response).to.redirectTo(/\/questionnaires$/);
     });
 
     it('Should not be able to update questionnaire with invalid title', async function() {
-        let invalid_form = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
-        invalid_form = JSON.parse(invalid_form);
-        invalid_form.title = '';
-        let url = editURL + '/' + test_questionnaire.id;
+        let invalidForm = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
+        invalidForm = JSON.parse(invalidForm);
+        invalidForm.title = '';
+        let url = `${editURL}/${testQuestionnaire.id}`;
         let pattern = new RegExp(url);
 
         const response = await request
             .post(url)
             .type('form')
-            .send(invalid_form);
+            .send(invalidForm);
 
         expect(response).to.redirectTo(pattern);
     });
@@ -291,7 +291,7 @@ describe('Management view', function() {
 
     it('Should be able to GET delete view', async function() {
         const response = await request
-            .get(deleteURL + '/' + test_questionnaire.id);
+            .get(`${deleteURL}/${testQuestionnaire.id}`);
 
         expect(response.statusCode).to.equal(200);
         csrfToken = parseCsrfToken(response);
@@ -299,7 +299,7 @@ describe('Management view', function() {
 
     it('Should be able to delete questionnaires', async function() {
         const response = await request
-            .post(deleteURL + '/' + test_questionnaire.id)
+            .post(`${deleteURL}/${testQuestionnaire.id}`)
             .type('form')
             .send({
                 _csrf: csrfToken
@@ -310,7 +310,7 @@ describe('Management view', function() {
 
     it('Should not be able to delete questionnaires without csrf token', async function() {
         const response = await request
-            .post(deleteURL + '/' + test_questionnaire.id)
+            .post(`${deleteURL}/${testQuestionnaire.id}`)
             .type('form');
 
         expect(response.statusCode).to.equal(403);
