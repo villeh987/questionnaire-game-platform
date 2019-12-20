@@ -79,6 +79,6 @@ module.exports = {
         if (!request.isAuthenticated()) {
             return next();
         }
-        response.redirect('/users/me');
+        response.redirect('/');
     }
 };
