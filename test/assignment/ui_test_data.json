@@ -1,6 +1,6 @@
 [
     {
-        "title": "Test for management view UI",
+        "title": "Test questionnaire",
         "submissions": 1,
         "questions": [
             {
@@ -116,7 +116,7 @@
                         "correctness": false
                     }
                 ]
-            }          
+            }
         ]
     }
 ]

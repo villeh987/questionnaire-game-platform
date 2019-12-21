@@ -44,7 +44,7 @@ describe('Management view UI test suite', function() {
         await Questionnaire.create(data);
 
         // Get test questionnaire
-        testQuestionnaire = await Questionnaire.findOne({title : 'Test for management view UI'}).exec();
+        testQuestionnaire = await Questionnaire.findOne({title : 'Test questionnaire'}).exec();
 
 
         server = http.createServer(app).listen(port);
@@ -67,7 +67,7 @@ describe('Management view UI test suite', function() {
         });
 
         it('must be able to view questionnaires', function() {
-            
+
             browser.assert.element('#questionnaireSearch');
             browser.fill('#questionnaireSearch', 'filter');
             browser.fire('#questionnaireSearch', 'keyup');
