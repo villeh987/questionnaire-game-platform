@@ -12,15 +12,18 @@ const gameScoreSchema = new Schema({
     },
     rights: {
         type: Number,
-        required: true
+        required: true,
+        validate: Number.isInteger
     },
     wrongs: {
         type: Number,
-        required: true
+        required: true,
+        validate: Number.isInteger
     },
     grade: {
         type: Number,
-        required: true
+        required: true,
+        validate: Number.isInteger
     }
 });
 
