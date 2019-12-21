@@ -17,7 +17,6 @@ module.exports = {
         }
 
         //Save rankingdata to the database
-        console.log(userName);
         let rankings = await Ranking.find().exec();
         let ranking;
         let gameScoreObject = {
@@ -39,17 +38,17 @@ module.exports = {
         let found = false;
         for (let i = 0; i< rankings.length; ++i) {
             if (rankings[i].game == id) {
-
                 let unsortedLeaderboards = rankings[i].gameScore;
                 let sortedLB = sortTopTen(unsortedLeaderboards, gameScoreObject);
-                await Ranking.update(
+                await Ranking.updateOne(
                    {_id: rankings[i].id},
                    {$set: {"gameScore": sortedLB } });
                 found = true;
+                break;
             }
         };
         if (!found) {
-            Ranking.create(data);
+            await Ranking.create(data);
         }
         return finalScore;
     }
