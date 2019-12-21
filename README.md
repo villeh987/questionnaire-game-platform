@@ -134,7 +134,6 @@ for high-school students, especially for the domains of mathematics and computer
 
 ```
 
-TODO: update this
 
 ## Game
 
@@ -180,11 +179,14 @@ Delete - Existing questionnaires may be deleted.
 
 ## Tests and documentation
 
-TODO: describe your work
+Tests consist of management view tests and game tests. ALl CRUD opearations of
+management view are tested (plus extra error handling and other asserts)
+both by sending requests to the routes, and by simulating a browser.
+Documentation consists of this README document, and function documentation
+in respective files.
 
 ## Security concerns
 
-TODO: this part needs more improvement
 
 Cross Site Request Forgery attack: Malicious website could include a POST form
 that sends a request to this application which causes logged in user to perform
