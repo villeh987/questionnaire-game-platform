@@ -25,15 +25,18 @@ for high-school students, especially for the domains of mathematics and computer
 ├── package.json            --> app info and dependencies
 ├── controllers             --> controllers (handle e.g. routing)
 │   ├── game.js             --> controller for the game
+│   ├── leaderboard.js      --> controller for leaderboard displayed after grading
 │   ├── questionnaire.js    --> controller for questionnaire CRUD operations
 │   └── hello.js            --> the same as "minimal viable grader"
 ├── models                  --> models that reflect the db schemes
 │   │                           and take care of storing data
 │   ├── db.js                    --> connecting/disconnecting from db
+│   ├── grader.js                --> main game grading logic
 │   ├── hello.js                 --> "minimal viable grader" grading logic
 │   ├── pagination.js            --> assigning page numbers
 │   ├── questionnaire.input.js   --> validating input for questionnaires
 │   ├── questionnaire.js         --> describes questionnaire, question and option schemas
+│   ├── ranking.js               --> model for leaderboard information
 │   ├── user.js                  --> user CRUD operations, validating users, authenticating
 │   └── validator.js             --> input filtering and errors
 ├── public                  --> location for public (static) files
@@ -47,13 +50,16 @@ for high-school students, especially for the domains of mathematics and computer
 │   └── css                        --> for styles
 │       └── style.css       --> general style file
 ├── routes                  --> a dir for router modules
-│   ├── hello.js            --> / (root) router
-│   ├── questionnaire.js    --> router for managing questionnaires
 │   ├── game.js             --> router for the game
+│   ├── hello.js            --> / (root) router
+│   ├── leaderboard.js      --> router for the leaderboard
+│   ├── questionnaire.js    --> router for managing questionnaires
 │   └── users.js            --> /users router
 ├── views                   --> views - visible parts
 │   ├── error.hbs           --> error view
 │   ├── game.hbs            --> game view
+│   ├── game_graded.hbs     --> game graded view
+│   ├── game_rejected.hbs   --> game rejected view
 │   ├── games.hbs           --> view of list of playable questionnaires
 │   ├── hello.hbs           --> main view - "minimal viable grader"
 │   ├── hello-graded.hbs    --> main view - "minimal viable grader", graded
@@ -62,10 +68,12 @@ for high-school students, especially for the domains of mathematics and computer
 │   └── partials            --> smaller handlebar components to be included in views
 │   |   ├── bootstrap_scipts.hbs      --> loads bootstrap scripts
 │   |   ├── csrf.hbs                  --> adds csrf token
+│   |   ├── game_info.hbs             --> info about the game
 │   |   ├── game_window.hbs           --> div that has the game window
-│   |   ├── games_info.hbs            --> info about a game
+│   |   ├── games_info.hbs            --> displays info about a particular game
 │   |   ├── games_listing.hbs         --> lists games
 │   |   ├── grader_meta.hbs           --> grader meta information
+│   |   ├── hidden_game_form.hbs      --> form needed by A+ grading
 │   |   ├── messages.hbs              --> messages to be displayed on page
 │   |   ├── navigation.hbs            --> top navigation bar
 │   |   ├── option_info.hbs           --> info about a single option
@@ -93,12 +101,21 @@ for high-school students, especially for the domains of mathematics and computer
 │       ├── user.hbs              --> information about one user
 │       └── users.hbs             --> user listing
 └── test                    --> tests
-│   ├── assignment          --> TODO: your tests here
-│   ├── integration         --> integration tests
-│   |   ├── auth.test       --> authentication
-│   |   └── user.test       --> managing users
+│   └── assignment         --> tests to test project functionality
+│   |   ├── management_view.test       --> API test to test management view routes
+│   |   └── management_view_ui.test    --> UI which emulates browser and server to test management view
+│   |   └── test_data                  --> test questionnaire
+│   |   └── test_form                  --> test form
+│   |   └── test_form_object           --> test form object
+│   |   └── ui_test_data               --> test data for ui tests
+│   ├── integration      --> integration tests
+│   |   ├── hello.reply.test   --> course side test
+│   |   ├── hello.test         --> course side test
+│   |   ├── security.test      --> course side test
+│   |   └── user.test          --> managing users
 │   └── models                  --> unit tests for models
 │       ├── db.test             --> test database
+│       ├── hello.test          --> test hello page
 │       ├── questionnaire.test  --> test validating questionnaires
 │       └── user.test           --> test validating users
 └── setup                       --> scripts that modify initial app state
