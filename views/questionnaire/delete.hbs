@@ -19,9 +19,9 @@
                                 {{#each question.options as |option index|}}
                                 <li>
                                     {{#if option.correctness}}
-                                    <b>{{option.option}}</b>
+                                    <h6 style="font-weight:bold">{{option.option}}</h6>
                                     {{else}}
-                                    {{option.option}}
+                                    <h6>{{option.option}}</h6>
                                     {{/if}}
                                 </li>
                                 {{/each}}                    

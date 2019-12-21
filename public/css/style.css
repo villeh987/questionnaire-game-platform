@@ -75,6 +75,20 @@
     display: none;
 }
 
+.input-group-text {
+    padding: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.correct-answer-checkbox {
+    padding-right: 5px;
+}
+
+label[for=correctAnswerCheckbox] {
+    margin-bottom: 0px;
+    padding-right: 5px;
+    padding-left: 5px;
+
 textarea {
     resize: none;
 }

@@ -14,19 +14,11 @@
                 <ul>
                     {{#each question.options as |option index|}}
                     <li>
-                        {{#if option.correctness}}
-                        <b>{{option.option}}</b>
-                        {{else}}
-                        {{option.option}}
-                        {{/if}}
+                        {{#if option.correctness}}<h6 style="font-weight:bold">{{option.option}}</h6>{{else}}<h6>{{option.option}}</h6>{{/if}}
                     </li>
                     {{/each}}                    
                 </ul>
-
-
             {{/each}}
-
-
         </p>
     </div>
     <div class="card-footer">
