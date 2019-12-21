@@ -7,11 +7,11 @@ const Ranking = require('../models/ranking');
 module.exports = {
 
     async listExercises(request, response) {
-          const questionnaires = await Questionnaire.find()
-              .sort('title')
-              .select('title submissions questions')
-              .exec();
-          response.render('games', { questionnaires });
+        const questionnaires = await Questionnaire.find()
+            .sort('title')
+            .select('title submissions questions')
+            .exec();
+        response.render('games', { questionnaires });
     },
 
     async showExercise(request, response) {
@@ -35,17 +35,16 @@ module.exports = {
         let errors = parseInt(request.sanitize(request.body.errors));
         let questionnaire = await Questionnaire.findById(request.params.id);
 
-        if (maxPoints == undefined || rights == undefined || errors == undefined) {
+        if (maxPoints === undefined || rights === undefined || errors === undefined) {
             response.render('game_graded_rejected', {
-                  status: 'rejected',
-                  description: 'Submission rejected',
-                  title: 'Rejected'
+                status: 'rejected',
+                description: 'Submission rejected',
+                title: 'Rejected'
             });
         } else {
-          let score = await Grader.grade(rights, errors, maxPoints,
-                                    questionnaire.id, request.user.name);
+            let score = await Grader.grade(rights, errors, maxPoints, questionnaire.id, request.user.name);
 
-          response.render('game_graded', {
+            response.render('game_graded', {
                 points: score,
                 maxPoints: maxPoints,
                 status: 'accepted',
@@ -54,8 +53,8 @@ module.exports = {
                 errors,
                 rights,
                 questionnaire
-          });
+            });
         }
-    },
+    }
 
 };
