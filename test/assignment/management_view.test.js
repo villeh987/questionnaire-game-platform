@@ -9,6 +9,7 @@ const config = require('config');
 const fs = require('fs');
 const path = require('path');
 const app = require('../../app');
+const User = require('../../models/user');
 const Questionnaire = require('../../models/questionnaire');
 
 const DomParser = require('dom-parser');
@@ -51,14 +52,14 @@ describe('Management view', function() {
     this.beforeAll( async function() {
         request = chai.request.agent(app);
 
-
-        // Login as admin
-        /*const response = await request
-            .post(loginUrl)
-            .type('form')
-            .send(admin);
-        expect(response).to.have.cookie('bwa');
-        expect(response).to.redirectTo(/\/users\/me$/);*/
+        // Create admin user, if doesn't exist
+        const userData = {...admin, role: 'admin'};
+        const user = new User(userData);
+        try {
+            await user.save();
+        } catch(error) {
+            // Admin exists already in db.
+        }
 
         // Empty database
         await Questionnaire.deleteMany({});

@@ -12,6 +12,7 @@ const path = require('path');
 
 const app = require('../../app.js');
 const admin = config.get('admin');
+const User = require('../../models/user');
 const Questionnaire = require('../../models/questionnaire');
 const port = 3333;
 
@@ -33,6 +34,17 @@ describe('Management view UI test suite', function() {
     let testQuestionnaire;
 
     beforeEach(async function() {
+
+
+        // Create admin user, if doesn't exist
+        const userData = {...admin, role: 'admin'};
+        const user = new User(userData);
+        try {
+            await user.save();
+        } catch(error) {
+            // Admin exists already in db.
+        }
+
 
         // Empty database
         await Questionnaire.deleteMany({});
