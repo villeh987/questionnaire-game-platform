@@ -71,7 +71,7 @@ describe('Management view', function() {
         await Questionnaire.create(data);
 
         // Get test questionnaire
-        testQuestionnaire = await Questionnaire.findOne({title : 'Test for management view API'}).exec();
+        testQuestionnaire = await Questionnaire.findOne({title : 'Test questionnaire'}).exec();
 
 
         //done();
