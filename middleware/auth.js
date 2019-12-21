@@ -69,7 +69,7 @@ module.exports = {
                 'errorMessage',
                 'Modify your data through profile'
             );
-            return response.redirect('/users/me');
+            return response.redirect('/');
         }
 
         next();
