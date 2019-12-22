@@ -104,6 +104,10 @@ for high-school students, especially for the domains of mathematics and computer
 │   └── assignment         --> tests to test project functionality
 │   |   ├── management_view.test       --> API test to test management view routes
 │   |   └── management_view_ui.test    --> UI which emulates browser and server to test management view
+│   |   └── game_view.test             --> test game view routes, controller and grader model
+│   |   └── game_view_ui.test          --> UI tests for game view
+│   |   └── leaderboard_view_ui.test   --> UI tests for leaderboard view
+│   |   └── game_test_form             --> test data for game grader
 │   |   └── test_data                  --> test questionnaire
 │   |   └── test_form                  --> test form
 │   |   └── test_form_object           --> test form object
@@ -146,8 +150,11 @@ answers by hitting them with projectiles that the ship launches by pressing
 spacebar key. Right options must be collected by flying in to them. Ship can be
 controlled with cursor keys. Up accelerates while left and right rotate the
 ship. When player has either collected or shot all the options new options and
-a new question will arrive. After all questions are done score is sent to them
-grader for evaluation.
+a new question will arrive. After all questions are answered score is sent to the
+grader for evaluation, which will route you to the final score screen, where you
+can see your score. Final score screen also has a leaderboards button, which
+will route you to the games leaderboards. The game specific leaderboard will
+have a list of the top 10 scores in that game, and the player names.
 
 Most of the game is created with Phaserjs, a game engine for creating web based
 games that uses MIT license. It was chosen because of it's popularity, web first
@@ -179,14 +186,13 @@ Delete - Existing questionnaires may be deleted.
 
 ## Tests and documentation
 
-Tests consist of management view tests and game tests. ALl CRUD opearations of
-management view are tested (plus extra error handling and other asserts)
-both by sending requests to the routes, and by simulating a browser.
+Tests consist of management view tests, game tests and model tests. All CRUD
+operations of management view are tested (plus extra error handling and other
+asserts) both by sending requests to the routes, and by simulating a browser.
 Documentation consists of this README document, and function documentation
 in respective files.
 
 ## Security concerns
-
 
 Cross Site Request Forgery attack: Malicious website could include a POST form
 that sends a request to this application which causes logged in user to perform
@@ -278,7 +284,7 @@ Application uses Helmet to protect itself against many common threats. More info
 
 6. Docker container starts _bwa_ server and listens `http://localhost:3000/`
 
-7) Docker container is stopped in the root dir with a command:
+7. Docker container is stopped in the root dir with a command:
 
     ```
     docker-compose down
