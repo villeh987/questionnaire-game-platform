@@ -36,7 +36,4 @@ router
     .get(QuestionnaireController.delete)
     .post(QuestionnaireController.processDelete);
 
-//router.get('/delete/:id([a-f0-9]{24})', QuestionnaireController.delete);
-//router.post('/delete/:id([a-f0-9]{24})', QuestionnaireController.processDelete); 
-
 module.exports = router;

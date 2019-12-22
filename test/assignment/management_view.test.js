@@ -45,7 +45,6 @@ describe('Management view', function() {
     let csrfToken;
 
     after(function(done) {
-        //mongoose.disconnect(done);
         done();
     });
 
@@ -73,8 +72,6 @@ describe('Management view', function() {
         // Get test questionnaire
         testQuestionnaire = await Questionnaire.findOne({title : 'Test questionnaire'}).exec();
 
-
-        //done();
     });
 
     this.afterAll(function(done) {
@@ -106,10 +103,6 @@ describe('Management view', function() {
             .type('form')
             .send(newQuestionnaire);
 
-        //let questionnaires = await Questionnaire.find().exec();
-        //console.log(questionnaires);
-
-        //console.log(response);
         expect(response).to.redirectTo(/\/questionnaires$/);
     });
 
@@ -242,10 +235,6 @@ describe('Management view', function() {
             .send(data);
 
         expect(response).to.redirectTo(/\/questionnaires$/);
-
-        //let questionnaires = await Questionnaire.find();
-        //console.log(questionnaires);
-
     });
 
     it('Should be able to update questionnaire without changing anything', async function() {
