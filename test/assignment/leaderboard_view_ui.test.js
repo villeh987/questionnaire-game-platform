@@ -12,7 +12,10 @@ const path = require('path');
 
 const app = require('../../app.js');
 const admin = config.get('admin');
+const User = require('../../models/user');
 const Questionnaire = require('../../models/questionnaire');
+const Ranking = require('../../models/ranking');
+const Grader = require('../../models/grader');
 const port = 3333;
 
 async function auth(browser) {
@@ -30,7 +33,7 @@ describe('Game view UI test suite', function() {
     let browser;
 
     let data;
-    let testQuestionnaires;
+    let testQuestionnaire;
 
     beforeEach(async function() {
 
@@ -43,8 +46,10 @@ describe('Game view UI test suite', function() {
             // Admin exists already in db.
         }
 
-        // Empty database
+
+        // Empty databases
         await Questionnaire.deleteMany({});
+        await Ranking.deleteMany({});
 
 
         // Create test data
@@ -53,7 +58,7 @@ describe('Game view UI test suite', function() {
         await Questionnaire.create(data);
 
         // Get test questionnaire
-        testQuestionnaires = await Questionnaire.find().exec();
+        testQuestionnaire = await Questionnaire.findOne({title : 'Test questionnaire'}).exec();
 
 
         server = http.createServer(app).listen(port);
@@ -67,31 +72,37 @@ describe('Game view UI test suite', function() {
         server.close();
     });
 
-    describe('/games', function() {
+    describe('/leaderboard/:id', function() {
 
         beforeEach(async function() {
-            await browser.visit('/games');
+            await browser.visit(`/leaderboard/${testQuestionnaire.id}`);
         });
 
         it('should be successful', function() {
             browser.assert.success();
         });
 
-        it('must be able to view all questionnaires as games', function() {
-
-            for(let questionnaire in testQuestionnaires) {
-                browser.assert.text('title', questionnaire.title);
-            }
+        it('should have empty leaderboard', function() {
+            browser.assert.elements('#li',  0);
         });
 
-        it('should have play-button', function() {
-            browser.assert.element(`#button_${testQuestionnaires[0].id}`);
+        it('should show 10 entries in leaderboard', async function() {
+          let points = 10;
+          let errors = 0;
+          let maxPoints = 100;
+          let playerName = "Test player";
+          for(let i = 11; i > 0; --i) {
+              await Grader.grade(points, errors, maxPoints,
+                                 testQuestionnaire.id, playerName);
+          }
+          let rankingList = await Ranking.findOne({game: testQuestionnaire.id}).exec();
+          let leaderboard = rankingList.gameScore;
+          await browser.visit(`/leaderboard/${testQuestionnaire.id}`);
+          for(let i = 0; i < 10; ++i) {
+              browser.assert.elements(`#li${i}`, 1);
+          }
         });
 
-        it('play-button should route to games/:id', function() {
-            browser.assert.attribute(`#button_${testQuestionnaires[0].id}`, 'href',
-                `/games/${testQuestionnaires[0].id}`);
-        });
 
     });
 

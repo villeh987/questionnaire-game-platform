@@ -5,7 +5,7 @@
             <br></br>
             <ol start="1">
             {{#each scoreBoard}}
-            <li>{{this.player}} - SCORE: {{this.grade}}</li>
+            <li id="li{{@index}}">{{this.player}} - SCORE: {{this.grade}}</li>
             {{/each}}
             <ol>
         </div>
