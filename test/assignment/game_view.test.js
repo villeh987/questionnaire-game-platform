@@ -14,10 +14,6 @@ const Questionnaire = require('../../models/questionnaire');
 const Grader = require('../../models/grader');
 const Ranking = require('../../models/ranking');
 
-const DomParser = require('dom-parser');
-const parser = new DomParser();
-
-
 const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
@@ -25,13 +21,6 @@ chai.use(chaiHttp);
 const admin = config.get('admin');
 const loginUrl = '/users/login';
 const listURL = '/games';
-
-
-function parseCsrfToken(res) {
-    let htmlDoc = parser.parseFromString(res.text, 'text/html');
-    return htmlDoc.getElementsByName('csrf-token')[0].getAttribute('content');
-}
-
 
 describe('Game view', function() {
 
@@ -41,10 +30,7 @@ describe('Game view', function() {
 
     let data;
 
-    let csrfToken;
-
     after(function(done) {
-        //mongoose.disconnect(done);
         done();
     });
 
@@ -64,9 +50,8 @@ describe('Game view', function() {
         // Empty database
         await Questionnaire.deleteMany({});
 
-
         // Create test data
-        let rawData = fs.readFileSync( path.resolve(__dirname, './test_data.json') );
+        const rawData = fs.readFileSync( path.resolve(__dirname, './test_data.json') );
         data =  JSON.parse(rawData);
         await Questionnaire.create(data);
 
@@ -101,7 +86,7 @@ describe('Game view', function() {
     it('Should load a game view', async function() {
 
         const response = await request
-            .get(`${listURL}/${testQuestionnaire.id}`)
+            .get(`${listURL}/${testQuestionnaire.id}`);
 
         expect(response.statusCode).to.equal(200);
     });
@@ -111,9 +96,7 @@ describe('Game view', function() {
         gameForm = JSON.parse(gameForm);
 
         const response = await request
-            .post(`${listURL}/${testQuestionnaire.id}`)
-            .type('form')
-            .send(gameForm);
+            .post(`${listURL}/${testQuestionnaire.id}`).type('form').send(gameForm);
 
         expect(response.statusCode).to.equal(200);
         response.should.have.property('text');
@@ -129,7 +112,7 @@ describe('Grader', function() {
         points: 10,
         errors: 0,
         maxPoints: 100
-    }
+    };
 
     after(function(done) {
         done();
@@ -143,42 +126,40 @@ describe('Grader', function() {
         // Empty questionnaire database
         await Questionnaire.deleteMany({});
 
-
         // Create test data
-        let rawData = fs.readFileSync( path.resolve(__dirname, './test_data.json') );
+        const rawData = fs.readFileSync( path.resolve(__dirname, './test_data.json') );
         data =  JSON.parse(rawData);
         await Questionnaire.create(data);
 
-        // Get test questionnaire
         testQuestionnaire = await Questionnaire.findOne({title : 'Test questionnaire'}).exec();
 
     });
 
     it('Should grade the game and return a score', async function() {
-        let score = await Grader.grade(gameData.points, gameData.errors,
-                      gameData.maxPoints, testQuestionnaire.id, "Test user");
+        const score = await Grader.grade(gameData.points, gameData.errors,
+            gameData.maxPoints, testQuestionnaire.id, 'Test user');
         expect(score).to.equal(100);
 
     });
 
     it('Should save the game data to Ranking database', async function() {
-      let score = await Grader.grade(gameData.points, gameData.errors,
-                    gameData.maxPoints, testQuestionnaire.id, "Test user");
-      let rankingList = await Ranking.find().exec();
-      let leaderboard = rankingList[0].gameScore;
+        const score = await Grader.grade(gameData.points, gameData.errors,
+            gameData.maxPoints, testQuestionnaire.id, 'Test user');
+        const rankingList = await Ranking.find().exec();
+        const leaderboard = rankingList[0].gameScore;
 
-      expect(rankingList).to.have.lengthOf(1);
-      expect(leaderboard[0].player).to.equal('Test user');
-      expect(leaderboard[0].grade).to.equal(100);
+        expect(rankingList).to.have.lengthOf(1);
+        expect(leaderboard[0].player).to.equal('Test user');
+        expect(leaderboard[0].grade).to.equal(score);
     });
 
     it('should only save 10 entries for each game', async function() {
         for(let i = 11; i > 0; --i) {
             await Grader.grade(gameData.points, i, gameData.maxPoints,
-                               "testID", "Test user" + i);
+                'testID', 'Test user' + i);
         }
-        let rankingList = await Ranking.findOne({game: "testID"}).exec();
-        let leaderboard = rankingList.gameScore;
+        const rankingList = await Ranking.findOne({game: 'testID'}).exec();
+        const leaderboard = rankingList.gameScore;
         expect(leaderboard).to.have.lengthOf(10);
         expect(leaderboard.slice(-1).pop().player).to.equal('Test user10');
 

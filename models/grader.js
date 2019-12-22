@@ -6,27 +6,26 @@ module.exports = {
 
     async grade(points, errors, maxPoints, id, userName) {
 
-        let total = points + errors;
+        //Count the grade
+        const total = points + errors;
         let finalScore = 0;
 
-        if(total == 0) {
+        if(total === 0) {
             finalScore = 0;
-        }
-        else {
+        } else {
             finalScore = Math.round( points / total * maxPoints);
         }
 
         //Save rankingdata to the database
-        let rankings = await Ranking.find().exec();
-        let ranking;
-        let gameScoreObject = {
+        const rankings = await Ranking.find().exec();
+        const gameScoreObject = {
             player: userName,
             rights: points,
             wrongs: errors,
             grade: finalScore
         };
 
-        let data = {
+        const data = {
             game: id,
             gameScore: [{
                 player: userName,
@@ -34,19 +33,19 @@ module.exports = {
                 wrongs: errors,
                 grade: finalScore
             }]
-        }
+        };
         let found = false;
         for (let i = 0; i< rankings.length; ++i) {
-            if (rankings[i].game == id) {
-                let unsortedLeaderboards = rankings[i].gameScore;
-                let sortedLB = sortTopTen(unsortedLeaderboards, gameScoreObject);
+            if (rankings[i].game === id) {
+                const unsortedLeaderboards = rankings[i].gameScore;
+                const sortedLB = sortTopTen(unsortedLeaderboards, gameScoreObject);
                 await Ranking.updateOne(
-                   {_id: rankings[i].id},
-                   {$set: {"gameScore": sortedLB } });
+                    {_id: rankings[i].id},
+                    {$set: {'gameScore': sortedLB } });
                 found = true;
                 break;
             }
-        };
+        }
         if (!found) {
             await Ranking.create(data);
         }
@@ -59,10 +58,10 @@ module.exports = {
 function sortTopTen(scoreBoard, newEntry) {
     for (let i = 0; i < scoreBoard.length; ++i) {
         if(newEntry.grade >= scoreBoard[i].grade) {
-            if(i == 0) {
+            if(i === 0) {
                 scoreBoard.unshift(newEntry);
             } else {
-                scoreBoard.splice(i, 0, newEntry)
+                scoreBoard.splice(i, 0, newEntry);
             }
             if(scoreBoard.length > 10) {
                 scoreBoard.pop();

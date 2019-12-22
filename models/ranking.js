@@ -2,8 +2,6 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const User = require('./user');
-const Questionnaire = require('./questionnaire');
 
 const gameScoreSchema = new Schema({
     player: {
@@ -50,7 +48,7 @@ const rankingSchema = new Schema({
                         uniqueGamescores[player].wrongs = current.wrongs;
                         uniqueGamescores[player].grade = current.grade;
                         return;
-                    };
+                    }
                     uniqueGamescores.push(player);
                 });
 
@@ -60,8 +58,6 @@ const rankingSchema = new Schema({
         }
     }
 });
-
-
 
 rankingSchema.set('toJSON', { versionKey: false });
 const Ranking = mongoose.model('Ranking', rankingSchema);

@@ -53,7 +53,7 @@ describe('Game view UI test suite', function() {
 
 
         // Create test data
-        let rawData = fs.readFileSync( path.resolve(__dirname, './ui_test_data.json') );
+        const rawData = fs.readFileSync( path.resolve(__dirname, './ui_test_data.json') );
         data =  JSON.parse(rawData);
         await Questionnaire.create(data);
 
@@ -87,22 +87,23 @@ describe('Game view UI test suite', function() {
         });
 
         it('should show 10 entries in leaderboard', async function() {
-          let points = 10;
-          let errors = 0;
-          let maxPoints = 100;
-          let playerName = "Test player";
+          const points = 10;
+          const errors = 0;
+          const maxPoints = 100;
+          const playerName = "Test player";
           for(let i = 11; i > 0; --i) {
               await Grader.grade(points, errors, maxPoints,
                                  testQuestionnaire.id, playerName);
           }
-          let rankingList = await Ranking.findOne({game: testQuestionnaire.id}).exec();
-          let leaderboard = rankingList.gameScore;
+          const rankingList = await Ranking.findOne({game: testQuestionnaire.id}).exec();
+          const leaderboard = rankingList.gameScore;
           await browser.visit(`/leaderboard/${testQuestionnaire.id}`);
+
+          //Every list element has id of "li" + index number
           for(let i = 0; i < 10; ++i) {
               browser.assert.elements(`#li${i}`, 1);
           }
         });
-
 
     });
 

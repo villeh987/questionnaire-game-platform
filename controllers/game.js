@@ -2,7 +2,6 @@
 
 const Questionnaire = require('../models/questionnaire');
 const Grader = require('../models/grader');
-const Ranking = require('../models/ranking');
 
 module.exports = {
 
@@ -30,10 +29,10 @@ module.exports = {
 
     async gradeExercise(request, response) {
         //Get the values from the form body, and turn into numbers for grading
-        let maxPoints = parseInt(request.sanitize(request.body.maxPoints));
-        let rights = parseInt(request.sanitize(request.body.points));
-        let errors = parseInt(request.sanitize(request.body.errors));
-        let questionnaire = await Questionnaire.findById(request.params.id);
+        const maxPoints = parseInt(request.sanitize(request.body.maxPoints));
+        const rights = parseInt(request.sanitize(request.body.points));
+        const errors = parseInt(request.sanitize(request.body.errors));
+        const questionnaire = await Questionnaire.findById(request.params.id);
 
         if (maxPoints === undefined || rights === undefined || errors === undefined) {
             response.render('game_graded_rejected', {
@@ -42,7 +41,8 @@ module.exports = {
                 title: 'Rejected'
             });
         } else {
-            let score = await Grader.grade(rights, errors, maxPoints, questionnaire.id, request.user.name);
+            const score = await Grader.grade(rights, errors, maxPoints,
+                questionnaire.id, request.user.name);
 
             response.render('game_graded', {
                 points: score,
