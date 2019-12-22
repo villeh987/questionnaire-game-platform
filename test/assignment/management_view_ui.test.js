@@ -64,8 +64,6 @@ describe('Management view UI test suite', function() {
         browser = new Browser();
 
         await auth(browser);
-        //await browser.visit('/questionnaires');
-        //await browser.pressButton('#grade');
     });
 
     afterEach(function() {
@@ -147,16 +145,10 @@ describe('Management view UI test suite', function() {
         });
 
         it('must be able to delete questionnaire', async function() {
-
-
             await browser.pressButton('#deleteQuestionnaire');
-
-            //console.log(browser.html());
             browser.assert.success();
             browser.assert.text('.alert.alert-success', 'Questionnaire removed successfully.');
-
         });
-
     });
 
 });

@@ -204,7 +204,6 @@ module.exports = {
 
             let errorMessage = '';
             for (let i in error) {
-                //console.log("i:", i);
                 errorMessage = errorMessage + '\n' + error[i];
             }
 
