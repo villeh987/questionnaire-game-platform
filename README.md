@@ -166,8 +166,6 @@ public location.
 Running: Install with npm install, run with npm start and navigate to
 localhost:3000, if the port is available for local testing.
 
-TODO: check in the end that those instructions are valid
-
 ## Management view
 
 In management view, users with teacher or admin rights may perform CRUD operations
@@ -189,6 +187,8 @@ Delete - Existing questionnaires may be deleted.
 Tests consist of management view tests, game tests and model tests. All CRUD
 operations of management view are tested (plus extra error handling and other
 asserts) both by sending requests to the routes, and by simulating a browser.
+All game routes, functionalities, and game related models are tested, except for
+the game script itself, because loading phaser crashes the tester.
 Documentation consists of this README document, and function documentation
 in respective files.
 
