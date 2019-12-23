@@ -126,7 +126,7 @@ module.exports = {
 
             let errorMessage = '';
             for (let i in error) {
-                errorMessage = errorMessage + '\n' + error[i];
+                errorMessage = `${errorMessage} \n ${error[i]}`;   
             }
 
             request.flash('errorMessage', errorMessage);
@@ -204,7 +204,7 @@ module.exports = {
 
             let errorMessage = '';
             for (let i in error) {
-                errorMessage = errorMessage + '\n' + error[i];
+                errorMessage = `${errorMessage} \n ${error[i]}`;
             }
 
             request.flash('errorMessage', errorMessage);

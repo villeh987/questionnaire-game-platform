@@ -94,8 +94,6 @@ describe('Game view UI test suite', function() {
             for(let i = 11; i > 0; --i) {
                 await Grader.grade(points, errors, maxPoints, testQuestionnaire.id, playerName);
             }
-            const rankingList = await Ranking.findOne({game: testQuestionnaire.id}).exec();
-            const leaderboard = rankingList.gameScore;
             await browser.visit(`/leaderboard/${testQuestionnaire.id}`);
 
             //Every list element has id of "li" + index number

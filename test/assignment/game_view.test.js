@@ -156,7 +156,8 @@ describe('Grader', function() {
     it('should only save 10 entries for each game', async function() {
         for(let i = 11; i > 0; --i) {
             await Grader.grade(gameData.points, i, gameData.maxPoints,
-                'testID', 'Test user' + i);
+                'testID', `Test user${i}`);
+            
         }
         const rankingList = await Ranking.findOne({game: 'testID'}).exec();
         const leaderboard = rankingList.gameScore;
