@@ -82,8 +82,8 @@ module.exports = {
         });
 
         // Check whether questionnaire with given title exists
-        let questionnaireTitle = request.sanitize(request.body.title);
-        let existingQuestionnaire = await Questionnaire.findOne({title : questionnaireTitle}).exec();
+        const questionnaireTitle = request.sanitize(request.body.title);
+        const existingQuestionnaire = await Questionnaire.findOne({title : questionnaireTitle}).exec();
 
         if (existingQuestionnaire) {
             request.flash('errorMessage', 'A Questionnaire with that title already exists.');
@@ -91,7 +91,7 @@ module.exports = {
         }
 
         // Check whether questions and options are unique
-        let uniqueQuestions = [];
+        const uniqueQuestions = [];
         let uniqueError;
         request.body.questions.forEach( (question) => {
 
@@ -102,7 +102,7 @@ module.exports = {
                 uniqueQuestions.push(question.title);
             }
 
-            let uniqueOptions = [];
+            const uniqueOptions = [];
             question.options.forEach( (option) => {
                 if (uniqueOptions.includes(option.option)) {
                     uniqueError = `Option title "${option.option}" must be unique!`;
@@ -170,7 +170,7 @@ module.exports = {
      * @param {Object} response is express response object
      */
     async update(request, response) {
-        let questionnaire = await Questionnaire.findById(request.params.id).exec();
+        const questionnaire = await Questionnaire.findById(request.params.id).exec();
 
         response.render('questionnaire/update', {questionnaire} );
     },

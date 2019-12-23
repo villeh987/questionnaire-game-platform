@@ -87,22 +87,21 @@ describe('Game view UI test suite', function() {
         });
 
         it('should show 10 entries in leaderboard', async function() {
-          const points = 10;
-          const errors = 0;
-          const maxPoints = 100;
-          const playerName = "Test player";
-          for(let i = 11; i > 0; --i) {
-              await Grader.grade(points, errors, maxPoints,
-                                 testQuestionnaire.id, playerName);
-          }
-          const rankingList = await Ranking.findOne({game: testQuestionnaire.id}).exec();
-          const leaderboard = rankingList.gameScore;
-          await browser.visit(`/leaderboard/${testQuestionnaire.id}`);
+            const points = 10;
+            const errors = 0;
+            const maxPoints = 100;
+            const playerName = 'Test player';
+            for(let i = 11; i > 0; --i) {
+                await Grader.grade(points, errors, maxPoints, testQuestionnaire.id, playerName);
+            }
+            const rankingList = await Ranking.findOne({game: testQuestionnaire.id}).exec();
+            const leaderboard = rankingList.gameScore;
+            await browser.visit(`/leaderboard/${testQuestionnaire.id}`);
 
-          //Every list element has id of "li" + index number
-          for(let i = 0; i < 10; ++i) {
-              browser.assert.elements(`#li${i}`, 1);
-          }
+            //Every list element has id of "li" + index number
+            for(let i = 0; i < 10; ++i) {
+                browser.assert.elements(`#li${i}`, 1);
+            }
         });
 
     });

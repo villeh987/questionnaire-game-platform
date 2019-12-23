@@ -29,7 +29,7 @@ const deleteURL = '/questionnaires/delete';
 
 
 function parseCsrfToken(res) {
-    let htmlDoc = parser.parseFromString(res.text, 'text/html');
+    const htmlDoc = parser.parseFromString(res.text, 'text/html');
     return htmlDoc.getElementsByName('csrf-token')[0].getAttribute('content');
 }
 
@@ -65,7 +65,7 @@ describe('Management view', function() {
 
 
         // Create test data
-        let rawData = fs.readFileSync( path.resolve(__dirname, './test_data.json') );
+        const rawData = fs.readFileSync( path.resolve(__dirname, './test_data.json') );
         data =  JSON.parse(rawData);
         await Questionnaire.create(data);
 
@@ -238,7 +238,7 @@ describe('Management view', function() {
     });
 
     it('Should be able to update questionnaire without changing anything', async function() {
-        let url = `${editURL}/${testQuestionnaire.id}`;
+        const url = `${editURL}/${testQuestionnaire.id}`;
 
         const response = await request
             .post(url)
@@ -252,7 +252,7 @@ describe('Management view', function() {
         let hintlessForm = fs.readFileSync( path.resolve(__dirname, './test_form_object.json') );
         hintlessForm = JSON.parse(hintlessForm);
         hintlessForm.title = 'This questionnaire is hintless';
-        let url = `${editURL}/${testQuestionnaire.id}`;
+        const url = `${editURL}/${testQuestionnaire.id}`;
         delete hintlessForm.questions[1].options[0].hint;
 
         const response = await request
@@ -267,8 +267,8 @@ describe('Management view', function() {
         let invalidForm = fs.readFileSync( path.resolve(__dirname, './test_form.json') );
         invalidForm = JSON.parse(invalidForm);
         invalidForm.title = '';
-        let url = `${editURL}/${testQuestionnaire.id}`;
-        let pattern = new RegExp(url);
+        const url = `${editURL}/${testQuestionnaire.id}`;
+        const pattern = new RegExp(url);
 
         const response = await request
             .post(url)

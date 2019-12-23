@@ -51,7 +51,7 @@ describe('Management view UI test suite', function() {
 
 
         // Create test data
-        let rawData = fs.readFileSync( path.resolve(__dirname, './ui_test_data.json') );
+        const rawData = fs.readFileSync( path.resolve(__dirname, './ui_test_data.json') );
         data =  JSON.parse(rawData);
         await Questionnaire.create(data);
 

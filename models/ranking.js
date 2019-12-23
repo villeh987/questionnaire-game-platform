@@ -37,7 +37,7 @@ const rankingSchema = new Schema({
             validator: (val) => {
                 if (!val || !Array.isArray(val)) return false;
                 if (val.length === 0) return false;
-            },
+            }
         }
     }
 });
