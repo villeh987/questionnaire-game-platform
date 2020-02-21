@@ -3,17 +3,7 @@
 In the assignment, we gamify multi-choice questionnaire.
 The assignment consists of three parts: the game, management view, and testing/documentation.
 
-1. game - some mechanism for selecting the right answers
-
-2. management implies CRUD operations: questions can be created, queried, modified, and deleted.
-
-3. test your modifications, that is game and management view in particular, other tests can be implemented as well.
-
-In the beginning of December, we will meet all the groups to check that each
-group has some idea how to proceed.
-In addition, we promote MIT licensing:
-if you grant the license, your game may be integrated in the LukioPlussa project;
-the project is funded by the Ministry of Education. Its aim is to provide free learning material
+The project is funded by the Ministry of Education. Its aim is to provide free learning material
 for high-school students, especially for the domains of mathematics and computer science.
 
 ### The project structure
@@ -319,13 +309,9 @@ The _mocha_ and _chai_ modules are used for testing and the tests can be found u
 ##About coding policies
 
 The project code aims to follow a consistent coding conventions
-ensured by using the _eslint_ code validation tool. The primary purpose of the tool is to ensure that the project code follows more or less the generally accepted style of appropriate conventions, and that the code avoids known vulnerabilities and / or risky coding practices. In addition, the tool aims to standardize the appearance of code of all programmers involved in the project so that all code is easy to read and maintainable for non-original coders as well.
-
-English is recommended for naming functions and variables and commenting on code. Git commit messages should also be written in English, but this is neither required nor monitored.
+ensured by using the _eslint_ code validation tool. The primary purpose of the tool is to ensure that the project code follows more or less the generally accepted style of appropriate conventions, and that the code avoids known vulnerabilities and / or risky coding practices.
 
 ##Code style
-
-The _eslint_ tool used is configured to require certain stylistic considerations that can reasonably be considered as opinion issues and may not necessarily be true or false. The intention is not to initiate any debate on the subject or upset anyone's mind, but to strive for uniformity in the appearance of the code, with no other motives.
 
 This project follows the following coding styles:
 
@@ -340,10 +326,9 @@ You can check the style of your code by command:
 
 `` ` npm run lint `` `
 
-_eslint_ can also correct some code errors and style violations automatically, but you shouldn't rely on this blindly. You can do this explicitly with the command:
+_eslint_ can also correct some code errors and style violations automatically
 
 `` ` npm run lint:fix `` `
 
-Naturally, it is easier to set up a code editor to monitor and correct the style during coding.
 
 The project root directory contains the VSCode Editor configuration folder, where the appropriate settings are available for the editor. In addition, it contains plugin recommendations that VSCode will offer to install if the user so wishes. In addition, the project includes the _.editorconfig_ file, which allows you to easily import some of your settings to a number of other editors.
